@@ -47,7 +47,7 @@
                                             class="text-muted d-none d-sm-inline-block float-end">
                                             Design with
                                             <i class="iconoir-heart-solid text-danger align-middle"></i>
-                                            by Trice Technologies</span>
+                                        by Smartenough solutions</span>
                                     </p>
                                 </div>
                             </div>

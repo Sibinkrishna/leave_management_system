@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\{
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\{DashboardController, ProfileController};
 use App\Http\Controllers\Employee\LeaveController;
+use App\Http\Controllers\Employee\LeaveSheetController; 
+use App\Http\Controllers\Employee\PendingLeaveController;
 
 
 
@@ -89,9 +91,15 @@ Route::post('holiday/{holiday}', [HolidayController::class, 'destroy'])->name('h
 });
 
 // ================== EMPLOYEE ROUTES ==================
-Route::prefix('employee')->name('employee.')->middleware(['auth', 'role:employee'])->group(function () {
-    Route::resource('leaves', LeaveController::class);
+
+
+Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'])->group(function () {
+    Route::get('leaves', [LeaveSheetController::class, 'index'])->name('leaves.index');
+    Route::get('pending-leaves', [PendingLeaveController::class, 'index'])->name('pendingleaves.index');
 });
 
- // ================== LeaveType ==================
+
+
+
+ // ================== Leave ==================
 
