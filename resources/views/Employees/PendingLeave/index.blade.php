@@ -33,16 +33,15 @@
                     <table class="table table-striped mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Leave Type</th>
-                                <th>From Date</th>
-                                <th>To Date</th>
-                                <th>Reason</th>
-                                <th>Status</th>
+                                <th>Name</th>
+                                <th>Casual Leave</th>
+                                <th>Medical leave</th>
+                                <th>WFH</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($pendingLeaves as $leave)
-                                <tr>
+                                <!-- <tr>
                                     <td>{{ $leave->type }}</td>
                                     <td>{{ \Carbon\Carbon::parse($leave->from_date)->format('d M, Y') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($leave->to_date)->format('d M, Y') }}</td>
@@ -50,7 +49,7 @@
                                     <td>
                                         <span class="badge bg-warning text-dark">{{ $leave->status }}</span>
                                     </td>
-                                </tr>
+                                </tr> -->
                             @empty
                                 <tr>
                                     <td colspan="5" class="text-center text-muted">No pending leaves found.</td>

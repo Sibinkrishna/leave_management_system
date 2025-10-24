@@ -71,11 +71,17 @@
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.pendingleaves.index') }}">
+                            <a class="nav-link" href="{{ route('employee.pendingleaves.index') }}">
                                 <i class="iconoir-book menu-icon"></i>
                                 <span>Pending Leaves</span>
                             </a>
                         </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.leaveapplication.index') }}">
+                               <i class="iconoir-book menu-icon"></i>
+                                <span>Apply Leave</span>
+                            </a>
+                            </li><!--end nav-item-->
                         @endif
                         <!--end nav-item-->
                         {{-- <li class="nav-item">
