@@ -23,12 +23,21 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard') }}">
-                                <i class="iconoir-report-columns menu-icon"></i>
-                                <span>Dashboard</span>
-                                {{-- <span class="badge text-bg-info ms-auto">New</span> --}}
-                            </a>
-                        </li>
+    @if (Auth::user()->role == 'admin')
+    <a class="nav-link" href="{{ route('admin.dashboard') }}">
+        <i class="iconoir-report-columns menu-icon"></i>
+        <span>Dashboard</span>
+    </a>
+@elseif (Auth::user()->role == 'employee')
+    <a class="nav-link" href="{{ route('employee.dashboard') }}">
+        <i class="iconoir-report-columns menu-icon"></i>
+        <span>Dashboard</span>
+    </a>
+@endif
+
+</li>
+                       
+
                         @if (Auth::user()->role == 'admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.employee.index')}}">
@@ -44,12 +53,6 @@
                             </a>
                         </li><!--end nav-item--> 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="iconoir-group menu-icon"></i>
-                                <span>Clients</span>
-                            </a>
-                        </li><!--end nav-item-->
-                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.leavetype.index') }}">
                                 <i class="iconoir-book menu-icon"></i>
                                 <span>Leave</span>
@@ -62,6 +65,21 @@
                                 <span>Holiday</span>
                             </a>
                         </li>
+                       <li class="nav-item">
+                          <a class="nav-link d-flex align-items-center" href="{{ route('admin.leaves.pending') }}">
+                          <i class="bi bi-calendar2-check menu-icon me-2"></i>
+                             <span>Leave Applications</span>
+                            @php
+                            $pendingCount = \App\Models\LeaveApplication::where('status', 'pending')->count();
+                             @endphp
+                            @if($pendingCount > 0)
+                            <span class="badge bg-danger ms-auto">{{ $pendingCount }}</span>
+                             @endif
+                               </a>
+                              </li>
+
+
+
                         @endif
                         @if (Auth::user()->role == 'employee')
                         <li class="nav-item">
@@ -82,6 +100,12 @@
                                 <span>Apply Leave</span>
                             </a>
                             </li><!--end nav-item-->
+                             <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.attendance.records') }}">
+                               <i class="iconoir-calendar menu-icon"></i>
+                               <span>Attendance Record</span>
+                            </a>
+                         </li>
                         @endif
                         <!--end nav-item-->
                         {{-- <li class="nav-item">

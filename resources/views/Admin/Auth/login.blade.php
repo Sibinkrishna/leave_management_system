@@ -109,14 +109,16 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
 
     const payload = new FormData(form);
 
-    try {
-        const res = await fetch("{{ route('login.submit') }}", {
-            method: 'POST',
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+ try {
+    const res = await fetch("{{ route('login.submit') }}", {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: payload
+    });
 
-             // marks it as AJAX
-            body: payload
-        });
 
         if (res.ok) {
             const data = await res.json();

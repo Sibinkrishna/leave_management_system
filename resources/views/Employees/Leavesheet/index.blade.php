@@ -3,30 +3,25 @@
 @section('content')
 <div class="row">
     <div class="col-sm-12">
-        <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
+        <div class="page-title-box d-flex justify-content-between align-items-center">
             <h4 class="page-title">Leave Sheet</h4>
-            <div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                    <li class="breadcrumb-item"><a href="#">Leaves</a></li>
-                    <li class="breadcrumb-item active">Sheet</li>
-                </ol>
-            </div>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Approx</a></li>
+                <li class="breadcrumb-item"><a href="#">Leaves</a></li>
+                <li class="breadcrumb-item active">Sheet</li>
+            </ol>
         </div>
     </div>
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-md-12 col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="row align-items-center mb-3">
-                    <div class="col">
-                        <h4 class="card-title">Employee Leave Summary</h4>
-                        <!-- <h6 class="text-muted mb-0">Name: {{ Auth::user()->name }}</h6> -->
-                    </div>
-                </div>
+    <div class="col-md-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">My Employee Leave Summary</h5>
+                <span class="fw-bold">(DIPPU)</span>
             </div>
+<<<<<<< HEAD
 
             <div class="card-body pt-0">
                 <div class="table-responsive">
@@ -67,6 +62,36 @@
                 </div><!-- end table-responsive -->
             </div><!-- end card-body -->
         </div><!-- end card -->
+=======
+            <div class="card-body">
+                <table class="table table-bordered text-center align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Casual Leave</th>
+                            <th>Medical Leave</th>
+                            <th>WFH</th>
+                            {{-- <th>Half Day</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @foreach (['Casual', 'Medical', 'WFH', ] as $type)
+                                <td>
+                                    @if (!empty($leavesGrouped[$type]))
+                                        @foreach ($leavesGrouped[$type] as $dateRange)
+                                            <div>{{ $dateRange }}</div>
+                                        @endforeach
+                                    @else
+                                        <small class="text-muted">No leave records found.</small>
+                                    @endif
+                                </td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+>>>>>>> 610ccd4224c2d13e0dc2fd35a08c6628a3ef8c9d
     </div>
 </div>
 @endsection

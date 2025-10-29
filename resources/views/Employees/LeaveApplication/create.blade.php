@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <!-- Row 2: Subject (full width)
+                <!-- Row 2: Subject (full width) -->
                 <div class="row mb-3">
                     <div class="col-12">
                         <label for="subject" class="form-label">Subject</label>
@@ -56,7 +56,7 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Row 2: Reason (full width) -->
                 <div class="row mb-3">

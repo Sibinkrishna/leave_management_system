@@ -1,37 +1,48 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
+<style>
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>
+
 <div class="row">
     <div class="col-sm-12">
-        <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
+        <div class="page-title-box d-flex justify-content-between align-items-center">
             <h4 class="page-title">Pending Leaves</h4>
-            <div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                    <li class="breadcrumb-item"><a href="#">Leaves</a></li>
-                    <li class="breadcrumb-item active">Pending</li>
-                </ol>
-            </div>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Approx</a></li>
+                <li class="breadcrumb-item"><a href="#">Leaves</a></li>
+                <li class="breadcrumb-item active">Pending</li>
+            </ol>
         </div>
     </div>
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-md-12 col-lg-12">
+<div class="row">
+    <div class="col-12">
         <div class="card">
-            <div class="card-header">
-                <div class="row align-items-center mb-3">
-                    <div class="col">
-                        <h4 class="card-title">My Pending Leave Requests</h4>
-                        <!-- <h6 class="text-muted mb-0">Name: {{ Auth::user()->name }}</h6> -->
-                    </div>
-                </div>
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">My Pending Leave Requests</h5>
+                <span>({{ Auth::user()->name }})</span>
             </div>
-
-            <div class="card-body pt-0">
-                <div class="table-responsive">
-                    <table class="table table-striped mb-0">
-                        <thead class="table-light">
+            <div class="card-body">
+                <table class="table table-bordered text-center align-middle w-100">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Leave Type</th>
+                            <th>Total Days</th>
+                            <th>Used Days</th>
+                            <th>Remaining Days</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($employeeLeaves as $leave)
                             <tr>
                                 <th>Leave Type</th>
                                 <th>Total</th>
