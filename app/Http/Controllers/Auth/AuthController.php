@@ -20,51 +20,60 @@ class AuthController extends Controller
     $credentials = $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],
-    ],[
+    ], [
         'email.required' => 'Please enter email',
-        'password.required'=>'Please enter password'
+        'password.required' => 'Please enter password',
     ]);
-    $user =User::where('email', $request->email)->first();
-    if(!$user){
+
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
         return response()->json([
             'success' => false,
             'errors' => ['email' => ['Email not found.']],
         ], 422);
     }
-    if(!Hash::check($request->password, $user->password)){
+
+    if (!Hash::check($request->password, $user->password)) {
         return response()->json([
             'success' => false,
             'errors' => ['password' => ['Incorrect password.']],
         ], 422);
     }
+
     if (Auth::attempt($credentials, $request->boolean('remember'))) {
         $request->session()->regenerate();
 
-        // ✅ If AJAX, return JSON (your JS expects this!)
+        // ✅ Role-based redirection
+        $redirectRoute = match ($user->role) {
+            'admin'    => route('admin.dashboard'),
+            'employee' => route('employee.dashboard'),
+            default    => route('login'), // fallback
+        };
+
+        // ✅ AJAX login (return JSON)
         if ($request->ajax()) {
             return response()->json([
-                'redirect' => route('dashboard')
+                'success'  => true,
+                'redirect' => $redirectRoute,
             ]);
         }
 
         // ✅ Normal login (non-AJAX form)
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended($redirectRoute);
     }
 
-    // ✅ Validation failed or credentials invalid
+    // ✅ Invalid credentials
     if ($request->ajax()) {
         return response()->json([
-            'errors' => [
-                'email' => ['Invalid credentials'],
-            ]
+            'success' => false,
+            'errors' => ['email' => ['Invalid credentials']],
         ], 422);
     }
 
-    // ✅ Normal form fallback
-    return back()
-        ->withErrors(['email' => 'Invalid credentials'])
-        ->onlyInput('email');
+    return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');
 }
+
 
 
     public function logout(Request $request)
@@ -101,7 +110,7 @@ class AuthController extends Controller
     public function showRegister()
     {
         return view('Admin.Auth.register');
-    } 
+    }
     public function register(Request $request)
     {
         $request->validate([

@@ -21,7 +21,6 @@
                 <h5 class="mb-0 fw-bold">My Employee Leave Summary</h5>
                 <span class="fw-bold">(DIPPU)</span>
             </div>
-<<<<<<< HEAD
 
             <div class="card-body pt-0">
                 <div class="table-responsive">
@@ -62,36 +61,6 @@
                 </div><!-- end table-responsive -->
             </div><!-- end card-body -->
         </div><!-- end card -->
-=======
-            <div class="card-body">
-                <table class="table table-bordered text-center align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Casual Leave</th>
-                            <th>Medical Leave</th>
-                            <th>WFH</th>
-                            {{-- <th>Half Day</th> --}}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            @foreach (['Casual', 'Medical', 'WFH', ] as $type)
-                                <td>
-                                    @if (!empty($leavesGrouped[$type]))
-                                        @foreach ($leavesGrouped[$type] as $dateRange)
-                                            <div>{{ $dateRange }}</div>
-                                        @endforeach
-                                    @else
-                                        <small class="text-muted">No leave records found.</small>
-                                    @endif
-                                </td>
-                            @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
->>>>>>> 610ccd4224c2d13e0dc2fd35a08c6628a3ef8c9d
     </div>
 </div>
 @endsection

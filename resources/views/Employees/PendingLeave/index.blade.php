@@ -42,7 +42,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($employeeLeaves as $leave)
+
                             <tr>
                                 <th>Leave Type</th>
                                 <th>Total</th>
