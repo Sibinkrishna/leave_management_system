@@ -29,6 +29,7 @@
                                 {{-- <span class="badge text-bg-info ms-auto">New</span> --}}
                             </a>
                         </li>
+                        @if (Auth::user()->role == 'admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.employee.index')}}">
                                 <i class="iconoir-hand-cash menu-icon"></i>
@@ -60,7 +61,29 @@
                              <i class="iconoir-calendar menu-icon"></i>
                                 <span>Holiday</span>
                             </a>
+                        </li>
+                        @endif
+                        @if (Auth::user()->role == 'employee')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.leaves.index') }}">
+                                <i class="iconoir-book menu-icon"></i>
+                                <span>Leave Sheet</span>
+                            </a>
                         </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.pendingleaves.index') }}">
+                                <i class="iconoir-book menu-icon"></i>
+                                <span>Pending Leaves</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.leaveapplication.index') }}">
+                               <i class="iconoir-book menu-icon"></i>
+                                <span>Apply Leave</span>
+                            </a>
+                            </li><!--end nav-item-->
+                        @endif
+                        <!--end nav-item-->
                         {{-- <li class="nav-item">
                             <a class="nav-link" href="#sidebarTransactions" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarTransactions">
