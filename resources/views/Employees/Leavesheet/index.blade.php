@@ -33,36 +33,35 @@
                     <table class="table table-striped mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Casual Leave</th>
-                                <th>Medical Leave</th>
-                                <th>WFH</th>
-                                <th>Half Day</th>
+                                <th>Leave Type</th>
+                                <th>Leave From</th>
+                                <th>Leave To</th>
+                                <th>Total Days</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $maxRows = max(
-                                    count($leavesGrouped['Casual'] ?? []),
-                                    count($leavesGrouped['Medical'] ?? []),
-                                    count($leavesGrouped['WFH'] ?? []),
-                                    count($leavesGrouped['Half Day'] ?? [])
-                                );
-                            @endphp
-
-                            @if($maxRows > 0)
-                                @for($i = 0; $i < $maxRows; $i++)
-                                    <tr>
-                                        <td>{{ $leavesGrouped['Casual'][$i] ?? '' }}</td>
-                                        <td>{{ $leavesGrouped['Medical'][$i] ?? '' }}</td>
-                                        <td>{{ $leavesGrouped['WFH'][$i] ?? '' }}</td>
-                                        <td>{{ $leavesGrouped['Half Day'][$i] ?? '' }}</td>
-                                    </tr>
-                                @endfor
-                            @else
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted">No leave records found.</td>
-                                </tr>
-                            @endif
+                         @forelse($leaveApplications as $application)
+                <tr>
+                    <td>{{ $application->leaveType->name }}</td>
+                    <td>{{ \Carbon\Carbon::parse($application->start_date)->format('d M Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($application->end_date)->format('d M Y') }}</td>
+                    <td>{{ $application->days }}</td>
+                    <td>
+                        @if($application->status == 'approved')
+                            <span class="badge bg-success">Approved</span>
+                        @elseif($application->status == 'rejected')
+                            <span class="badge bg-danger">Rejected</span>
+                        @else
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6">No leave records found.</td>
+                </tr>
+            @endforelse
                         </tbody>
                     </table><!-- end table -->
                 </div><!-- end table-responsive -->

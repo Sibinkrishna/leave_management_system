@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->string('subject')->nullable();
             $table->text('reason');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->unsignedBigInteger('approved_by')->nullable();
+            $table->date('approval_date')->nullable();
             $table->timestamps();
         });
     }

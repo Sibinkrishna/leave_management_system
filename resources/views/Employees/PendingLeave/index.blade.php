@@ -33,29 +33,34 @@
                     <table class="table table-striped mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Name</th>
-                                <th>Casual Leave</th>
-                                <th>Medical leave</th>
-                                <th>WFH</th>
+                                <th>Leave Type</th>
+                                <th>Total</th>
+                                <th>Used</th>
+                                <th>Remaining</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($pendingLeaves as $leave)
-                                <!-- <tr>
-                                    <td>{{ $leave->type }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($leave->from_date)->format('d M, Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($leave->to_date)->format('d M, Y') }}</td>
-                                    <td>{{ $leave->reason ?? '—' }}</td>
-                                    <td>
-                                        <span class="badge bg-warning text-dark">{{ $leave->status }}</span>
-                                    </td>
-                                </tr> -->
+                                 <tr>
+                                    <td>{{ $leave->leaveType->name }}</td>
+                                    <td>{{ $leave->total }}</td>
+                                    <td>{{ $leave->used }}</td>
+                                    <td>{{ $leave->remaining }}</td>
+                                </tr>
                             @empty
                                 <tr>
                                     <td colspan="5" class="text-center text-muted">No pending leaves found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <th>Total</th>
+                                <th>{{ $totalAll['total_leaves'] }}</th>
+                                <th>{{ $totalAll['used_leaves'] }}</th>
+                                <th>{{ $totalAll['remaining_leaves'] }}</th>
+                            </tr>
+                        </tfoot>
                     </table><!-- end table -->
                 </div><!-- end table-responsive -->
             </div><!-- end card-body -->

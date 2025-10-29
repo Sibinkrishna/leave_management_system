@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LeaveSheet extends Model
 {
@@ -26,6 +27,7 @@ class LeaveSheet extends Model
     // Relation to Employee
     public function employee()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(User::class);
     }
+
 }

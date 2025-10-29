@@ -11,15 +11,16 @@ class PendingLeaveController extends Controller
 {
     public function index()
     {
-        // Get logged-in employee ID
         $employeeId = Auth::user()->id;
-
-        // Fetch only this employee’s pending leaves
-        $pendingLeaves = PendingLeave::where('user_id', $employeeId)
-            ->where('status', 'Pending')
-            ->orderBy('from_date', 'desc')
+        $pendingLeaves = PendingLeave::with('leaveType')
+            ->where('user_id', $employeeId)
+            ->where('year', now()->year)
             ->get();
-
-        return view('Employees.PendingLeave.index', compact('pendingLeaves'));
+        $totalAll = [
+        'total_leaves'     => $pendingLeaves->sum('total'),
+        'used_leaves'      => $pendingLeaves->sum('used'),
+        'remaining_leaves' => $pendingLeaves->sum('remaining'),
+    ];
+        return view('Employees.PendingLeave.index', compact('pendingLeaves', 'totalAll'));
     }
 }

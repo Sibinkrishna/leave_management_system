@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\LeaveType;
 use App\Models\Department;
+use App\Models\PendingLeave;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,45 +29,62 @@ class EmployeeController extends Controller
 
     // Store new employee
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name'           => 'required|string|max:255',
-            'phone'          => 'required|string|max:15',
-            'email'          => 'required|string|email|max:255|unique:users,email',
-            'password'       => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required|string|min:8',
-            'designation'    => 'required|string|max:255',
-            'join_date'      => 'required|date',
-            'status'         => 'required|string|max:50',
-            'avatar'         => 'nullable|image|max:2048|mimes:png,jpg,jpeg,gif',
-            'address'        => 'nullable|string|max:500',
-            'department_id'  => 'nullable|exists:departments,id',
-        ]);
+{
+    $validatedData = $request->validate([
+        'name'           => 'required|string|max:255',
+        'phone'          => 'required|string|max:15',
+        'email'          => 'required|string|email|max:255|unique:users,email',
+        'password'       => 'required|string|min:8|confirmed',
+        'password_confirmation' => 'required|string|min:8',
+        'designation'    => 'required|string|max:255',
+        'join_date'      => 'required|date',
+        'status'         => 'required|string|max:50',
+        'avatar'         => 'nullable|image|max:2048|mimes:png,jpg,jpeg,gif',
+        'address'        => 'nullable|string|max:500',
+        'department_id'  => 'nullable|exists:departments,id',
+    ]);
 
-        // Handle avatar upload
-        $avatarPath = null;
-        if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-        }
-
-        // Create employee
-        User::create([
-            'name'          => $validatedData['name'],
-            'phone'         => $validatedData['phone'],
-            'email'         => $validatedData['email'],
-            'password'      => Hash::make($validatedData['password']),
-            'designation'   => $validatedData['designation'],
-            'join_date'     => $validatedData['join_date'],
-            'status'        => $validatedData['status'],
-            'role'          => 'employee',
-            'company_id'    => $request->company_id ?? 1,
-            'avatar'        => $avatarPath,
-            'address'       => $validatedData['address'] ?? null,
-            'department_id' => $validatedData['department_id'] ?? null,
-        ]);
-
-        return redirect()->route('admin.employee.index')->with('success', 'Employee created successfully!');
+    // Handle avatar upload
+    $avatarPath = null;
+    if ($request->hasFile('avatar')) {
+        $avatarPath = $request->file('avatar')->store('avatars', 'public');
     }
+
+    // ✅ 1️⃣ Create the user and store it in a variable
+    $user = User::create([
+        'name'          => $validatedData['name'],
+        'phone'         => $validatedData['phone'],
+        'email'         => $validatedData['email'],
+        'password'      => Hash::make($validatedData['password']),
+        'designation'   => $validatedData['designation'],
+        'join_date'     => $validatedData['join_date'],
+        'status'        => $validatedData['status'],
+        'role'          => 'employee',
+        'company_id'    => $request->company_id ?? 1,
+        'avatar'        => $avatarPath,
+        'address'       => $validatedData['address'] ?? null,
+        'department_id' => $validatedData['department_id'] ?? null,
+    ]);
+
+    // ✅ 2️⃣ Assign all leave types automatically to this user
+    $leaveTypes = LeaveType::all();
+
+    foreach ($leaveTypes as $type) {
+        PendingLeave::create([
+            'user_id' => $user->id,
+            'leave_type_id' => $type->id,
+            'year' => now()->year,
+            'total' => $type->total_days_per_year,
+            'used' => 0,
+            'remaining' => $type->total_days_per_year,
+        ]);
+    }
+
+    // ✅ 3️⃣ Redirect with success
+    return redirect()
+        ->route('admin.employee.index')
+        ->with('success', 'Employee created successfully with default leave allocations!');
+}
 
     // Show edit form
     public function edit($id)

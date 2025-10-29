@@ -11,11 +11,11 @@ return new class extends Migration
         Schema::create('pending_leaves', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('type'); // e.g. Casual, Medical, WFH
-            $table->date('from_date');
-            $table->date('to_date');
-            $table->text('reason')->nullable();
-            $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
+            $table->unsignedBigInteger('leave_type_id');
+            $table->year('year');
+            $table->integer('total')->default(0);
+            $table->integer('used')->default(0);
+            $table->integer('remaining')->default(0);
             $table->timestamps();
         });
     }

@@ -11,20 +11,23 @@ class LeaveSheetController extends Controller
 {
     public function index()
     {
-        $employeeId = Auth::user()->id;
+        $employee = Auth::user();
 
-        $leavesheets = LeaveSheet::where('user_id', $employeeId)->get();
+    // Summary section
+    $pendingLeaves = $employee->pendingLeaves()->with('leaveType')->where('year', now()->year)->get();
+    // dd( $pendingLeaves);
+    $totalAll = [
+        'total_leaves'     => $pendingLeaves->sum('total_leaves'),
+        'used_leaves'      => $pendingLeaves->sum('used_leaves'),
+        'remaining_leaves' => $pendingLeaves->sum('remaining_leaves'),
+    ];
 
-        $leaveTypes = ['Casual', 'Medical', 'WFH', 'Half Day'];
-        $leavesGrouped = [];
+    // Detailed leave sheet section
+    $leaveApplications = $employee->leaveApplications()
+        ->with('leaveType')
+        ->orderByDesc('start_date')
+        ->get();
 
-        foreach ($leaveTypes as $type) {
-            $leavesGrouped[$type] = $leavesheets->where('leave_type', $type)
-                ->pluck('start_date')
-                ->map(fn($date) => \Carbon\Carbon::parse($date)->format('d-m-Y'))
-                ->toArray();
-        }
-
-        return view('Employees.LeaveSheet.index', compact('leavesGrouped'));
+    return view('Employees.LeaveSheet.index', compact('pendingLeaves', 'leaveApplications', 'totalAll'));
     }
 }
