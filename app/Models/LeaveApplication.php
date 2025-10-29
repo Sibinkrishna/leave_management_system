@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\LeaveType;
 use Illuminate\Database\Eloquent\Model;
 
 class LeaveApplication extends Model
@@ -19,7 +21,11 @@ class LeaveApplication extends Model
         'approved_by',
         'approval_date'
     ];
-
+    protected $casts = [
+            'start_date' => 'date',
+            'end_date'   => 'date',
+            'approval_date' => 'datetime',
+        ];
     /**
      * Relation to the user who applied for leave
      */

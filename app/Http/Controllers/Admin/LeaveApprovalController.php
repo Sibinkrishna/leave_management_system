@@ -10,16 +10,26 @@ use Illuminate\Support\Facades\Auth;
 
 class LeaveApprovalController extends Controller
 {
+    public function index()
+    {
+        $leaveApplications = LeaveApplication::with(['user', 'leaveType'])
+            ->where('status', 'pending')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('Admin.Leave.index', compact('leaveApplications'));
+    }
+
     public function approve($id)
 {
     $application = LeaveApplication::findOrFail($id);
 
     // Calculate number of days
-    $days = $application->from_date->diffInDays($application->to_date) + 1;
+    $days = $application->start_date->diffInDays($application->end_date) + 1;
 
     // Update leave status
     $application->status = 'approved';
-    $application->approved_at = now();
+    $application->approval_date = now();
     $application->save();
 
     // Update pending leaves table
@@ -29,8 +39,8 @@ class LeaveApprovalController extends Controller
         ->first();
 
     if ($pending) {
-        $pending->used_leaves += $days;
-        $pending->remaining_leaves = max(0, $pending->total_leaves - $pending->used_leaves);
+        $pending->used += $days;
+        $pending->remaining = max(0, $pending->total - $pending->used);
         $pending->save();
     }
 

@@ -29,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($leaves as $key => $leave)
+                    @forelse($leaveApplications as $key => $leave)
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $leave->user->name ?? '-' }}</td>
@@ -47,7 +47,7 @@
                                 @endif
                             </td>
                             <td>
-                                <button 
+                                <button
                                     class="btn btn-outline-primary btn-sm viewBtn"
                                     data-bs-toggle="modal"
                                     data-bs-target="#viewLeaveModal"
