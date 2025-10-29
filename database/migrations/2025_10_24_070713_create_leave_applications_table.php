@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->string('subject')->nullable();
 
             // Reason for the leave
-            $table->text('reason');
+            $table->text('reason')->nullable();
            
 
 

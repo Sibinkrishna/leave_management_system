@@ -40,7 +40,9 @@ class LeaveTypeController extends Controller
 
         LeaveType::create($data);
 
-        return redirect()->route('admin.leavetype.index')->with('success', 'Leave type created successfully.');
+        return redirect()
+            ->route('admin.leavetype.index')
+            ->with('success', 'Leave type created successfully.');
     }
 
     /**
@@ -69,18 +71,32 @@ class LeaveTypeController extends Controller
 
         $leaveType->update($data);
 
-        return redirect()->route('admin.leavetype.index')->with('success', 'Leave type updated successfully.');
+        return redirect()
+            ->route('admin.leavetype.index')
+            ->with('success', 'Leave type updated successfully.');
     }
 
     /**
      * Remove the specified leave type from storage.
+     * This version prevents foreign key constraint errors.
      */
     public function destroy($id)
     {
         $leaveType = LeaveType::findOrFail($id);
+
+        // ✅ Check if this leave type is linked to any leave applications
+        if ($leaveType->leaveApplications()->exists()) {
+            return redirect()
+                ->route('admin.leavetype.index')
+                ->with('error', 'Cannot delete this leave type because it is assigned to one or more leave applications.');
+        }
+
+        // If not linked, delete safely
         $leaveType->delete();
 
-        return redirect()->route('admin.leavetype.index')->with('success', 'Leave type deleted successfully.');
+        return redirect()
+            ->route('admin.leavetype.index')
+            ->with('success', 'Leave type deleted successfully.');
     }
 
     /**

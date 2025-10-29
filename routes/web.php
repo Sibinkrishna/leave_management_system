@@ -12,13 +12,17 @@ use App\Http\Controllers\Admin\{
     ReportController,
     UserController,
     HolidayController,
+
 };
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\{DashboardController, ProfileController};
-use App\Http\Controllers\Employee\LeaveController;
+// use App\Http\Controllers\Employee\LeaveController;
 use App\Http\Controllers\Employee\LeaveSheetController; 
 use App\Http\Controllers\Employee\PendingLeaveController;
 use App\Http\Controllers\Employee\LeaveApplicationController;
+use App\Http\Controllers\Employee\AttendanceController ;
+
+
 
 
 
@@ -31,16 +35,23 @@ Route::post('change-password', [AuthController::class, 'changePassword'])->name(
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
-
 // ================== DASHBOARD ==================
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth')
-    ->name('dashboard');
+
+// Admin Dashboard
+
+
+// Employee Dashboard
+// Route::get('/dashboard', [DashboardController::class, 'index'])
+//     ->middleware(['auth','role:employee'])
+//     ->name('employee.dashboard');
 
 
 // ================== ADMIN ROUTES ==================
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
-
+  
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth','role:admin'])
+    ->name('dashboard');
     // Employee Management
     Route::get('/employee-create', [EmployeeController::class, 'create'])->name('employee.create');
     Route::post('/employee-create', [EmployeeController::class, 'store'])->name('employee.store');
@@ -55,9 +66,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('company-settings', [CompanySettingController::class, 'update'])->name('company.settings.update');
 
     // Leave Approvals
-    Route::get('leaves/pending', [LeaveApprovalController::class, 'index'])->name('leaves.pending');
-    Route::post('leaves/{leave}/approve', [LeaveApprovalController::class, 'approve'])->name('leaves.approve');
-    Route::post('leaves/{leave}/reject', [LeaveApprovalController::class, 'reject'])->name('leaves.reject');
+   // Admin Leave Approvals
+    Route::get('leaves', [LeaveApprovalController::class, 'index'])->name('leaves.pending');
+    Route::post('leaves/{id}/approve', [LeaveApprovalController::class, 'approve'])->name('leaves.approve');
+    Route::post('leaves/{id}/reject', [LeaveApprovalController::class, 'reject'])->name('leaves.reject');
 
     // ================== Department Routes ==================
     Route::get('/department', [DepartmentController::class, 'index'])->name('department.index');
@@ -95,6 +107,8 @@ Route::post('holiday/{holiday}', [HolidayController::class, 'destroy'])->name('h
 
 
 Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
     Route::get('leaves', [LeaveSheetController::class, 'index'])->name('leaves.index');
     Route::get('pending-leaves', [PendingLeaveController::class, 'index'])->name('pendingleaves.index');
     
@@ -103,6 +117,15 @@ Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'
  Route::get('leaves/apply', [LeaveApplicationController::class, 'create'])->name('leaveapplications.create');
 
  Route::post('leaves', [LeaveApplicationController::class, 'store']) ->name('leaveapplications.store');
+
+  Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+  Route::get('attendance/records', [AttendanceController::class, 'records'])->name('attendance.records');
+
+    Route::post('attendance/checkin', [AttendanceController::class, 'checkIn'])->name('attendance.checkin');
+    Route::post('attendance/checkout', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
+
+
+ 
 
 });
 

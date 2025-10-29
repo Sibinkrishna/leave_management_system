@@ -33,8 +33,7 @@
                             <td>{{ $leave->leaveType->name ?? '-' }}</td>
                             <td>{{ $leave->start_date }}</td>
                             <td>{{ $leave->end_date }}</td>
-                            <td>{{ $leave->days }}</td>
-                               
+                            <td>{{ $leave->days }}</td>                
                             <!-- <td>{{ $leave->subject ?? '-'}}</td> -->
                             <td>
                                 @if($leave->status == 'pending')
