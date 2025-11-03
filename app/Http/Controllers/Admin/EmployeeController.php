@@ -68,7 +68,7 @@ class EmployeeController extends Controller
 
     // ✅ 2️⃣ Assign all leave types automatically to this user
     $leaveTypes = LeaveType::all();
-
+dd($leaveTypes);
     foreach ($leaveTypes as $type) {
         PendingLeave::create([
             'user_id' => $user->id,

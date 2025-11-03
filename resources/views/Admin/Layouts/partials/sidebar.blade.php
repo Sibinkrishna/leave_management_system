@@ -82,6 +82,15 @@
 
                         @endif
                         @if (Auth::user()->role == 'employee')
+                       <li class="nav-item">
+                          <a class="nav-link" href="{{ url('employee/holiday') }}">
+                            <i class="iconoir-calendar menu-icon"></i>
+                            <span>Holiday</span>
+                          </a>
+                       </li><!--end nav-item-->
+
+
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('employee.leaves.index') }}">
                                 <i class="iconoir-book menu-icon"></i>
@@ -102,7 +111,7 @@
                             </li><!--end nav-item-->
                              <li class="nav-item">
                             <a class="nav-link" href="{{ route('employee.attendance.records') }}">
-                               <i class="iconoir-calendar menu-icon"></i>
+                                <i class="iconoir-bell menu-icon"></i>
                                <span>Attendance Record</span>
                             </a>
                          </li>

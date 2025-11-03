@@ -1,424 +1,282 @@
 @extends('Admin.Layouts.app')
+
 @section('content')
+
+<!-- ✅ SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
-    body {
-        background: #f9fbfd;
-        font-family: 'Poppins', sans-serif;
-        color: #333;
-    }
-
-    .dashboard-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
-    .summary-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    /* ===== Dashboard Styling ===== */
+    .dashboard-row {
+        display: flex;
+        flex-wrap: wrap;
         gap: 20px;
-        margin-bottom: 30px;
+        justify-content: center;
+        align-items: stretch;
+         
     }
 
-    .summary-card {
-        background: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        padding: 25px;
-        text-align: center;
-        height: 150px;
-        /* width: 150px; */
+    /* Quick Attendance Big Card */
+    .quick-attendance-card {
+        flex: 1 1 50%;
+        min-width: 500px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        height: 100%;
+        
+    }
+
+    .quick-attendance-card .card-body {
+        padding: 2rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .quick-attendance-card h4 {
+        font-size: 22px;
+        font-weight: 300;
+    }
+
+    .quick-attendance-card p {
+        font-size: 15px;
+        color: #6c757d;
+    }
+
+    .quick-attendance-card .btn {
+        font-size: 18px;
+        font-weight: 500;
+        padding: 15px 0;
+        border-radius: 10px;
         transition: all 0.3s ease;
     }
 
-    .summary-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    .quick-attendance-card .btn:hover {
+        transform: translateY(-2px);
     }
 
-    .summary-card h3 {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #1976d2;
+    /* Summary Cards Layout */
+    .summary-cards {
+        flex: 1 1 45%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        align-items: stretch;
     }
 
-    .summary-card p {
-        margin: 0;
-        color: #666;
-    }
-
-    /* ✅ Quick Attendance section */
-    .quick-attendance-row {
-        display: flex;
-        justify-content: flex-start;
-        margin-top: 20px;
-        
-        
-    }
-
-    .checkin-card {
-        background: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        padding: 25px;
-        width: 100;
-        max-width: 300px; /* same width as summary cards */
-        height: 150px; /* same height */
-        text-align: center;
+    .summary-cards .card {
+        border-radius: 12px;
+        transition: 0.3s ease;
+        padding: 20px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
-    .checkin-card h4,
-    .checkin-card p {
-        color: #000;
-        margin-bottom:10px;
+    .summary-cards .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    /* ✅ Two buttons side by side */
-    .attendance-buttons {
+    .card-header-row {
         display: flex;
         justify-content: space-between;
-        gap: 10px;
-        margin-top: 10px;
+        align-items: center;
+        margin-bottom: 8px;
     }
 
-    .checkin-btn,
-    .checkout-btn {
-        flex: 1;
-        border: none;
-        border-radius: 40px;
-        padding: 10px 0;
-        color: #fff;
+    .card-header-row h5 {
+        font-size: 15px;
         font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        color: #333;
+        margin: 0;
     }
 
-    .checkin-btn {
-        background: #2e7d32;
+    .icon-box {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed;
     }
 
-    .checkin-btn:hover {
-        background: #1b5e20;
+    .icon-blue { border-color: #007bff; color: #007bff; background-color: rgba(0,123,255,0.08); }
+    .icon-green { border-color: #28a745; color: #28a745; background-color: rgba(40,167,69,0.08); }
+    .icon-red { border-color: #dc3545; color: #dc3545; background-color: rgba(220,53,69,0.08); }
+    .icon-orange { border-color: #ffc107; color: #ffc107; background-color: rgba(255,193,7,0.08); }
+
+    .summary-cards h4 {
+        font-size: 22px;
+        font-weight: 600;
+        text-align: center;
+        margin: 0;
+        color: #000;
     }
-
-    .checkout-btn {
-        background: #c62828;
-    }
-
-    .checkout-btn:hover {
-        background: #8e0000;
-    }
-
-    @media (max-width: 768px) {
-        .quick-attendance-row {
-            justify-content: center;
-        }
-    }@extends('Admin.Layouts.app')
-
-@section('content')
-
-
-<div class="page-title-box">
-    <div class="page-title-right">
-        <ol class="breadcrumb m-0">
-            <li class="breadcrumb-item"><a href="#">Approx</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-    </div>
-    <h4 class="page-title">Dashboard</h4>
-</div>
-
-<div class="row justify-content-center">
-
-    <!-- Quick Attendance Box -->
-    <div class="col-lg-7">
-        <div class="card bg-globe-img">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="fw-semibold mb-0">Quick Attendance</h4>
-                </div>
-                <h3 class="fw-bold mb-1">Mark your presence for the day</h3>
-                <p class="text-muted mb-4">Track your daily attendance easily</p>
-
-                <div class="d-flex gap-3">
-                    <button type="button" class="btn btn-soft-primary w-50">Check In</button>
-                    <button type="button" class="btn btn-soft-danger w-50">Check Out</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Summary Boxes -->
-    <div class="col-lg-5">
-        <div class="row justify-content-center">
-
-            <!-- Total Days Recorded -->
-            <div class="col-md-6 col-lg-6">
-                <div class="card bg-corner-img">
-                    <div class="card-body">
-                        <p class="text-muted text-uppercase mb-0 fw-normal fs-13">Total Days Recorded</p>
-                        <h4 class="mt-1 mb-0 fw-medium">{{ $attendances->count() }}</h4>
-                        <div class="d-flex justify-content-center align-items-center thumb-md border-dashed border-primary rounded mt-2">
-                            <i class="iconoir-calendar fs-22 text-primary"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Present -->
-            <div class="col-md-6 col-lg-6">
-                <div class="card bg-corner-img">
-                    <div class="card-body">
-                        <p class="text-muted text-uppercase mb-0 fw-normal fs-13">Present</p>
-                        <h4 class="mt-1 mb-0 fw-medium">{{ $attendances->where('status','present')->count() }}</h4>
-                        <div class="d-flex justify-content-center align-items-center thumb-md border-dashed border-success rounded mt-2">
-                            <i class="iconoir-check-circle fs-22 text-success"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Absent -->
-            <div class="col-md-6 col-lg-6">
-                <div class="card bg-corner-img">
-                    <div class="card-body">
-                        <p class="text-muted text-uppercase mb-0 fw-normal fs-13">Absent</p>
-                        <h4 class="mt-1 mb-0 fw-medium">{{ $attendances->where('status','absent')->count() }}</h4>
-                        <div class="d-flex justify-content-center align-items-center thumb-md border-dashed border-danger rounded mt-2">
-                            <i class="iconoir-cancel fs-22 text-danger"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Total Minutes Worked -->
-            <div class="col-md-6 col-lg-6">
-                <div class="card bg-corner-img">
-                    <div class="card-body">
-                        <p class="text-muted text-uppercase mb-0 fw-normal fs-13">Total Minutes Worked</p>
-                        <h4 class="mt-1 mb-0 fw-medium">{{ $attendances->sum('duration_minutes') ?? 0 }}</h4>
-                        <div class="d-flex justify-content-center align-items-center thumb-md border-dashed border-warning rounded mt-2">
-                            <i class="iconoir-clock fs-22 text-warning"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div> <!-- end row -->
-    </div> <!-- end col-lg-5 -->
-
-</div> <!-- end row -->
-
-@endsection
-
 </style>
-@if(Auth::user()->role == 'employee')
-<div class="row justify-content-center">
-                    <div class="col-lg-7">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card  bg-welcome-img overflow-hidden">
-                                    <div class="card-body">
-                                        <div class="">                                            
-                                            <h3 class="text-white fw-semibold fs-20 lh-base">Upgrade you plan for
-                                            <br>Great experience</h3>
-                                            <a href="#" class="btn btn-sm btn-danger">Upgarde Now</a>
-                                            <img src="assets/images/extra/fund.png" alt="" class=" mb-n4 float-end" height="107"> 
-                                        </div>
-                                    </div><!--end card-body-->
-                                </div><!--end card-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="card bg-globe-img">
-                                    <div class="card-body">
-                                        <div>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fs-16 fw-semibold">Balance</span>
-                                                <form class="">
-                                                    <div>
-            <div class="dynamic-select example-select" id="dynamic-select" style="">
-                <input type="hidden" name="example-select" value="1">
-                <div class="dynamic-select-header" style="">
-                    
-                    <img src="assets/images/logos/m-card.png" alt="xx25" class="" style="">
-                    <span class="dynamic-select-option-text">xx25</span>
-                
-                </div>
-                <div class="dynamic-select-options" style="">
-                <div class="dynamic-select-option dynamic-select-selected" data-value="1" style="width:100%;">
-                    
-                    <img src="assets/images/logos/m-card.png" alt="xx25" class="" style="">
-                    <span class="dynamic-select-option-text">xx25</span>
-                
-                </div>
-            
-                <div class="dynamic-select-option" data-value="2" style="width:100%;">
-                    
-                    <img src="assets/images/logos/ame-bank.png" alt="xx56" class="" style="">
-                    <span class="dynamic-select-option-text">xx56</span>
-                
-                </div>
-            </div>
-            </div>
-        </div>
-                                                </form>
-                                            </div>
-                                            
-                                            <h4 class="my-2 fs-24 fw-semibold">122.5692.00 <small class="font-14">BTC</small></h4>                                            
-                                            <p class="mb-3 text-muted fw-semibold">
-                                                <span class="text-success"><i class="fas fa-arrow-up me-1"></i>11.1%</span> Outstanding balance boost
-                                            </p> 
-                                            <button type="submit" class="btn btn-soft-primary">Transfer</button>
-                                            <button type="button" class="btn btn-soft-danger">Request</button> 
-                                        </div>
-                                    </div><!--end card-body-->
-                                </div><!--end card-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end col-->
-                    <div class="col-lg-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-6 col-lg-6">
-                                <div class="card bg-corner-img">
-                                    <div class="card-body">
-                                        <div class="row d-flex justify-content-center">
-                                            <div class="col-9">
-                                                <p class="text-muted text-uppercase mb-0 fw-normal fs-13">Total Revenue</p>
-                                                <h4 class="mt-1 mb-0 fw-medium">$8365.00</h4>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-3 align-self-center">
-                                                <div class="d-flex justify-content-center align-items-center thumb-md border-dashed border-primary rounded mx-auto">
-                                                    <i class="iconoir-dollar-circle fs-22 align-self-center mb-0 text-primary"></i>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-                            </div>
-                            <!--end col-->
-                            <div class="col-md-6 col-lg-6">
-                                <div class="card bg-corner-img">
-                                    <div class="card-body">
-                                        <div class="row d-flex justify-content-center">
-                                            <div class="col-9">
-                                                <p class="text-muted text-uppercase mb-0 fw-normal fs-13">New Order</p>
-                                                <h4 class="mt-1 mb-0 fw-medium">722</h4>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-3 align-self-center">
-                                                <div class="d-flex justify-content-center align-items-center thumb-md border-dashed border-info rounded mx-auto">
-                                                    <i class="iconoir-cart fs-22 align-self-center mb-0 text-info"></i>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-                            </div>
-                            <!--end col-->
-                            <div class="col-md-6 col-lg-6">
-                                <div class="card bg-corner-img">
-                                    <div class="card-body">
-                                        <div class="row d-flex justify-content-center">
-                                            <div class="col-9">
-                                                <p class="text-muted text-uppercase mb-0 fw-normal fs-13">Sessions</p>
-                                                <h4 class="mt-1 mb-0 fw-medium">181</h4>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-3 align-self-center">
-                                                <div class="d-flex justify-content-center align-items-center thumb-md border-dashed border-warning rounded mx-auto">
-                                                    <i class="iconoir-percentage-circle fs-22 align-self-center mb-0 text-warning"></i>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-                            </div>
-                            <!--end col-->
-        
-                            <div class="col-md-6 col-lg-6">
-                                <div class="card bg-corner-img">
-                                    <div class="card-body">
-                                        <div class="row d-flex justify-content-center">
-                                            <div class="col-9">
-                                                <p class="text-muted text-uppercase mb-0 fw-normal fs-13">Avg. Order value</p>
-                                                <h4 class="mt-1 mb-0 fw-medium">$1025.50</h4>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-3 align-self-center">
-                                                <div class="d-flex justify-content-center align-items-center thumb-md border-dashed border-danger rounded mx-auto">
-                                                    <i class="iconoir-hexagon-dice fs-22 align-self-center mb-0 text-danger"></i>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-                            </div><!--end col-->        
-                        </div>
-                        <!--end row-->
-                    </div><!--end col-->
-                    
-                </div>
-<div class="container-fluid py-4">
-    <div class="dashboard-header">
-        <h2 class="fw-bold text-dark">Employee Attendance</h2>
-        <p class="text-muted">Track your working hours and attendance record in style</p>
-    </div>
 
-    <!-- Summary Cards Row -->
-    <div class="summary-cards">
-        <div class="summary-card">
-            <h3>{{ $attendances->count() }}</h3>
-            <p>Total Days Recorded</p>
-        </div>
-        <div class="summary-card">
-            <h3>{{ $attendances->where('status','present')->count() }}</h3>
-            <p>Present</p>
-        </div>
-        <div class="summary-card">
-            <h3>{{ $attendances->where('status','absent')->count() }}</h3>
-            <p>Absent</p>
-        </div>
-        <div class="summary-card">
-            <h3>{{ $attendances->sum('duration_minutes') ?? 0 }}</h3>
-            <p>Total Minutes Worked</p>
-        </div>
-    </div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box d-flex justify-content-between align-items-center">
+            <h4 class="fw-semibold mb-0">Attendance Summary - {{ $monthName }} {{ $currentYear }}</h4>
 
-    <!-- ✅ Quick Attendance Box -->
-    <div class="quick-attendance-row">
-        <div class="checkin-card">
-            <div>
-                <h4 class="fw-semibold">Quick Attendance</h4>
-                <p>Mark your presence for the day</p>
-            </div>
-            <div class="attendance-buttons">
-                <button class="checkin-btn" data-bs-toggle="modal" data-bs-target="#checkInModal">Check In</button>
-                <button class="checkout-btn" data-bs-toggle="modal" data-bs-target="#checkOutModal">Check Out</button>
-            </div>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Approx</a></li>
+                <li class="breadcrumb-item"><a href="#">Attendance</a></li>
+                {{-- <li class="breadcrumb-item active">Pending</li> --}}
+            </ol>
         </div>
     </div>
 </div>
+
+{{-- <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-soft-danger  text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">My Attendance Register</h5>
+                <span>({{ Auth::user()->name }})</span>
+            </div> --}}
+
+@if(Auth::user()->role == 'employee')
+
+<div class="dashboard-row">
+    <!-- ✅ Quick Attendance Card -->
+    <div class="card bg-globe-img quick-attendance-card overflow-hidden">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-semibold mb-0">Quick Attendance</h4>
+            </div>
+            <p class="text-muted mb-4">Track your daily attendance easily</p>
+
+            <div class="d-flex gap-3">
+                <!-- ✅ Check In Form -->
+                <form method="POST" action="{{ route('employee.attendance.checkin') }}" id="checkInForm" class="w-50">
+                    @csrf
+                    <button type="submit" class="btn btn-soft-primary w-100">Check In</button>
+                </form>
+
+                <!-- ✅ Check Out Form -->
+                <form method="POST" action="{{ route('employee.attendance.checkout') }}" id="checkOutForm" class="w-50">
+                    @csrf
+                    <button type="submit" class="btn btn-soft-danger w-100">Check Out</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Summary Cards with Icons -->
+    <div class="summary-cards">
+        <div class="card bg-corner-img">
+            <div class="card-header-row">
+                <h5>Total Days Recorded</h5>
+                <div class="icon-box icon-blue">
+                    <i class="iconoir-calendar fs-18"></i>
+                </div>
+            </div>
+           <h4>{{ $totalDays }}</h4>
+
+
+        </div>
+
+        <div class="card bg-corner-img">
+            <div class="card-header-row">
+                <h5>Present</h5>
+                <div class="icon-box icon-green">
+                    <i class="iconoir-check-circle fs-18"></i>
+                </div>
+            </div>
+            <h4>{{ $attendances->where('status','present')->count() }}</h4>
+        </div>
+
+        <div class="card bg-corner-img">
+            <div class="card-header-row">
+                <h5>Absent</h5>
+                <div class="icon-box icon-red">
+                    <i class="iconoir-cancel fs-18"></i>
+                </div>
+            </div>
+            <h4>{{ $attendances->where('status','absent')->count() }}</h4>
+        </div>
+
+        <div class="card bg-corner-img">
+            <div class="card-header-row">
+                <h5>Total hours Worked</h5>
+                <div class="icon-box icon-orange">
+                    <i class="iconoir-clock fs-18"></i>
+                </div>
+            </div>
+           <h4>{{ $totalHoursWorked }} hr</h4>
+
+    </div>
+</div>
+
 @endif
+
+<!-- ✅ SweetAlert2 Popup Confirmation -->
+<script>
+document.querySelector('#checkInForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    Swal.fire({
+        title: 'Check In?',
+        text: "Do you want to check in now?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#007bff',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, Check In'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.submit();
+        }
+    });
+});
+
+document.querySelector('#checkOutForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    Swal.fire({
+        title: 'Check Out?',
+        text: "Do you want to check out now?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, Check Out'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.submit();
+        }
+    });
+});
+</script>
+
+<!-- ✅ Success / Error Messages -->
+@if(session('success'))
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: '{{ session('success') }}',
+    showConfirmButton: false,
+    timer: 2000
+});
+</script>
+@endif
+
+@if(session('error'))
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Error!',
+    text: '{{ session('error') }}',
+    showConfirmButton: false,
+    timer: 2000
+});
+</script>
+@endif
+
 @endsection
-
-
-    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>/ --}}

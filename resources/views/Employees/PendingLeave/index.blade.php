@@ -43,12 +43,12 @@
                     </thead>
                     <tbody>
 
-                            <tr>
+                            {{-- <tr>
                                 <th>Leave Type</th>
                                 <th>Total</th>
                                 <th>Used</th>
                                 <th>Remaining</th>
-                            </tr>
+                            </tr> --}}
                         </thead>
                         <tbody>
                             @forelse($pendingLeaves as $leave)

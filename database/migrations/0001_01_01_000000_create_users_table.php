@@ -17,13 +17,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->string('password');
+           $table->string('address')->nullable();
 
             // Role (simple) - You can also use Spatie roles table instead
             $table->enum('role', ['admin', 'manager', 'employee'])->default('employee');
 
             // Relationship fields
             $table->bigInteger('manager_id')->nullable()->unsigned();
-            $table->bigInteger('department_id')->nullable()->unsigned();
+            $table->bigInteger('department_id')->nullable()->unsigned();  
+            $table->bigInteger('company_id')->nullable()->unsigned();  
 
             $table->string('designation')->nullable();
             $table->date('join_date')->nullable();

@@ -13,7 +13,7 @@ class LeaveApprovalController extends Controller
     public function index()
     {
         $leaveApplications = LeaveApplication::with(['user', 'leaveType'])
-            ->where('status', 'pending')
+            // ->where('status', 'pending')
             ->orderByDesc('created_at')
             ->get();
 
@@ -46,4 +46,15 @@ class LeaveApprovalController extends Controller
 
     return back()->with('success', 'Leave approved and balance updated!');
 }
+public function reject($id)
+{
+    $application = LeaveApplication::findOrFail($id);
+
+    $application->status = 'rejected';
+    $application->approval_date = now();
+    $application->save();
+
+    return back()->with('success', 'Leave rejected successfully!');
+}
+
 }

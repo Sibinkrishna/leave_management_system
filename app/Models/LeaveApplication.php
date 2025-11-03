@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\LeaveType;
+
 use Illuminate\Database\Eloquent\Model;
 
 class LeaveApplication extends Model
@@ -37,10 +38,11 @@ class LeaveApplication extends Model
     /**
      * Relation to the leave type
      */
-    public function leaveType()
-    {
-        return $this->belongsTo(LeaveType::class);
-    }
+   public function leaveType()
+{
+    return $this->belongsTo(\App\Models\LeaveType::class, 'leave_type_id');
+}
+
 
     /**
      * Relation to the approver (if approved)

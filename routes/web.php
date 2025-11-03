@@ -123,6 +123,7 @@ Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'
 
     Route::post('attendance/checkin', [AttendanceController::class, 'checkIn'])->name('attendance.checkin');
     Route::post('attendance/checkout', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
+     Route::get('/holiday', [App\Http\Controllers\Employee\HolidayController::class, 'index'])->name('employee.holiday');
 
 
  

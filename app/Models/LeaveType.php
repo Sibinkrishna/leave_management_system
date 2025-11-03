@@ -29,7 +29,7 @@ class LeaveType extends Model
         return $this->hasMany(PendingLeave::class, 'leave_type_id');
     }
 
-    public function applications()
+     public function leaveApplications()
     {
         return $this->hasMany(LeaveApplication::class,'leave_type_id');
     }

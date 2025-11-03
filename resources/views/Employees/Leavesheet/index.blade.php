@@ -19,13 +19,12 @@
         <div class="card shadow-sm border-0">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0 fw-bold">My Employee Leave Summary</h5>
-                <span class="fw-bold">(DIPPU)</span>
+                <span>({{ Auth::user()->name }})</span>
             </div>
 
-            <div class="card-body pt-0">
-                <div class="table-responsive">
-                    <table class="table table-striped mb-0">
-                        <thead class="table-light">
+                <div class="card-body">
+                <table class="table table-bordered text-center align-middle w-100">
+                    <thead class="table-light">
                             <tr>
                                 <th>Leave Type</th>
                                 <th>Leave From</th>

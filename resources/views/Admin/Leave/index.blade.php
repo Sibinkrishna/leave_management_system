@@ -34,8 +34,9 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $leave->user->name ?? '-' }}</td>
                             <td>{{ $leave->leaveType->name ?? '-' }}</td>
-                            <td>{{ $leave->start_date }}</td>
-                            <td>{{ $leave->end_date }}</td>
+                            <td>{{ \Carbon\Carbon::parse($leave->start_date)->format('Y-m-d') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($leave->end_date)->format('Y-m-d') }}</td>
+
                             <td>{{ $leave->days }}</td>
                             <td>
                                 @if($leave->status == 'pending')

@@ -105,6 +105,6 @@ class LeaveTypeController extends Controller
     public function show($id)
     {
         $leaveType = LeaveType::findOrFail($id);
-        return view('Admin.LeaveType.show', compact('leaveType'));
+        return view('Admin.LeaveType.show', compact('leavetype'));
     }
 }
