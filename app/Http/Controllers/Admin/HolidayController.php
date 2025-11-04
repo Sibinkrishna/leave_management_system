@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Holiday;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HolidayController extends Controller
 {
     // List all holidays
     public function index()
     {
-        $holidays = Holiday::orderBy('date', 'asc')->get(); // pass to view
+        $holidays = Holiday::orderBy('date', 'asc')->get();
         return view('Admin.Holiday.index', compact('holidays'));
     }
 
@@ -27,8 +28,9 @@ class HolidayController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'date' => 'required|date|unique:holidays,date',
-            'description' => 'nullable|string',
         ]);
+
+        $data['created_by'] = Auth::id();
 
         Holiday::create($data);
 
@@ -47,13 +49,11 @@ class HolidayController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'date' => 'required|date|unique:holidays,date,' . $holiday->id,
-            'description' => 'nullable|string',
         ]);
 
         $holiday->update($data);
 
         return redirect()->route('admin.holiday.index')->with('success', 'Holiday updated successfully.');
-        
     }
 
     // Delete holiday

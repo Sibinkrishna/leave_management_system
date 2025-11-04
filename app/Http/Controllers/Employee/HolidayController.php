@@ -8,11 +8,15 @@ use App\Models\Holiday;
 
 class HolidayController extends Controller
 {
+    /**
+     * Display a listing of the holidays for employees.
+     */
     public function index()
     {
-        // Get all holidays created by admin
+        // Fetch all holidays sorted by date (ascending)
         $holidays = Holiday::orderBy('date', 'asc')->get();
 
+        // Return to the employee holiday index view
         return view('Employees.Holiday.index', compact('holidays'));
     }
 }

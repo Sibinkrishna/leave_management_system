@@ -1,16 +1,21 @@
 <div class="startbar d-print-none">
         <!--start brand-->
-        <div class="brand">
-            <a href="#" class="logo">
-                <span>
-                    {{-- <img src="{{asset('Admin/assets/images/logo-sm.png')}}" alt="logo-small" class="logo-sm"> --}}
-                </span>
-                <span class="">
-                    {{-- <img src="{{asset('Admin/assets/images/logo-light.png')}}" alt="logo-large" class="logo-lg logo-light"> --}}
-                    {{-- <img src="{{asset('Admin/assets/images/logo-dark.png')}}" alt="logo-large" class="logo-lg logo-dark"> --}}
-                </span>
-            </a>
-        </div>
+     <div class="w-100 d-flex justify-content-center align-items-center" style="padding: 10px 0;">
+    <img src="{{ asset('Admin/assets/images/smartenough2_logo.png') }}" 
+         alt="SmartEnough Solutions Logo"
+         style="height: 70px; width: 68px; margin-left: -11px;">
+         
+    <g>
+        <polygon class="st0" points="78,105 15,105 24,87 87,87"></polygon>
+        <polygon class="st0" points="96,69 33,69 42,51 105,51"></polygon>
+        <polygon class="st0" points="78,33 15,33 24,15 87,15"></polygon>
+    </g>
+</div>
+
+
+
+
+
         <!--end brand-->
         <!--start startbar-menu-->
         <div class="startbar-menu" >
@@ -18,9 +23,9 @@
                 <div class="d-flex align-items-start flex-column w-100">
                     <!-- Navigation -->
                     <ul class="navbar-nav mb-auto w-100">
-                        <li class="menu-label mt-2">
+                        {{-- <li class="menu-label mt-2">
                             <span>Main</span>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item">
     @if (Auth::user()->role == 'admin')
@@ -67,7 +72,7 @@
                         </li>
                        <li class="nav-item">
                           <a class="nav-link d-flex align-items-center" href="{{ route('admin.leaves.pending') }}">
-                          <i class="bi bi-calendar2-check menu-icon me-2"></i>
+                          <i class="iconoir-bell menu-icon"></i>
                              <span>Leave Applications</span>
                             @php
                             $pendingCount = \App\Models\LeaveApplication::where('status', 'pending')->count();

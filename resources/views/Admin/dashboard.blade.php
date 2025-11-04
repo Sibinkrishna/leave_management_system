@@ -210,7 +210,8 @@
                     <i class="iconoir-clock fs-18"></i>
                 </div>
             </div>
-           <h4>{{ $totalHoursWorked }} hr</h4>
+           <h4>{{ number_format($totalHoursWorked, 2) }} hr</h4>
+
 
     </div>
 </div>

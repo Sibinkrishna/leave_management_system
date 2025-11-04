@@ -17,13 +17,14 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card shadow-sm border-0">
-            <!-- ✅ Header with Month-Year Filter -->
+            <!-- ✅ Header -->
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap">
                 <div class="d-flex align-items-center gap-2">
                     <h5 class="mb-0 fw-bold">My Attendance Records</h5>
                     <span>({{ Auth::user()->name }})</span>
                 </div>
-                   <!-- Filter Form -->
+                
+                <!-- ✅ Filter Form -->
                 <form method="GET" action="{{ route('employee.attendance.records') }}" class="d-flex align-items-center gap-2">
                     <select name="month" class="form-select form-select-sm" style="width:auto;">
                         @for ($m = 1; $m <= 12; $m++)
@@ -46,7 +47,8 @@
                     </button>
                 </form>
             </div>
-             <!-- ✅ Attendance Table -->
+
+            <!-- ✅ Table -->
             <div class="card-body">
                 <table class="table table-bordered text-center align-middle mb-0">
                     <thead class="table-light">
@@ -54,12 +56,12 @@
                             <th>Date</th>
                             <th>Check In</th>
                             <th>Check Out</th>
-                            <th>Duration (min)</th>
+                            <th>Duration (hrs)</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($records as $record)
+                        @forelse ($records as $record)
                             <tr>
                                 <td>{{ $record['date'] }}</td>
                                 <td>{{ $record['check_in'] }}</td>
@@ -72,17 +74,22 @@
                                     @endif
                                 </td>
                                 <td>
-                                   @if($record['status'] === 'Present')
-                                      <span class="badge bg-success">Present</span>
-                                   @elseif($record['status'] === 'Weekend')
-                                      <span class="badge bg-secondary">Weekend</span>
-                                   @else
-                                      <span class="badge bg-danger">Absent</span>
-                                       @endif
-
+                                    @if($record['status'] === 'Present')
+                                        <span class="status-badge present">Present</span>
+                                    @elseif($record['status'] === 'Weekend')
+                                        <span class="status-badge weekend">Weekend</span>
+                                    @elseif($record['status'] === 'Holiday')
+                                        <span class="status-badge holiday">Holiday</span>
+                                    @else
+                                        <span class="status-badge absent">Absent</span>
+                                    @endif
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-muted">No records found for this month.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -95,6 +102,45 @@ select.form-select-sm {
     background-color: #f8f9fa;
     border-radius: 6px;
     padding: 4px 8px;
+}
+
+/* ✅ Soft and clean status badges */
+.status-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 10px;
+    /* bytton-size:15px; */
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* ✅ Light pastel colors */
+.status-badge.present {
+    background-color: #5bff94ff; /* soft green */
+    color: #28563aff;
+}
+
+.status-badge.absent {
+    background-color: #ff9a9aff; /* soft red */
+    color: #161515ff;
+}
+
+.status-badge.weekend {
+    background-color: #f4f5f7ff; /* soft gray */
+    color: #374151;
+}
+
+.status-badge.holiday {
+    background-color: #a2e8eeff; /* soft cyan */
+    color: #0e7490;
+}
+
+/* ✅ Optional hover effect */
+.status-badge:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 </style>
 @endsection

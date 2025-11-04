@@ -34,7 +34,8 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Date</th>
-                                <th>Description</th>
+                               <th>Day</th>
+
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
@@ -43,7 +44,8 @@
                                 <tr>
                                     <td>{{ $holiday->name }}</td>
                                     <td>{{ \Carbon\Carbon::parse($holiday->date)->format('d M Y') }}</td>
-                                    <td>{{ $holiday->description }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($holiday->date)->format('l') }}</td>
+
                                     <td class="text-end">
                                         <a href="{{ route('admin.holiday.edit', $holiday->id) }}">
                                             <i class="las la-pen text-secondary font-16"></i>

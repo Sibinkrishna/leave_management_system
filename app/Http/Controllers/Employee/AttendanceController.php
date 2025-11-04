@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\Holiday;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -16,7 +17,6 @@ class AttendanceController extends Controller
         $userId = Auth::id();
         $today = Carbon::today();
 
-        // Check if already checked in
         $existing = Attendance::where('user_id', $userId)
             ->where('attendance_date', $today)
             ->first();
@@ -59,16 +59,14 @@ class AttendanceController extends Controller
         $checkIn = Carbon::parse($attendance->check_in);
         $checkOut = Carbon::parse($attendance->check_out);
 
-        // ✅ Calculate duration
         $durationMinutes = $checkOut->diffInMinutes($checkIn);
-
         $attendance->duration_minutes = $durationMinutes;
         $attendance->save();
 
         return back()->with('success', 'Check-out recorded successfully!');
     }
 
-    // ✅ Monthly Attendance Record
+    // ✅ Records Page
     public function records(Request $request)
     {
         $month = $request->get('month', date('m'));
@@ -81,6 +79,12 @@ class AttendanceController extends Controller
             ->get()
             ->keyBy('attendance_date');
 
+        $holidays = Holiday::whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->pluck('date')
+            ->map(fn($d) => Carbon::parse($d)->toDateString())
+            ->toArray();
+
         $records = [];
         $today = now()->startOfDay();
         $daysInMonth = Carbon::create($year, $month)->daysInMonth;
@@ -90,6 +94,7 @@ class AttendanceController extends Controller
 
             if ($date->greaterThan($today)) continue;
 
+            // ✅ Weekend
             if ($date->isSaturday() || $date->isSunday()) {
                 $records[] = [
                     'date' => $date->format('d M Y'),
@@ -101,13 +106,26 @@ class AttendanceController extends Controller
                 continue;
             }
 
+            // ✅ Holiday
+            if (in_array($date->toDateString(), $holidays)) {
+                $records[] = [
+                    'date' => $date->format('d M Y'),
+                    'check_in' => '--',
+                    'check_out' => '--',
+                    'duration' => '--',
+                    'status' => 'Holiday',
+                ];
+                continue;
+            }
+
+            // ✅ Attendance Record
             if (isset($attendances[$date->toDateString()])) {
                 $attendance = $attendances[$date->toDateString()];
                 $records[] = [
                     'date' => $date->format('d M Y'),
                     'check_in' => $attendance->check_in ? Carbon::parse($attendance->check_in)->format('h:i A') : '--',
                     'check_out' => $attendance->check_out ? Carbon::parse($attendance->check_out)->format('h:i A') : '--',
-                    'duration' => $attendance->duration_minutes ? number_format($attendance->duration_minutes / 60, 2) : '--',
+                    'duration' => $attendance->duration_minutes ? round($attendance->duration_minutes / 60, 2) : '--',
                     'status' => 'Present',
                 ];
             } else {
@@ -137,16 +155,12 @@ class AttendanceController extends Controller
             ->whereYear('attendance_date', $currentYear)
             ->get();
 
-        $totalDays = $attendances->count();
         $presentDays = $attendances->where('status', 'present')->count();
-        $absentDays = $attendances->where('status', 'absent')->count();
-
-        $totalMinutes = $attendances->sum('duration_minutes');
-        $totalHoursWorked = round($totalMinutes / 60, 2);
+        $absentDays = now()->daysInMonth - $presentDays;
+        $totalHoursWorked = round($attendances->sum('duration_minutes') / 60, 2);
 
         return view('Admin.dashboard', compact(
             'attendances',
-            'totalDays',
             'presentDays',
             'absentDays',
             'totalHoursWorked',
