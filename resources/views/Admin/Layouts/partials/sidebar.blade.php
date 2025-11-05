@@ -82,6 +82,13 @@
                              @endif
                                </a>
                               </li>
+                               <li class="nav-item">
+                                   <a class="nav-link" href="{{ route('admin.wfh.index') }}">
+                                  <i class="iconoir-laptop menu-icon"></i>
+                                   <span>WFH Records</span>
+                                    </a>
+                                   </li>
+
 
 
 
@@ -93,9 +100,6 @@
                             <span>Holiday</span>
                           </a>
                        </li><!--end nav-item-->
-
-
-
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('employee.leaves.index') }}">
                                 <i class="iconoir-book menu-icon"></i>
@@ -120,6 +124,15 @@
                                <span>Attendance Record</span>
                             </a>
                          </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.wfh.create') }}">
+                             <i class="iconoir-laptop menu-icon"></i>
+                            <span>Work From Home</span>
+                             </a>
+                            </li>
+
+                        
+
                         @endif
                         <!--end nav-item-->
                         {{-- <li class="nav-item">
@@ -141,6 +154,28 @@
                         </li><!--end nav-item--> --}}
 
                     </ul><!--end navbar-nav--->
+                    <!-- Optional CSS to standardize icon size and spacing -->
+<style>
+.nav-link i.menu-icon {
+    font-size: 1.2rem;        /* consistent size */
+    vertical-align: middle;
+}
+.nav-link span {
+    margin-left: 6px;          /* consistent gap */
+}
+.nav-item .nav-link {
+    display: flex;
+    align-items: center;       /* vertical center */
+    gap: 6px;                  /* spacing between icon & text */
+}
+.nav-link i.menu-icon {
+    font-size: 1.2rem;        /* same size for all */
+    line-height: 1;            /* prevent extra vertical spacing */
+    display: inline-flex;
+    align-items: center;
+}
+
+</style>
 
                 </div>
             </div><!--end startbar-collapse-->

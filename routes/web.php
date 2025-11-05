@@ -21,6 +21,8 @@ use App\Http\Controllers\Employee\LeaveSheetController;
 use App\Http\Controllers\Employee\PendingLeaveController;
 use App\Http\Controllers\Employee\LeaveApplicationController;
 use App\Http\Controllers\Employee\AttendanceController ;
+use App\Http\Controllers\Employee\WorkFromHomeController;
+use App\Http\Controllers\Admin\WorkFromHomeController as AdminWFHController;
 
 
 
@@ -70,6 +72,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     Route::get('leaves', [LeaveApprovalController::class, 'index'])->name('leaves.pending');
     Route::post('leaves/{id}/approve', [LeaveApprovalController::class, 'approve'])->name('leaves.approve');
     Route::post('leaves/{id}/reject', [LeaveApprovalController::class, 'reject'])->name('leaves.reject');
+
+    Route::get('/workfromhome', [AdminWFHController::class, 'index'])->name('wfh.index');
+
 
     // ================== Department Routes ==================
     Route::get('/department', [DepartmentController::class, 'index'])->name('department.index');
@@ -124,6 +129,13 @@ Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'
     Route::post('attendance/checkin', [AttendanceController::class, 'checkIn'])->name('attendance.checkin');
     Route::post('attendance/checkout', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
      Route::get('/holiday', [App\Http\Controllers\Employee\HolidayController::class, 'index'])->name('employee.holiday');
+      // ✅ Work From Home routes (move here)
+    Route::get('wfh/create', [WorkFromHomeController::class, 'create'])->name('wfh.create');
+    Route::post('wfh', [WorkFromHomeController::class, 'store'])->name('wfh.store');
+
+ 
+   
+
 
 
  
