@@ -3,8 +3,8 @@
 @section('content')
 <div class="row">
     <div class="col-sm-12">
-        <div class="page-title-box d-flex justify-content-between align-items-center">
-            <h4 class="page-title">Leave Sheet</h4>
+        <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
+            <h4 class="page-title mb-2 mb-md-0">Leave Sheet</h4>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">Leaves</a></li>
@@ -15,16 +15,20 @@
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-md-12">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+    <div class="col-lg-12 col-md-12">
+        <div class="card shadow-sm border-0 mt-3">
+            
+            <!-- ✅ Card Header -->
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap py-3 px-3">
                 <h5 class="mb-0 fw-bold">My Employee Leave Summary</h5>
-                <span>({{ Auth::user()->name }})</span>
+                <span class="text-light small">({{ Auth::user()->name }})</span>
             </div>
 
-                <div class="card-body">
-                <table class="table table-bordered text-center align-middle w-100">
-                    <thead class="table-light">
+            <!-- ✅ Table Section -->
+            <div class="card-body pt-3 pb-2 px-2">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center align-middle mb-0">
+                        <thead class="table-light">
                             <tr>
                                 <th>Leave Type</th>
                                 <th>Leave From</th>
@@ -34,32 +38,103 @@
                             </tr>
                         </thead>
                         <tbody>
-                         @forelse($leaveApplications as $application)
-                <tr>
-                    <td>{{ $application->leaveType->name }}</td>
-                    <td>{{ \Carbon\Carbon::parse($application->start_date)->format('d M Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($application->end_date)->format('d M Y') }}</td>
-                    <td>{{ $application->days }}</td>
-                    <td>
-                        @if($application->status == 'approved')
-                            <span class="badge bg-success">Approved</span>
-                        @elseif($application->status == 'rejected')
-                            <span class="badge bg-danger">Rejected</span>
-                        @else
-                            <span class="badge bg-warning text-dark">Pending</span>
-                        @endif
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6">No leave records found.</td>
-                </tr>
-            @endforelse
+                            @forelse($leaveApplications as $application)
+                                <tr>
+                                    <td>{{ $application->leaveType->name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($application->start_date)->format('d M Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($application->end_date)->format('d M Y') }}</td>
+                                    <td>{{ $application->days }}</td>
+                                    <td>
+                                        @if($application->status == 'approved')
+                                            <span class="badge bg-success">Approved</span>
+                                        @elseif($application->status == 'rejected')
+                                            <span class="badge bg-danger">Rejected</span>
+                                        @else
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-muted py-3">No leave records found.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
-                    </table><!-- end table -->
-                </div><!-- end table-responsive -->
+                    </table>
+                </div>
             </div><!-- end card-body -->
         </div><!-- end card -->
     </div>
 </div>
+
+<!-- ✅ Responsive Styles -->
+<style>
+/* General Table & Badge Styling */
+.table th, .table td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.badge {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+/* ✅ Proper spacing below header */
+.card-body {
+    margin-top: 5px;
+}
+
+/* ✅ Fix header alignment */
+.card-header {
+    border-bottom: 2px solid #343a40;
+}
+
+.card-header h5 {
+    font-size: 1.1rem;
+}
+
+.card-header span {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ✅ Responsive adjustments */
+@media (max-width: 768px) {
+    .page-title-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 4px;
+    }
+
+    .card-header h5 {
+        font-size: 1rem;
+    }
+
+    .card-header span {
+        font-size: 0.85rem;
+    }
+
+    .table th, .table td {
+        font-size: 0.85rem;
+        padding: 6px;
+        white-space: normal;
+    }
+}
+
+@media (max-width: 576px) {
+    .badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+}
+</style>
 @endsection

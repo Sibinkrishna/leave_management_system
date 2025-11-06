@@ -1,24 +1,14 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
-<div class="row">
-    <div class="col-sm-12">
-        <div class="page-title-box d-flex justify-content-between align-items-center">
-            <h4 class="page-title">Leave Application Sheet</h4>
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                <li class="breadcrumb-item"><a href="#">Leave Application</a></li>
-                <li class="breadcrumb-item active">Records</li>
-            </ol>
-        </div>
-    </div>
-</div>
 <div class="container mt-4">
     <div class="card shadow-sm rounded-3">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0">My Leave Applications</h5>
            <a href="{{ route('employee.leaveapplications.create') }}" class="btn btn-sm btn-light">+ Apply Leave</a>
+
         </div>
+
         <div class="card-body">
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
@@ -29,8 +19,8 @@
                     <tr>
                         <th>#</th>
                         <th>Leave Type</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
+                        {{-- <th>Start Date</th> --}}
+                        {{-- <th>End Date</th> --}}
                         <th>Days</th>
                         <!-- <th>Subject</th> -->
                         <th>Status</th>
@@ -41,8 +31,8 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $leave->leaveType->name ?? '-' }}</td>
-                            <td>{{ $leave->start_date }}</td>
-                            <td>{{ $leave->end_date }}</td>
+                            {{-- <td>{{ $leave->start_date }}</td> --}}
+                            {{-- <td>{{ $leave->end_date }}</td> --}}
                             <td>{{ $leave->days }}</td>                
                             <!-- <td>{{ $leave->subject ?? '-'}}</td> -->
                             <td>

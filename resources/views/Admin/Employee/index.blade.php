@@ -36,10 +36,10 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Customer</th>
-                                <th>Email</th>
-                                <th>Contact No</th>
-                                <th>Join Date</th>
-                                <th>Designation</th>
+                                {{-- <th>Email</th> --}}
+                                {{-- <th>Contact No</th> --}}
+                                {{-- <th>Join Date</th> --}}
+                                {{-- <th>Designation</th> --}}
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
@@ -53,10 +53,10 @@
                                              class="rounded-circle thumb-md me-1 d-inline">
                                         {{ $employee->name }}
                                     </td>
-                                    <td>{{ $employee->email }}</td>
-                                    <td>{{ $employee->phone }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($employee->join_date)->format('d M Y') }}</td>
-                                    <td>{{ $employee->designation }}</td>
+                                    {{-- <td>{{ $employee->email }}</td> --}}
+                                    {{-- <td>{{ $employee->phone }}</td> --}}
+                                    {{-- <td>{{ \Carbon\Carbon::parse($employee->join_date)->format('d M Y') }}</td> --}}
+                                    {{-- <td>{{ $employee->designation }}</td> --}}
                                     <td>{{ ucfirst($employee->status) }}</td>
                                     <td class="text-end">
                                         <a href="{{ route('admin.employee.show', $employee->id) }}">
