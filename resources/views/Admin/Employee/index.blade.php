@@ -25,39 +25,41 @@
                         <h4 class="card-title">Employee Table</h4>
                     </div>
                     <div class="col text-end">
-                        <a href="{{ route('admin.employee.create') }}" class="btn btn-primary">Create</a>
+                        <a href="{{ route('admin.employee.create') }}" class="btn btn-primary">
+                            Add Employee
+                        </a>
                     </div>
                 </div>
             </div>
 
             <div class="card-body pt-0">
                 <div class="table-responsive">
-                    <table class="table table-striped mb-0">
+                    <table class="table table-striped mb-0 align-middle">
                         <thead class="table-light">
                             <tr>
                                 <th>Customer</th>
-                                {{-- <th>Email</th> --}}
-                                {{-- <th>Contact No</th> --}}
-                                {{-- <th>Join Date</th> --}}
-                                {{-- <th>Designation</th> --}}
+                                <th>Designation</th>
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($employees as $employee)
+                                @if(strtolower($employee->status) === 'active')
                                 <tr>
                                     <td>
-                                        <img src="{{ asset('storage/' . ($employee->avatar ?? 'default.png')) }}" 
-                                             alt="{{ $employee->name }}" 
-                                             class="rounded-circle thumb-md me-1 d-inline">
-                                        {{ $employee->name }}
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ asset('storage/' . ($employee->avatar ?? 'default.png')) }}" 
+                                                 alt="{{ $employee->name }}" 
+                                                 class="rounded-circle me-2" 
+                                                 style="width:35px; height:35px;">
+                                            <span>{{ $employee->name }}</span>
+                                        </div>
                                     </td>
-                                    {{-- <td>{{ $employee->email }}</td> --}}
-                                    {{-- <td>{{ $employee->phone }}</td> --}}
-                                    {{-- <td>{{ \Carbon\Carbon::parse($employee->join_date)->format('d M Y') }}</td> --}}
-                                    {{-- <td>{{ $employee->designation }}</td> --}}
-                                    <td>{{ ucfirst($employee->status) }}</td>
+                                    <td>{{ $employee->designation }}</td>
+                                    <td>
+                                        <span class="badge bg-success">{{ ucfirst($employee->status) }}</span>
+                                    </td>
                                     <td class="text-end">
                                         <a href="{{ route('admin.employee.show', $employee->id) }}">
                                             <i class="las la-eye text-secondary font-16"></i>
@@ -66,7 +68,7 @@
                                             <i class="las la-pen text-secondary font-16"></i>
                                         </a>
                                         <form action="{{ route('admin.employee.destroy', $employee->id) }}" 
-                                              method="post" style="display:inline">
+                                              method="POST" style="display:inline">
                                             @csrf
                                             <button type="button" style="all: unset;" 
                                                 onclick="Swal.fire({
@@ -83,17 +85,60 @@
                                         </form>
                                     </td>
                                 </tr>
+                                @endif
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center">No employees found.</td>
+                                    <td colspan="4" class="text-center">No active employees found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
-                    </table><!-- end table -->
-                </div><!-- end table responsive -->
-            </div><!-- end card body -->
-        </div><!-- end card -->
-    </div><!-- end col -->
-</div><!-- end row -->
+                    </table>
+                </div><!--end /tableresponsive-->
+            </div><!--end /card-body-->
+        </div><!--end /card-->
+    </div><!--end /col-->
+</div><!--end /row-->
 
+<style>
+/* ✅ Responsive Styling */
+.table th, .table td {
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+.table td img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+    .table th, .table td {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 575px) {
+    .card-title, .page-title {
+        text-align: center;
+        font-size: 16px;
+    }
+    .btn {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+    .table th, .table td {
+        font-size: 13px;
+        padding: 0.45rem 0.5rem;
+    }
+    .table td img {
+        width: 30px;
+        height: 30px;
+    }
+    .table-responsive {
+        border-radius: 8px;
+        overflow-x: auto;
+    }
+}
+</style>
 @endsection

@@ -20,49 +20,22 @@
     <div class="col-md-12">
         <div class="card shadow-sm border-0">
             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                <div class="d-flex align-items-center gap-2">
-                    <h6 class="mb-0 fw-bold">WFH Recors List</h6>
-                    {{-- <span>Admin Panel</span> --}}
-                </div>
+                <h6 class="mb-0 fw-bold">WFH Records List</h6>
 
-                <!-- Month & Year Filter Form -->
-                <!-- Month, Year, and Date Filter Form -->
-<!-- Day, Month, Year Filter Form -->
+                <!-- ✅ Updated Filter Form -->
 <form method="GET" action="{{ route('admin.wfh.index') }}" class="d-flex align-items-center gap-2">
-
-    <!-- Day -->
-    <select name="day" class="form-select form-select-sm" style="width:auto;">
-        <option value="">Day</option>
-        @for ($d = 1; $d <= 31; $d++)
-            <option value="{{ $d }}" {{ request('day') == $d ? 'selected' : '' }}>{{ $d }}</option>
-        @endfor
-    </select>
-
-    <!-- Month -->
-    <select name="month" class="form-select form-select-sm" style="width:auto;">
-        <option value="">Month</option>
-        @for ($m = 1; $m <= 12; $m++)
-            <option value="{{ $m }}" {{ request('month', now()->month) == $m ? 'selected' : '' }}>
-                {{ date('F', mktime(0, 0, 0, $m, 1)) }}
-            </option>
-        @endfor
-    </select>
-
-    <!-- Year -->
-    <select name="year" class="form-select form-select-sm" style="width:auto;">
-        <option value="">Year</option>
-        @for ($y = now()->year; $y >= now()->year - 3; $y--)
-            <option value="{{ $y }}" {{ request('year', now()->year) == $y ? 'selected' : '' }}>
-                {{ $y }}
-            </option>
-        @endfor
-    </select>
+    <input 
+        type="date" 
+        name="date" 
+        class="form-control form-control-sm"
+        value="{{ request('date') }}"
+        style="width: auto;"
+    >
 
     <button type="submit" class="btn btn-sm btn-light text-dark border">
         <i class="bi bi-search"></i> Filter
     </button>
 </form>
-
 
             </div>
 
@@ -72,52 +45,144 @@
                     <table class="table table-striped table-bordered mb-0 text-center align-middle">
                         <thead class="table-light">
                             <tr>
-                               <th>User_Id</th>
+                                <th>ID</th>
                                 <th>Employee</th>
                                 <th>Date</th>
-                                <th>Work Duration</th>
-                                <th>Task Summary</th>
-                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($entries as $entry)
+                            @php
+                                use Carbon\Carbon;
+                                $grouped = $entries->groupBy(function($e) {
+                                    return ($e->user->id ?? 'N/A') . '|' . ($e->user->name ?? 'N/A') . '|' . $e->entry_date;
+                                });
+                            @endphp
+
+                            @forelse($grouped as $key => $records)
+                                @php
+                                    [$id, $name, $date] = explode('|', $key);
+                                    $dateFormatted = Carbon::parse($date)->format('d-m-Y');
+
+                                @endphp
+
                                 <tr>
-                                    <td>{{ $entry->user->id ?? 'N/A' }}</td> <!-- show user ID -->
-                                    <td>{{ $entry->user->name ?? 'N/A' }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($entry->entry_date)->format('d M Y') }}</td>
-                                    <td>{{ $entry->work_time }}</td>
-                                    <td>{{ $entry->task_summary }}</td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $name }}</td>
+                                    <td>{{ $dateFormatted }}</td>
                                     <td>
-                                        @if(strtolower($entry->notes) == 'completed')
-                                            <span class="badge bg-success">Completed</span>
-                                        @elseif(strtolower($entry->notes) == 'working')
-                                            <span class="badge bg-warning text-dark">Working</span>
-                                        @elseif(strtolower($entry->notes) == 'doing')
-                                            <span class="badge bg-info text-dark">Doing</span>
-                                        @else
-                                            <span class="badge bg-secondary">Unknown</span>
-                                        @endif
+                                        <button class="btn btn-sm btn-outline-dark"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailsModal"
+                                            data-employee="{{ $name }}"
+                                            data-date="{{ $dateFormatted }}"
+                                            data-details='@json($records->map(fn($r)=>[
+                                                "time"=>$r->work_time,
+                                                "task"=>$r->task_summary,
+                                                "status"=>$r->notes
+                                            ]))'>
+                                            <i class="bi bi-eye"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">No Work From Home records found.</td>
+                                    <td colspan="4" class="text-center">No Work From Home records found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
-                    </table><!-- end table -->
-                </div><!-- end table-responsive -->
-            </div><!-- end card-body -->
-        </div><!-- end card -->
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<style>
-select.form-select-sm {
-    background-color: #f8f9fa;
-    border-radius: 6px;
-    padding: 4px 8px;
-}
-</style>
+<!-- ✅ Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h6 class="modal-title">Work From Home Details</h6>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Employee:</strong> <span id="modalEmployee"></span></p>
+        <p><strong>Date:</strong> <span id="modalDate"></span></p>
+        <hr>
+        <div id="modalDetails"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    var modal = document.getElementById('detailsModal');
+    modal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var employee = button.getAttribute('data-employee');
+        var date = button.getAttribute('data-date');
+        var details = JSON.parse(button.getAttribute('data-details'));
+
+        // ✅ Sort by actual time (AM/PM)
+        details.sort(function(a, b) {
+            const parseTime = t => {
+                const [time, modifier] = t.split(' ');
+                let [hours, minutes] = time.split(':').map(Number);
+                if (modifier === 'PM' && hours !== 12) hours += 12;
+                if (modifier === 'AM' && hours === 12) hours = 0;
+                return hours * 60 + minutes;
+            };
+            return parseTime(a.time) - parseTime(b.time);
+        });
+
+        document.getElementById('modalEmployee').textContent = employee;
+        document.getElementById('modalDate').textContent = date;
+
+        // ✅ Table generation
+        let html = '<table class="table table-bordered text-center">';
+        html += '<thead><tr><th>Work Duration</th><th>Task Summary</th><th>Status</th></tr></thead><tbody>';
+
+        details.forEach(function(item){
+            let timeText = (item.time || '').trim();
+            let taskName = (item.task || '').trim();
+            let statusText = (item.status || '—').trim();
+
+            // ✅ Parse time to 24hr for checking
+            const parseTimeToMinutes = t => {
+                const [time, modifier] = t.split(' ');
+                let [hours, minutes] = time.split(':').map(Number);
+                if (modifier === 'PM' && hours !== 12) hours += 12;
+                if (modifier === 'AM' && hours === 12) hours = 0;
+                return hours * 60 + minutes;
+            };
+
+            const timeInMinutes = parseTimeToMinutes(timeText);
+
+            // ✅ If time between 1:00 PM and 2:00 PM → Lunch Time
+            if (timeInMinutes >= 13 * 60 && timeInMinutes < 14 * 60) {
+                statusText = 'Lunch Time';
+            }
+
+            let rowStyle = '';
+            if (statusText === 'Lunch Time') {
+                rowStyle = 'style="background-color:#fff3cd;font-weight:600;color:#856404;"';
+            }
+
+            html += `<tr ${rowStyle}>
+                        <td>${item.time}</td>
+                        <td>${taskName}</td>
+                        <td>${statusText}</td>
+                     </tr>`;
+        });
+
+        html += '</tbody></table>';
+        document.getElementById('modalDetails').innerHTML = html;
+    });
+});
+</script>
+
+
+
 @endsection

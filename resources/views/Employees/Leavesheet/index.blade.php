@@ -41,8 +41,8 @@
                             @forelse($leaveApplications as $application)
                                 <tr>
                                     <td>{{ $application->leaveType->name }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($application->start_date)->format('d M Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($application->end_date)->format('d M Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($application->start_date)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($application->end_date)->format('d-m-Y') }}</td>
                                     <td>{{ $application->days }}</td>
                                     <td>
                                         @if($application->status == 'approved')
@@ -73,10 +73,11 @@
 .table th, .table td {
     vertical-align: middle;
     white-space: nowrap;
+    font-size: 15px;
 }
 
 .badge {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     padding: 6px 10px;
     border-radius: 8px;
 }
@@ -92,15 +93,35 @@
 }
 
 .card-header h5 {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
 }
 
 .card-header span {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     opacity: 0.9;
 }
 
-/* ✅ Responsive adjustments */
+/* ✅ Tablet View */
+@media (max-width: 992px) {
+    .page-title-box h4 {
+        font-size: 1.1rem;
+    }
+
+    .table th, .table td {
+        font-size: 0.9rem;
+        padding: 7px;
+    }
+
+    .card-header h5 {
+        font-size: 1rem;
+    }
+
+    .badge {
+        font-size: 0.8rem;
+    }
+}
+
+/* ✅ Mobile View */
 @media (max-width: 768px) {
     .page-title-box {
         flex-direction: column;
@@ -116,7 +137,7 @@
     }
 
     .card-header h5 {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 
     .card-header span {
@@ -130,10 +151,24 @@
     }
 }
 
-@media (max-width: 576px) {
+/* ✅ Small Mobile View */
+@media (max-width: 480px) {
+    .table th, .table td {
+        font-size: 0.8rem;
+        padding: 5px;
+    }
+
     .badge {
         font-size: 0.75rem;
-        padding: 4px 8px;
+        padding: 4px 7px;
+    }
+
+    .card-header h5 {
+        font-size: 0.9rem;
+    }
+
+    .card-header span {
+        font-size: 0.8rem;
     }
 }
 </style>

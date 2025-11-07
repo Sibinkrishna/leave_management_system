@@ -35,9 +35,9 @@
             <div class="card-body pt-0">
                 <div class="table-responsive">
                     <table class="table table-striped mb-0">
-                        <thead class="table-light">
+                        <thead class="table-light text-center">
                             <tr>
-                                <th>Name</th>
+                                <th class="text-start">Name</th>
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
@@ -45,15 +45,19 @@
                         <tbody>
                             @forelse($department as $dept)
                                 <tr>
-                                    <td>{{ $dept->name }}</td>
-                                    <td>{{ ucfirst($dept->status) }}</td>
+                                    <td class="text-start">{{ $dept->name }}</td>
+                                    <td class="text-center">
+                                        @if(strtolower($dept->status) === 'active')
+                                            <span class="badge bg-success">{{ ucfirst($dept->status) }}</span>
+                                        @else
+                                            <span class="badge bg-secondary">{{ ucfirst($dept->status) }}</span>
+                                        @endif
+                                    </td>
                                     <td class="text-end">
                                         <a href="{{ route('admin.department.edit', $dept->id) }}">
                                             <i class="las la-pen text-secondary font-16"></i>
                                         </a>
-
-                                        <form action="{{ route('admin.department.destroy', $dept->id) }}" 
-                                              method="POST" style="display:inline">
+                                        <form action="{{ route('admin.department.destroy', $dept->id) }}" method="POST" style="display:inline">
                                             @csrf
                                             <button type="button" class="btn-style-none" style="all: unset;" 
                                                 onclick="Swal.fire({
@@ -82,4 +86,37 @@
         </div>
     </div>
 </div>
+
+<style>
+/* ✅ Responsive font and spacing adjustments */
+.table th, .table td {
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+@media (max-width: 1024px) {
+    .table th, .table td {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 575px) {
+    .card-title, .page-title {
+        text-align: center;
+        font-size: 16px;
+    }
+    .btn {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+    .table th, .table td {
+        font-size: 13px;
+        padding: 0.45rem 0.5rem;
+    }
+    .badge {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+</style>
 @endsection

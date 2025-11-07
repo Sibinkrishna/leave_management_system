@@ -105,7 +105,7 @@
         justify-content: center;
         border: 1px dashed;
     }
-
+    
     .icon-blue { border-color: #007bff; color: #007bff; background-color: rgba(0,123,255,0.08); }
     .icon-green { border-color: #28a745; color: #28a745; background-color: rgba(40,167,69,0.08); }
     .icon-red { border-color: #dc3545; color: #dc3545; background-color: rgba(220,53,69,0.08); }
@@ -118,12 +118,160 @@
         margin: 0;
         color: #000;
     }
+    /* ✅ Responsive fix for Quick Attendance Card */
+@media (max-width: 992px) {
+    .quick-attendance-card {
+        min-width: 100%;
+        flex: 1 1 100%;
+        margin-bottom: 20px;
+    }
+
+    .quick-attendance-card .card-body {
+        padding: 1.5rem;
+    }
+
+    .quick-attendance-card h4 {
+        font-size: 18px;
+    }
+
+    .quick-attendance-card .btn {
+        font-size: 16px;
+        padding: 12px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .quick-attendance-card {
+        min-width: 100%;
+        border-radius: 10px;
+    }
+
+    .quick-attendance-card .card-body {
+        padding: 1.2rem;
+    }
+
+    .quick-attendance-card .d-flex.gap-3 {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .quick-attendance-card .btn {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 15px;
+    }
+}
+/* ✅ Responsive & Font Scaling for Quick Attendance Card */
+
+/* 🖥️ Desktop (Default > 992px) */
+.quick-attendance-card h4 {
+    font-size: 22px;
+}
+.quick-attendance-card p {
+    font-size: 15px;
+}
+.quick-attendance-card .btn {
+    font-size: 18px;
+    padding: 15px 0;
+}
+
+/* 💻 Tablet View (768px–992px) */
+@media (max-width: 992px) and (min-width: 768px) {
+    .dashboard-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .quick-attendance-card {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+
+    .quick-attendance-card .card-body {
+        padding: 1.8rem;
+    }
+
+    .quick-attendance-card h4 {
+        font-size: 20px;
+    }
+
+    .quick-attendance-card p {
+        font-size: 14px;
+    }
+
+    .quick-attendance-card .btn {
+        font-size: 16px;
+        padding: 12px 0;
+    }
+}
+
+/* 📱 Mobile View (Below 768px) */
+@media (max-width: 767px) {
+    .dashboard-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .quick-attendance-card {
+        flex: 1 1 100%;
+        min-width: 100%;
+        border-radius: 12px;
+    }
+
+    .quick-attendance-card .card-body {
+        padding: 1.3rem;
+    }
+
+    .quick-attendance-card h4 {
+        font-size: 18px;
+    }
+
+    .quick-attendance-card p {
+        font-size: 13px;
+    }
+
+    .quick-attendance-card .btn {
+        font-size: 15px;
+        padding: 10px 0;
+    }
+
+    .quick-attendance-card .d-flex.gap-3 {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* 📲 Small Mobile View (Below 480px) */
+@media (max-width: 480px) {
+    .quick-attendance-card h4 {
+        font-size: 17px;
+    }
+
+    .quick-attendance-card p {
+        font-size: 12.5px;
+    }
+
+    .quick-attendance-card .btn {
+        font-size: 14px;
+        padding: 9px 0;
+    }
+
+    .quick-attendance-card .card-body {
+        padding: 1rem;
+    }
+}
+
 </style>
 
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center">
-            <h4 class="fw-semibold mb-0">Attendance Summary - {{ $monthName }} {{ $currentYear }}</h4>
+            <h4 class="fw-semibold mb-0">  {{ $monthName }} {{ $currentYear }}</h4>
 
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>

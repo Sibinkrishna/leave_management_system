@@ -70,7 +70,7 @@
                                 <option value="">-- Select Status --</option>
                                 <option value="Working">Working</option>
                                 <option value="Completed">Completed</option>
-                                <option value="Doing">Doing</option>
+                                <option value="Doing">Lunch Time</option>
                             </select>
                             @error('notes')
                                 <div class="invalid-feedback">{{ $message }}</div>

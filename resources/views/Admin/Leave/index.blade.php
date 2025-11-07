@@ -1,87 +1,104 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
-<div class="container mt-4">
-    <div class="card shadow-sm rounded-3">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Employee Leave Applications</h5>
-        </div>
-
-        <div class="card-body">
-            {{-- Success/Error Messages --}}
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @elseif(session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
-
-            <table class="table table-bordered table-striped text-center align-middle">
-                <thead class="table-secondary">
-                    <tr>
-                        <th>#</th>
-                        <th>Employee</th>
-                        <th>Leave Type</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Days</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($leaveApplications as $key => $leave)
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $leave->user->name ?? '-' }}</td>
-                            <td>{{ $leave->leaveType->name ?? '-' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($leave->start_date)->format('Y-m-d') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($leave->end_date)->format('Y-m-d') }}</td>
-
-                            <td>{{ $leave->days }}</td>
-                            <td>
-                                @if($leave->status == 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                @elseif($leave->status == 'approved')
-                                    <span class="badge bg-success">Approved</span>
-                                @else
-                                    <span class="badge bg-danger">Rejected</span>
-                                @endif
-                            </td>
-                            <td>
-                                <button
-                                    class="btn btn-outline-primary btn-sm viewBtn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#viewLeaveModal"
-                                    data-subject="{{ $leave->subject ?? 'N/A' }}"
-                                    data-reason="{{ $leave->reason ?? 'N/A' }}"
-                                    data-id="{{ $leave->id }}"
-                                    data-status="{{ $leave->status }}"
-                                >
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8" class="text-muted">No leave applications found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
+            <h4 class="page-title">Employee Leave Applications</h4>
+            <div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="#">Approx</a></li>
+                    <li class="breadcrumb-item"><a href="#">Leave</a></li>
+                    <li class="breadcrumb-item active">Applications</li>
+                </ol>
+            </div>
         </div>
     </div>
 </div>
 
-{{-- Modal (Subject & Reason only) --}}
+<div class="row justify-content-center">
+    <div class="col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">Employee Leave List</h5>
+            </div>
+
+            <div class="card-body pt-0">
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0 text-center align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-start">Employee</th>
+                                <th>Leave Type</th>
+                                <th>Days</th>
+                                <th>Status</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($leaveApplications as $leave)
+                                <tr>
+                                    <td class="text-start">{{ $leave->user->name ?? '-' }}</td>
+                                    <td>{{ $leave->leaveType->name ?? '-' }}</td>
+                                    <td>{{ $leave->days ?? '0' }}</td>
+                                    <td>
+                                        @if($leave->status == 'approved')
+                                            <span class="badge bg-success">Approved</span>
+                                        @elseif($leave->status == 'pending')
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @else
+                                            <span class="badge bg-danger">Rejected</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-end">
+                                        <button
+                                            class="btn btn-outline-secondary btn-sm viewBtn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#viewLeaveModal"
+                                            data-subject="{{ $leave->subject ?? 'N/A' }}"
+                                            data-reason="{{ $leave->reason ?? 'N/A' }}"
+                                            data-start="{{ \Carbon\Carbon::parse($leave->start_date)->format('Y-m-d') }}"
+                                            data-end="{{ \Carbon\Carbon::parse($leave->end_date)->format('Y-m-d') }}"
+                                            data-id="{{ $leave->id }}"
+                                            data-status="{{ $leave->status }}"
+                                        >
+                                            <i class="las la-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-muted">No leave applications found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- ✅ Modal --}}
 <div class="modal fade" id="viewLeaveModal" tabindex="-1" aria-labelledby="viewLeaveLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
+            <div class="modal-header bg-white border-bottom">
                 <h6 class="modal-title" id="viewLeaveLabel">Leave Details</h6>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6><strong>Start Date:</strong></h6>
+                        <p id="modalStart" class="border rounded p-2 bg-light"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><strong>End Date:</strong></h6>
+                        <p id="modalEnd" class="border rounded p-2 bg-light"></p>
+                    </div>
+                </div>
                 <div class="mb-3">
                     <h6><strong>Subject:</strong></h6>
                     <p id="modalSubject" class="border rounded p-2 bg-light"></p>
@@ -99,24 +116,24 @@
     </div>
 </div>
 
-{{-- Script --}}
+{{-- ✅ Script --}}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("viewLeaveModal");
     modal.addEventListener("show.bs.modal", function (event) {
         const button = event.relatedTarget;
-
-        // Get attributes
         const subject = button.getAttribute("data-subject") || "N/A";
         const reason = button.getAttribute("data-reason") || "N/A";
+        const start = button.getAttribute("data-start") || "N/A";
+        const end = button.getAttribute("data-end") || "N/A";
         const id = button.getAttribute("data-id");
         const status = (button.getAttribute("data-status") || '').toLowerCase();
 
-        // Fill modal content
         document.getElementById("modalSubject").textContent = subject;
         document.getElementById("modalReason").textContent = reason;
+        document.getElementById("modalStart").textContent = start;
+        document.getElementById("modalEnd").textContent = end;
 
-        // Render buttons dynamically
         const actionDiv = document.getElementById("modalActions");
         if (status === "pending") {
             actionDiv.innerHTML = `
@@ -139,4 +156,42 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
+{{-- ✅ Style --}}
+<style>
+.table th, .table td {
+    vertical-align: middle;
+    font-size: 15px;
+}
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: none;
+}
+
+/* ✅ Responsive */
+@media (max-width: 1024px) {
+    .table th, .table td {
+        font-size: 14px;
+    }
+}
+@media (max-width: 768px) {
+    .table th, .table td {
+        font-size: 13px;
+        padding: 0.45rem 0.5rem;
+    }
+    .card-title, .page-title {
+        text-align: center;
+        font-size: 16px;
+    }
+    .btn {
+        font-size: 13px;
+        padding: 5px 8px;
+    }
+    .badge {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+</style>
 @endsection

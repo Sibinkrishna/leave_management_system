@@ -1,6 +1,99 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
+<style>
+/* ✅ General responsiveness */
+.container-fluid, .card, .card-body {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+/* 
+/* ✅ Default font sizes (Desktop - unchanged) */
+/* h4.page-title { font-size: 1.6rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+h5 { padding-top:30px;}
+p, span, td, th, div { font-size: 1rem; } */ */
+
+/* ✅ Tablet (width ≤ 992px) */
+@media (max-width: 992px) {
+    h4.page-title { font-size: 1.4rem; }
+    h5 { font-size: 1.1rem; }
+    h6 { font-size: 0.95rem; }
+    p, span, td, th, div { font-size: 0.95rem; }
+    .card-body img { width: 110px; }
+}
+
+/* ✅ Mobile (width ≤ 576px) */
+@media (max-width: 576px) {
+    h4.page-title { font-size: 1.2rem; text-align: center; }
+    h5 { font-size: 1rem; text-align: center; }
+    h6 { font-size: 0.9rem; text-align: center; }
+    p, span, td, th, div { font-size: 0.9rem; }
+
+    /* Center and scale image */
+    .card-body img {
+        width: 90px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Stack name and designation properly */
+    .d-flex.align-items-center {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Make card content padding smaller */
+    .card-body {
+        padding: 1rem !important;
+    }
+
+    /* Breadcrumb alignment fix */
+    .page-title-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+/* ✅ Mobile: Arrange employee info in 2 columns */
+@media (max-width: 576px) {
+
+    /* make each info row a grid */
+    .employee-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* two columns */
+        gap: 8px 12px;
+    }
+
+    /* make each info item clear and readable */
+    .employee-info .mb-2 {
+        margin-bottom: 6px !important;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* icon and text alignment fix */
+    .employee-info i {
+        font-size: 1rem;
+        margin-bottom: 2px;
+    }
+
+    /* label bold and smaller text */
+    .employee-info span.text-body.fw-semibold {
+        font-weight: 600;
+        color: #333;
+    }
+}
+</style>
+
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -51,7 +144,8 @@
 
                     <div class="row align-items-center">                                        
                         <div class="col-lg-12">
-                            <div class="mt-3">
+                           <div class="mt-3 employee-info">
+
                                 <div class="mb-2 d-flex align-items-center">
                                     <i class="iconoir-mail-out fs-20 me-1"></i>
                                     <span class="text-body fw-semibold">Email:</span> {{ $employee->email }}
