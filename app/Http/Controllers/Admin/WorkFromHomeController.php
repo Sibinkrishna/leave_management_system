@@ -13,19 +13,27 @@ public function index(Request $request)
 {
     $query = WorkFromHomeEntry::with('user');
 
-    // Filter by day, month, and year
-    if ($request->day) {
+    // ✅ If the user selected a specific date
+    if ($request->filled('date')) {
+        $selectedDate = $request->date;
+        $query->whereDate('entry_date', $selectedDate);
+    } 
+    // ✅ If filtering by day, month, and year separately (fallback)
+    elseif ($request->filled('day') || $request->filled('month') || $request->filled('year')) {
         $day = $request->day;
         $month = $request->month ?? now()->month;
         $year = $request->year ?? now()->year;
 
-        $query->whereDay('entry_date', $day)
-              ->whereMonth('entry_date', $month)
+        if ($day) {
+            $query->whereDay('entry_date', $day);
+        }
+        $query->whereMonth('entry_date', $month)
               ->whereYear('entry_date', $year);
-    } else {
-        // Only month/year filter if day not selected
-        $month = $request->month ?? now()->month;
-        $year = $request->year ?? now()->year;
+    } 
+    // ✅ Default to current month if nothing selected
+    else {
+        $month = now()->month;
+        $year = now()->year;
 
         $query->whereMonth('entry_date', $month)
               ->whereYear('entry_date', $year);
