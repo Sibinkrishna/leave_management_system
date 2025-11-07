@@ -102,9 +102,4 @@ class LeaveTypeController extends Controller
     /**
      * Optional: Show details of a leave type.
      */
-    public function show($id)
-    {
-        $leaveType = LeaveType::findOrFail($id);
-        return view('Admin.LeaveType.show', compact('leaveType'));
-    }
 }

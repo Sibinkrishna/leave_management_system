@@ -71,7 +71,7 @@
 {{-- ✅ Responsive Font Sizes --}}
 <style>
 /* ✅ Default Desktop View */
-body {
+/* body {
     font-size: 16px;
 }
 
@@ -81,7 +81,7 @@ body {
 
 .card-header h5 {
     font-size: 18px;
-}
+} */
 
 /* ✅ Tablet View */
 @media (max-width: 1024px) {

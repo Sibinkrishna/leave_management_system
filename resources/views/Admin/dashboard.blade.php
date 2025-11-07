@@ -271,7 +271,11 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center">
+            @if(Auth::user()->role == 'employee')
             <h4 class="fw-semibold mb-0">  {{ $monthName }} {{ $currentYear }}</h4>
+            @else
+            <h4 class="fw-semibold mb-0">  Dashboard</h4>
+            @endif
 
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
@@ -363,8 +367,10 @@
 
     </div>
 </div>
-
+@else
+HUNJMK,
 @endif
+
 
 <!-- ✅ SweetAlert2 Popup Confirmation -->
 <script>

@@ -89,7 +89,7 @@
 {{-- ✅ Responsive Font Sizes --}}
 <style>
 /* ✅ Default Desktop View */
-body {
+/* body {
     font-size: 16px;
 }
 
@@ -107,7 +107,7 @@ body {
 
 .btn {
     font-size: 14px;
-}
+} */
 
 /* ✅ Tablet View */
 @media (max-width: 1024px) {
