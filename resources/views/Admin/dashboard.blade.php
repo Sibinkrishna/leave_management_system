@@ -25,6 +25,7 @@
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         height: 100%;
+        border: 2px solid pink; /* ✅ Correct syntax */
         
     }
 
@@ -65,6 +66,7 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 14px;
         align-items: stretch;
+        
     }
 
     .summary-cards .card {
@@ -75,11 +77,13 @@
         flex-direction: column;
         justify-content: space-between;
         box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+         border: 2px solid pink; /* ✅ Correct syntax */
     }
 
     .summary-cards .card:hover {
         transform: translateY(-3px);
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        
     }
 
     .card-header-row {
@@ -87,6 +91,7 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 8px;
+        
     }
 
     .card-header-row h5 {
@@ -94,6 +99,7 @@
         font-weight: 600;
         color: #333;
         margin: 0;
+        
     }
 
     .icon-box {
@@ -368,7 +374,84 @@
     </div>
 </div>
 @else
-HUNJMK,
+<style>
+/* ✅ Dashboard Styling */
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.dashboard-card {
+    flex: 1 1 250px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.dashboard-card h3 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.dashboard-card p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* ✅ Header */
+.dashboard-header {
+    background: #ffb6c1;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+}
+</style>
+
+<div class="dashboard-header">
+    <h4>👩‍💼 Admin Dashboard</h4>
+    <span>Welcome, {{ Auth::user()->name ?? 'Admin' }}</span>
+</div>
+
+<div class="dashboard-container">
+    <div class="dashboard-card">
+        <h3>25</h3>
+        <p>Total Employees</p>
+    </div>
+    <div class="dashboard-card">
+        <h3>8</h3>
+        <p>Leave Requests</p>
+    </div>
+    <div class="dashboard-card">
+        <h3>5</h3>
+        <p>Pending Approvals</p>
+    </div>
+    <div class="dashboard-card">
+        <h3>90%</h3>
+        <p>Attendance Today</p>
+    </div>
+</div>
+
+
 @endif
 
 
