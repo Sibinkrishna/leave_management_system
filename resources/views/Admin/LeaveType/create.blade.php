@@ -107,7 +107,8 @@
 
                     <div class="mt-4 d-flex gap-2">
                         <button type="submit" class="btn btn-primary px-4">Submit</button>
-                        <button type="reset" class="btn btn-danger px-4">Cancel</button>
+                       <a href="{{ route('admin.employee.index') }}" class="btn btn-danger">Cancel</a>
+
                     </div>
 
                 </form>

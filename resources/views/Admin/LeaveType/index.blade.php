@@ -26,7 +26,7 @@
                     </div>
                     <div class="col text-end">
                         <a href="{{ route('admin.leavetype.create') }}" class="btn btn-primary">
-                            Add Leave Type
+                            Add Leave
                         </a>
                     </div>
                 </div>

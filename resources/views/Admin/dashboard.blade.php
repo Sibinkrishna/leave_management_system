@@ -425,31 +425,112 @@
         flex-direction: column;
     }
 }
+<style>
+/* ✅ Dashboard Styling */
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.dashboard-card {
+    flex: 1 1 250px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.dashboard-card h3 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.dashboard-card p {
+    font-size: 16px;
+    color: #666;
+}
+
+.dashboard-header {
+    background: #6eb4ffff;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+}
 </style>
+{{-- admin dasborde --}}
+<div class="row g-3">
 
-<div class="dashboard-header">
-    <h4>👩‍💼 Admin Dashboard</h4>
-    <span>Welcome, {{ Auth::user()->name ?? 'Admin' }}</span>
+    <!-- Total Employees -->
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card text-center p-3 shadow-sm h-100">
+            <h5 class="mb-2">Total Employees</h5>
+            <h3>{{ $totalEmployees }}</h3>
+        </div>
+    </div>
+
+    <!-- Today's Leaves -->
+  <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="card text-center p-3 shadow-sm h-100">
+        <h5 class="mb-2">Today's Leaves</h5>
+        @if($leavesToday->count() > 0)
+            <ul class="list-unstyled mb-0">
+                @foreach($leavesToday as $leave)
+                    <li>{{ $leave->employee->name }}</li>
+                @endforeach
+            </ul>
+        @else
+            <p>No leaves today</p>
+        @endif
+    </div>
 </div>
 
-<div class="dashboard-container">
-    <div class="dashboard-card">
-        <h3>25</h3>
-        <p>Total Employees</p>
+
+    <!-- Attendance Today -->
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card text-center p-3 shadow-sm h-100">
+            <h5 class="mb-2 d-flex justify-content-center align-items-center">
+                Attendance Today
+                <button class="btn btn-sm btn-link ms-2 p-0" type="button" data-bs-toggle="collapse" data-bs-target="#attendanceList" aria-expanded="false" aria-controls="attendanceList">
+                    ▽
+                </button>
+            </h5>
+
+            <div class="collapse mt-2" id="attendanceList">
+                <ul class="list-unstyled mb-0">
+                    @forelse($attendanceToday as $att)
+                        <li>{{ $att->employee->name }}</li>
+                    @empty
+                        <li>No attendance marked</li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="dashboard-card">
-        <h3>8</h3>
-        <p>Leave Requests</p>
-    </div>
-    <div class="dashboard-card">
-        <h3>5</h3>
-        <p>Pending Approvals</p>
-    </div>
-    <div class="dashboard-card">
-        <h3>90%</h3>
-        <p>Attendance Today</p>
-    </div>
+
 </div>
+
+
+
+
+
+
 
 
 @endif

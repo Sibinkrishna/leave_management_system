@@ -42,6 +42,14 @@
         border-radius: 8px;
         overflow-x: auto;
     }
+
+    /* ✅ Stack icons vertically on mobile */
+    .action-icons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+    }
 }
 </style>
 
@@ -64,9 +72,9 @@
     <div class="col-md-12 col-lg-12">
         <div class="card">
             <div class="card-header">
-                <div class="row align-items-center mb-6">
+                <div class="row align-items-center mb-2">
                     <div class="col">
-                        <h4 class="card-title">Holiday Table</h4>
+                        <h4 class="card-title">Holiday Table ({{ date('Y') }})</h4>
                     </div>
                     <div class="col text-end">
                         <a href="{{ route('admin.holiday.create') }}" class="btn btn-primary">Create</a>
@@ -87,36 +95,36 @@
                         </thead>
                         <tbody>
                             @forelse($holidays as $holiday)
-                                <tr>
-                                    <td class="text-start">{{ $holiday->name }}</td>
-                                    <td class="text-center">{{ \Carbon\Carbon::parse($holiday->date)->format('d M Y') }}</td>
-                                    <td class="text-center">{{ \Carbon\Carbon::parse($holiday->date)->format('l') }}</td>
-                                    <td class="text-end">
-                                        <a href="{{ route('admin.holiday.edit', $holiday->id) }}">
-                                            <i class="las la-pen text-secondary font-16"></i>
-                                        </a>
-                                        <form action="{{ route('admin.holiday.destroy', $holiday->id) }}" method="post" style="display:inline">
-                                            @csrf
-                                            <button type="button" style="all: unset;"
-                                                onclick="Swal.fire({
-                                                    title: 'Delete?',
-                                                    text: 'Are you sure you want to delete {{ $holiday->name }}?',
-                                                    icon: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: 'rgba(255, 73, 194, 0.72)',
-                                                    cancelButtonColor: '#3085d6',
-                                                    confirmButtonText: 'Yes, Delete'
-                                                }).then((result) => { if(result.isConfirmed){ this.form.submit(); }})"
-                                                title="Delete">
-                                                <i class="las la-trash-alt text-secondary font-16"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td class="text-start">{{ $holiday->name }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($holiday->date)->format('d/m') }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($holiday->date)->format('l') }}</td>
+                                <td class="text-end action-icons">
+                                    <a href="{{ route('admin.holiday.edit', $holiday->id) }}" title="Edit">
+                                        <i class="las la-pen text-secondary font-16"></i>
+                                    </a>
+                                    <form action="{{ route('admin.holiday.destroy', $holiday->id) }}" method="post" style="display:inline">
+                                        @csrf
+                                        <button type="button" style="all: unset;"
+                                            onclick="Swal.fire({
+                                                title: 'Delete?',
+                                                text: 'Are you sure you want to delete {{ $holiday->name }}?',
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: 'rgba(255, 73, 194, 0.72)',
+                                                cancelButtonColor: '#3085d6',
+                                                confirmButtonText: 'Yes, Delete'
+                                            }).then((result) => { if(result.isConfirmed){ this.form.submit(); }})"
+                                            title="Delete">
+                                            <i class="las la-trash-alt text-secondary font-16"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="4" class="text-center">No holidays found.</td>    
-                                </tr>
+                            <tr>
+                                <td colspan="4" class="text-center">No holidays found.</td>    
+                            </tr>
                             @endforelse
                         </tbody>
                     </table><!--end /table-->

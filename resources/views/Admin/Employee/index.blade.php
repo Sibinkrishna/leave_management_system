@@ -37,7 +37,7 @@
                     <table class="table table-striped mb-0 align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Customer</th>
+                                <th>Name</th>
                                 <th>Designation</th>
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
@@ -47,15 +47,7 @@
                             @forelse($employees as $employee)
                                 @if(strtolower($employee->status) === 'active')
                                 <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="{{ asset('storage/' . ($employee->avatar ?? 'default.png')) }}" 
-                                                 alt="{{ $employee->name }}" 
-                                                 class="rounded-circle me-2" 
-                                                 style="width:35px; height:35px;">
-                                            <span>{{ $employee->name }}</span>
-                                        </div>
-                                    </td>
+                                    <td>{{ $employee->name }}</td>
                                     <td>{{ $employee->designation }}</td>
                                     <td>
                                         <span class="badge bg-success">{{ ucfirst($employee->status) }}</span>
@@ -93,29 +85,16 @@
                             @endforelse
                         </tbody>
                     </table>
-                </div><!--end /tableresponsive-->
-            </div><!--end /card-body-->
-        </div><!--end /card-->
-    </div><!--end /col-->
-</div><!--end /row-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
-/* ✅ Responsive Styling */
 .table th, .table td {
     vertical-align: middle;
     font-size: 15px;
-}
-
-.table td img {
-    width: 35px;
-    height: 35px;
-    object-fit: cover;
-}
-
-@media (max-width: 1024px) {
-    .table th, .table td {
-        font-size: 14px;
-    }
 }
 
 @media (max-width: 575px) {
@@ -131,14 +110,32 @@
         font-size: 13px;
         padding: 0.45rem 0.5rem;
     }
-    .table td img {
-        width: 30px;
-        height: 30px;
-    }
     .table-responsive {
         border-radius: 8px;
         overflow-x: auto;
     }
+/* ✅ Default desktop layout: icons in one row */
+.text-end a,
+.text-end form {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+/* 📱 Mobile layout: icons stacked vertically */
+@media (max-width: 575px) {
+    .text-end {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px; /* space between icons */
+    }
+    .text-end a,
+    .text-end form {
+        margin: 0;
+    }
+}
+
+
 }
 </style>
 @endsection
