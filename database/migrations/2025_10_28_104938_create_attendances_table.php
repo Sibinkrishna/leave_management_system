@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
             $table->date('attendance_date');            // date of record (Y-m-d)
             $table->timestamp('check_in')->nullable();  // check-in timestamp
             $table->timestamp('check_out')->nullable(); // check-out timestamp
