@@ -84,10 +84,10 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    public function showChangePassword()
-    {
-        return view('auth.change-password');
-    }
+    // public function showChangePassword()
+    // {
+    //     return view('auth.change-password');
+    // }
 
     public function changePassword(Request $request)
     {
@@ -111,23 +111,23 @@ class AuthController extends Controller
     {
         return view('Admin.Auth.register');
     }
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+    // public function register(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => 'required|string|min:8|confirmed',
+    //     ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'employee', // Default role
-        ]);
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //         'role' => 'employee', // Default role
+    //     ]);
 
-        Auth::login($user);
+    //     Auth::login($user);
 
-        return redirect()->route('dashboard');
-    }
+    //     return redirect()->route('dashboard');
+    // }
 }

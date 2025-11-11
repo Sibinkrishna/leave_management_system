@@ -67,4 +67,82 @@
         </div>
     </div>
 </div>
+
+{{-- ✅ Responsive Font Sizes --}}
+<style>
+/* ✅ Default Desktop View */
+/* body {
+    font-size: 16px;
+}
+
+.table th, .table td {
+    font-size: 15px;
+}
+
+.card-header h5 {
+    font-size: 18px;
+} */
+
+/* ✅ Tablet View */
+@media (max-width: 1024px) {
+    body {
+        font-size: 15px;
+    }
+    .table th, .table td {
+        font-size: 14px;
+    }
+    .card-header h5 {
+        font-size: 17px;
+    }
+    .btn {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+
+/* ✅ Mobile View */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    .table th, .table td {
+        font-size: 13px;
+        padding: 6px 8px;
+    }
+    .card-header h5 {
+        font-size: 16px;
+        text-align: center;
+    }
+    .btn {
+        font-size: 13px;
+        padding: 5px 8px;
+    }
+    .badge {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+/* ✅ Small Mobile View */
+@media (max-width: 430px) {
+    body {
+        font-size: 13px;
+    }
+    .table th, .table td {
+        font-size: 12px;
+        padding: 4px 6px;
+    }
+    .card-header h5 {
+        font-size: 15px;
+    }
+    .btn {
+        font-size: 12px;
+        padding: 4px 6px;
+    }
+    .badge {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+}
+</style>
 @endsection

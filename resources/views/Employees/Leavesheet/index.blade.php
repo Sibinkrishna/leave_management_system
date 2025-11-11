@@ -70,7 +70,7 @@
 <!-- ✅ Responsive Styles -->
 <style>
 /* General Table & Badge Styling */
-.table th, .table td {
+/* .table th, .table td {
     vertical-align: middle;
     white-space: nowrap;
     font-size: 15px;
@@ -78,17 +78,17 @@
 
 .badge {
     font-size: 0.9rem;
-    padding: 6px 10px;
-    border-radius: 8px;
-}
+    /* padding: 6px 10px; */
+    /* border-radius: 8px;
+} */ */
 
 /* ✅ Proper spacing below header */
-.card-body {
+/* .card-body {
     margin-top: 5px;
 }
 
 /* ✅ Fix header alignment */
-.card-header {
+/* .card-header {
     border-bottom: 2px solid #343a40;
 }
 
@@ -99,7 +99,7 @@
 .card-header span {
     font-size: 0.95rem;
     opacity: 0.9;
-}
+} */ */
 
 /* ✅ Tablet View */
 @media (max-width: 992px) {
