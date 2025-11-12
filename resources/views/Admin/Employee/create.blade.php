@@ -26,124 +26,103 @@
                     </div>
                 </div>
             </div>
-          @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif  
-             @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong> {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Success!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <div class="card-body pt-0">
                 <form action="{{ route('admin.employee.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="row">
+                    <!-- ✅ Responsive Form Section -->
+                    <!-- gy-2 = small vertical gap on mobile -->
+                    <!-- gy-md-3 = normal gap on tablet/desktop -->
+                    <div class="row gy-2 gy-md-3">
                         <input type="hidden" name="company_id" value="1">
                         <input type="hidden" name="role" value="employee">
 
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputname" class="form-label">Name</label>
-                                <input type="text" class="form-control" name="name" value="{{ old('name')}}"  id="exampleInputname" placeholder="Enter name">
-                            </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" value="{{ old('name')}}" placeholder="Enter name">
                         </div>
 
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputphone" class="form-label">Phone</label>
-                                <input type="tel" class="form-control" name="phone"  value="{{ old('phone')}}" id="exampleInputphone" placeholder="Enter phone number">
-                            </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" name="phone" value="{{ old('phone')}}" placeholder="Enter phone number">
                         </div>
 
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                <input type="email" class="form-control" name="email"  value="{{ old('email')}}"id="exampleInputEmail1" placeholder="Enter email">
-                            </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" value="{{ old('email')}}" placeholder="Enter email">
                         </div>
 
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputPassword1" class="form-label">Password</label>
-                                <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Enter password">
-                            </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Enter password">
                         </div>
 
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" name="password_confirmation" id="exampleInputPassword2" placeholder="Confirm password">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputaddress" class="form-label">Address</label>
-                                <input type="text" class="form-control" name="address" value="{{ old('address')}}" id="exampleInputaddress" placeholder="Enter address">
-                            </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm password">
                         </div>
 
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputdesignation" class="form-label">Designation</label>
-                                <input type="text" class="form-control" name="designation"  value="{{ old('designation')}}"id="exampleInputdesignation" placeholder="Enter designation">
-                            </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" value="{{ old('address')}}" placeholder="Enter address">
                         </div>
 
-                       <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputjoin date" class="form-label">Join date</label>
-                                <input type="date" class="form-control" name="join date" value="{{ old('join date')}}" id="exampleInputjoin date" placeholder="Join date">
-                            </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Designation</label>
+                            <input type="text" class="form-control" name="designation" value="{{ old('designation')}}" placeholder="Enter designation">
                         </div>
 
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputstatus" class="form-label">Status</label>
-                            <select class="form-control" name="status" value="{{ old('status')}}" id="">
-                                <option value=""selected disabled>--select--</option>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Join Date</label>
+                            <input type="date" class="form-control" name="join_date" value="{{ old('join_date')}}">
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Status</label>
+                            <select class="form-control" name="status">
+                                <option value="" disabled selected>-- Select --</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                             </select>
-                            </div>
                         </div>
-                        <div class="col-4">
-    <div class="mb-3">
-        <label for="department_id" class="form-label">Department</label>
-        <select class="form-control" name="department_id" id="department_id" required>
-            <option value="" disabled>-- Select Department --</option>
-            @forelse($departments as $department)
-                <option value="{{ $department->id }}" 
-                    {{ $department->department_id == $department->id ? 'selected' : '' }}>
-                    {{ $department->name }}
-                </option>
-            @empty
-                <option value="" disabled>No departments found</option>
-            @endforelse
-        </select>
-    </div>
-</div>
 
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Department</label>
+                            <select class="form-control" name="department_id" required>
+                                <option value="" disabled selected>-- Select Department --</option>
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="exampleInputavatar" class="form-label">Avatar</label>
-                                <input type="file" class="form-control" name="avatar" value="{{ old('avatar')}}" id="exampleInputavatar" placeholder="Avatar">
-                            </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <label class="form-label">Avatar</label>
+                            <input type="file" class="form-control" name="avatar" value="{{ old('avatar')}}">
                         </div>
                     </div>
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-danger" onclick="window.history.back()">Cancel</button>
-
                     </div>
                 </form>
             </div>

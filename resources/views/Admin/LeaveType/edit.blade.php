@@ -99,7 +99,7 @@
                         <!-- Buttons -->
                         <div class="col-12 mt-3">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="reset" class="btn btn-danger">Cancel</button>
+                                <a href="{{ route('admin.department.index') }}" class="btn btn-danger">Cancel</a>
                         </div>
 
                     </div>

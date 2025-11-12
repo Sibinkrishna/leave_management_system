@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center">
-            <h4 class="page-title">WFH records</h4>
+            <h4 class="page-title"></h4>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">WFH</a></li>
@@ -17,7 +17,7 @@
     <div class="col-md-12">
         <div class="card shadow-sm rounded-3">
             <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">Work From Home Entry</h5>
+                <h5 class="mb-0">WFH Entry</h5>
             </div>
 
             <div class="card-body">

@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
-            <h4 class="page-title">Leave Types</h4>
+            <h4 class="page-title"></h4>
             <div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">Approx</a></li>
@@ -48,13 +48,8 @@
                                 <tr>
                                     <td class="text-start">{{ $type->name }}</td>
                                     <td class="text-center">{{ $type->total_days_per_year }}</td>
-                                    <td class="text-center">
-                                        @if(strtolower($type->status) === 'active')
-                                            <span class="badge bg-success">{{ ucfirst($type->status) }}</span>
-                                        @else
-                                            <span class="badge bg-secondary">{{ ucfirst($type->status) }}</span>
-                                        @endif
-                                    </td>
+                                      <!-- ✅ Plain text status -->
+                                   <td class="status-text text-center">{{ ucfirst($type->status) }}</td>
                                     <td class="text-end">
                                         <a href="{{ route('admin.leavetype.edit', $type->id) }}">
                                             <i class="las la-pen text-secondary font-16"></i>
@@ -90,35 +85,48 @@
 </div>
 
 <style>
-/* ✅ Responsive font and spacing adjustments */
+/* Default Desktop View (≥1025px) */
 .table th, .table td {
     vertical-align: middle;
-    font-size: 15px;
+    font-size: 13px; /* Desktop font size */
+}
+.page-title, .card-title {
+    font-size: 20px; /* Desktop title size */
+}
+.btn {
+    font-size: 14px;
+    padding: 8px 12px;
 }
 
-@media (max-width: 1024px) {
+/* Tablet View (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
     .table th, .table td {
-        font-size: 14px;
+        font-size: 12px; /* Tablet table font */
     }
-}
-
-@media (max-width: 575px) {
-    .card-title, .page-title {
-        text-align: center;
-        font-size: 16px;
+    .page-title, .card-title {
+        font-size: 18px; /* Tablet title size */
     }
     .btn {
         font-size: 13px;
-        padding: 6px 10px;
-    }
-    .table th, .table td {
-        font-size: 13px;
-        padding: 0.45rem 0.5rem;
-    }
-    .badge {
-        font-size: 12px;
-        padding: 4px 8px;
+        padding: 7px 10px;
     }
 }
+
+/* Mobile View (<768px) */
+@media (max-width: 767px) {
+    .table th, .table td {
+        font-size: 10px; /* Mobile table font */
+        padding: 0.45rem 0.5rem;
+    }
+    .page-title, .card-title {
+        text-align: center;
+        font-size: 14px; /* Mobile title size */
+    }
+    .btn {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+}
+
 </style>
 @endsection

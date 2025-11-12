@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
-            <h4 class="page-title">Departments</h4>
+            <h4 class="page-title"></h4>
             <div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">Approx</a></li>
@@ -15,6 +15,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="row justify-content-center">
     <div class="col-md-12 col-lg-12">
@@ -46,13 +47,7 @@
                             @forelse($department as $dept)
                                 <tr>
                                     <td class="text-start">{{ $dept->name }}</td>
-                                    <td class="text-center">
-                                        @if(strtolower($dept->status) === 'active')
-                                            <span class="badge bg-success">{{ ucfirst($dept->status) }}</span>
-                                        @else
-                                            <span class="badge bg-secondary">{{ ucfirst($dept->status) }}</span>
-                                        @endif
-                                    </td>
+                                    <td class="text-center">{{ ucfirst($dept->status) }}</td> <!-- ✅ Normal text -->
                                     <td class="text-end">
                                         <a href="{{ route('admin.department.edit', $dept->id) }}">
                                             <i class="las la-pen text-secondary font-16"></i>
@@ -88,34 +83,43 @@
 </div>
 
 <style>
-/* ✅ Responsive font and spacing adjustments */
+/* Desktop: default font size */
 .table th, .table td {
     vertical-align: middle;
-    font-size: 15px;
+    font-size: 13px;
 }
 
-@media (max-width: 1024px) {
+/* Tablet: 768px - 1024px */
+@media (max-width: 1024px) and (min-width: 768px) {
     .table th, .table td {
+        font-size: 12px;
+    }
+    .card-title, .page-title {
+        font-size: 18px;
+    }
+    .btn {
         font-size: 14px;
+        padding: 6px 12px;
     }
 }
 
-@media (max-width: 575px) {
+/* Mobile: <768px */
+@media (max-width: 767px) {
+    .table th, .table td {
+        font-size: 10px;
+        padding: 0.45rem 0.5rem;
+    }
     .card-title, .page-title {
         text-align: center;
         font-size: 16px;
     }
     .btn {
         font-size: 13px;
-        padding: 6px 10px;
+        padding: 5px 8px;
     }
-    .table th, .table td {
-        font-size: 13px;
-        padding: 0.45rem 0.5rem;
-    }
-    .badge {
-        font-size: 12px;
-        padding: 4px 8px;
+    .table-responsive {
+        border-radius: 8px;
+        overflow-x: auto;
     }
 }
 </style>

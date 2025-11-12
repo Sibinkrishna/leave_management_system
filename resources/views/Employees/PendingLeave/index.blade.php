@@ -90,7 +90,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
-            <h4 class="page-title mb-2 mb-md-0">Pending Leaves</h4>
+            <h4 class="page-title mb-2 mb-md-0"></h4>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">Leaves</a></li>
@@ -106,8 +106,8 @@
         <div class="card mt-3">
             <!-- Dark Header -->
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <h5 class="fw-bold mb-0">My Pending Leave Requests</h5>
-                <span class="text-light small">({{ Auth::user()->name }})</span>
+                <h5 class="fw-bold mb-0">Pending Leaves</h5>
+                {{-- <span class="text-light small">({{ Auth::user()->name }})</span> --}}
             </div>
 
             <!-- ✅ Added clear padding so gap appears -->

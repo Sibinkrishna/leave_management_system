@@ -5,7 +5,7 @@
 /* ✅ Base font size for desktop */
 .table th, 
 .table td {
-    font-size: 15px;
+    font-size: 13px;
     vertical-align: middle;
 }
 
@@ -13,7 +13,7 @@
 @media (max-width: 1024px) {
     .table th, 
     .table td {
-        font-size: 14px;
+        font-size: 11px;
     }
     .card-title {
         font-size: 18px;
@@ -24,7 +24,7 @@
 @media (max-width: 767px) {
     .table th, 
     .table td {
-        font-size: 13px;
+        font-size: 10px;
     }
     .card-title {
         font-size: 16px;
@@ -56,12 +56,12 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
-            <h4 class="page-title">Holiday List</h4>
+            <h4 class="page-title"></h4>
             <div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">Approx</a></li>
                     <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                    <li class="breadcrumb-item active">Holidays</li>
+                    <li class="breadcrumb-item active">Holiday List</li>
                 </ol>
             </div>
         </div>

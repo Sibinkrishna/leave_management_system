@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
-            <h4 class="page-title">Add Department</h4>
+            <h4 class="page-title"></h4>
             <div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">Approx</a></li>
@@ -70,7 +70,7 @@
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <button type="reset" class="btn btn-danger">Cancel</button>
+                           <a href="{{ route('admin.department.index') }}" class="btn btn-danger">Cancel</a>
                     </div>
                 </form>
             </div>

@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
-            <h4 class="page-title mb-2 mb-md-0">Leave application</h4>
+            <h4 class="page-title mb-2 mb-md-0"></h4>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">Leaves</a></li>
@@ -17,7 +17,7 @@
 <div class="container mt-4">
     <div class="card shadow-sm rounded-3">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">My Leave Applications</h5>
+            <h5 class="mb-0">Leave Applications</h5>
             <a href="{{ route('employee.leaveapplications.create') }}" class="btn btn-sm btn-primary">+ Apply Leave</a>
         </div>
 
@@ -70,18 +70,7 @@
 
 {{-- ✅ Responsive Font Sizes --}}
 <style>
-/* ✅ Default Desktop View */
-/* body {
-    font-size: 16px;
-}
 
-.table th, .table td {
-    font-size: 15px;
-}
-
-.card-header h5 {
-    font-size: 18px;
-} */
 
 /* ✅ Tablet View */
 @media (max-width: 1024px) {

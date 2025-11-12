@@ -4,12 +4,12 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
-            <h4 class="page-title">Employee List</h4>
+            <h4 class="page-title"></h4>
             <div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="#">Approx</a></li>
                     <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                    <li class="breadcrumb-item active">Employees</li>
+                    <li class="breadcrumb-item active">Employee List</li>
                 </ol>
             </div>
         </div>
@@ -49,9 +49,7 @@
                                 <tr>
                                     <td>{{ $employee->name }}</td>
                                     <td>{{ $employee->designation }}</td>
-                                    <td>
-                                        <span class="badge bg-success">{{ ucfirst($employee->status) }}</span>
-                                    </td>
+                                    <td>{{ ucfirst($employee->status) }}</td> <!-- ✅ Normal text -->
                                     <td class="text-end">
                                         <a href="{{ route('admin.employee.show', $employee->id) }}">
                                             <i class="las la-eye text-secondary font-16"></i>
@@ -92,50 +90,56 @@
 </div>
 
 <style>
+/* Base font size for desktop */
 .table th, .table td {
     vertical-align: middle;
-    font-size: 15px;
+    font-size: 13px;
 }
 
-@media (max-width: 575px) {
+/* Tablet: 768px - 1024px */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .table th, .table td {
+        font-size: 12px;
+    }
+    .card-title, .page-title {
+        font-size: 18px;
+    }
+    .btn {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+}
+
+/* Mobile: <768px */
+@media (max-width: 767px) {
+    .table th, .table td {
+        font-size: 10px;
+        padding: 0.45rem 0.5rem;
+    }
     .card-title, .page-title {
         text-align: center;
         font-size: 16px;
     }
     .btn {
         font-size: 13px;
-        padding: 6px 10px;
-    }
-    .table th, .table td {
-        font-size: 13px;
-        padding: 0.45rem 0.5rem;
+        padding: 5px 8px;
     }
     .table-responsive {
         border-radius: 8px;
         overflow-x: auto;
     }
-/* ✅ Default desktop layout: icons in one row */
-.text-end a,
-.text-end form {
-    display: inline-block;
-    margin-left: 5px;
-}
 
-/* 📱 Mobile layout: icons stacked vertically */
-@media (max-width: 575px) {
+    /* Icons stacked vertically on mobile */
     .text-end {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        gap: 6px; /* space between icons */
+        gap: 6px;
     }
     .text-end a,
     .text-end form {
         margin: 0;
     }
-}
-
-
 }
 </style>
 @endsection

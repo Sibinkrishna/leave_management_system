@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
-            <h4 class="page-title mb-2 mb-md-0">Attendance Sheet</h4>
+            <h4 class="page-title mb-2 mb-md-0"></h4>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item active">Attendance</li>
@@ -18,8 +18,8 @@
         <!-- ✅ Header -->
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap">
             <div class="d-flex align-items-center flex-wrap gap-2">
-                <h5 class="mb-0 fw-bold">My Attendance Records</h5>
-                <span class="small">({{ Auth::user()->name }})</span>
+                <h5 class="mb-0 fw-bold">Attendance Records</h5>
+                {{-- <span class="small">({{ Auth::user()->name }})</span> --}}
             </div>
 
             <!-- ✅ Filter Form -->

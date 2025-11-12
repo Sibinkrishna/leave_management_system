@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center">
-            <h4 class="page-title">Holiday Calendar</h4>
+            <h4 class="page-title"></h4>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">Holiday</a></li>
@@ -20,7 +20,7 @@
             <!-- Black header (same as Leave Sheet) -->
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0 fw-bold">Holiday @2025</h5>
-                <span>({{ Auth::user()->name }})</span>
+                {{-- <span>({{ Auth::user()->name }})</span> --}}
             </div>
 
             <!-- White background for content -->
