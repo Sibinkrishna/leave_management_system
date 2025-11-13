@@ -91,7 +91,7 @@
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
             <h4 class="page-title mb-2 mb-md-0"></h4>
-            <ol class="breadcrumb mb-0">
+            <ol class="breadcrumb mb-0 ms-auto"> <!-- ✅ Right side on all screens -->
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">Leaves</a></li>
                 <li class="breadcrumb-item active">Pending</li>
@@ -100,13 +100,15 @@
     </div>
 </div>
 
+
+
 <!-- ✅ Table Card -->
 <div class="row justify-content-center">
     <div class="col-12">
         <div class="card mt-3">
             <!-- Dark Header -->
-            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <h5 class="fw-bold mb-0">Pending Leaves</h5>
+          <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
+                <h5 class="mb-0 fs-6 fs-md-5">Pending Leaves</h5>
                 {{-- <span class="text-light small">({{ Auth::user()->name }})</span> --}}
             </div>
 

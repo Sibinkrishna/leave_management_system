@@ -18,10 +18,10 @@
     <div class="col-md-12">
         <div class="card shadow-sm border-0">
             <!-- Black header (same as Leave Sheet) -->
-            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0 fw-bold">Holiday @2025</h5>
-                {{-- <span>({{ Auth::user()->name }})</span> --}}
-            </div>
+           <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
+    <h5 class="mb-0 fw-bold fs-6 fs-md-5">Holiday @2025</h5>
+</div>
+
 
             <!-- White background for content -->
             <div class="card-body" style="background-color: #ffffff;">

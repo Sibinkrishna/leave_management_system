@@ -8,7 +8,9 @@
             <h4 class="page-title mb-2 mb-md-0"></h4>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                <li class="breadcrumb-item active">Attendance</li>
+                <li class="breadcrumb-item"><a href="#">Attendance</a></li>
+                <li class="breadcrumb-item active">List</li>
+                
             </ol>
         </div>
     </div>
@@ -16,9 +18,10 @@
 <div class="container mt-4">
     <div class="card shadow-sm rounded-3">
         <!-- ✅ Header -->
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap">
-            <div class="d-flex align-items-center flex-wrap gap-2">
-                <h5 class="mb-0 fw-bold">Attendance Records</h5>
+      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
+
+<div class="d-flex align-items-center flex-wrap gap-1">
+                 <h5 class="mb-0 fs-6 fs-md-5">Attendance Records</h5> 
                 {{-- <span class="small">({{ Auth::user()->name }})</span> --}}
             </div>
 
@@ -88,26 +91,7 @@
 
 {{-- ✅ Responsive Font Sizes --}}
 <style>
-/* ✅ Default Desktop View */
-/* body {
-    font-size: 16px;
-}
 
-.table th, .table td {
-    font-size: 15px;
-}
-
-.card-header h5 {
-    font-size: 18px;
-}
-
-.card-header span {
-    font-size: 14px;
-}
-
-.btn {
-    font-size: 14px;
-} */
 
 /* ✅ Tablet View */
 @media (max-width: 1024px) {

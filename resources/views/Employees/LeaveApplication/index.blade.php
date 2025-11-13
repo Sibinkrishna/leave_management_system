@@ -14,11 +14,14 @@
         </div>
     </div>
 </div>
+
 <div class="container mt-4">
     <div class="card shadow-sm rounded-3">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Leave Applications</h5>
-            <a href="{{ route('employee.leaveapplications.create') }}" class="btn btn-sm btn-primary">+ Apply Leave</a>
+        <!-- ✅ Compact Header (Auto adjusts for mobile) -->
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
+            <h5 class="mb-0 fs-6 fs-md-5">Leave Applications</h5>
+            <a href="{{ route('employee.leaveapplications.create') }}" 
+               class="btn btn-sm btn-primary">+ Apply Leave</a>
         </div>
 
         <div class="card-body">
@@ -31,10 +34,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Leave Type</th>
-                        {{-- <th>Start Date</th> --}}
-                        {{-- <th>End Date</th> --}}
                         <th>Days</th>
-                        <!-- <th>Subject</th> -->
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -43,10 +43,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $leave->leaveType->name ?? '-' }}</td>
-                            {{-- <td>{{ $leave->start_date }}</td> --}}
-                            {{-- <td>{{ $leave->end_date }}</td> --}}
                             <td>{{ $leave->days }}</td>                
-                            <!-- <td>{{ $leave->subject ?? '-'}}</td> -->
                             <td>
                                 @if($leave->status == 'pending')
                                     <span class="badge bg-warning text-dark">Pending</span>
@@ -59,7 +56,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-muted">No leave applications found.</td>
+                            <td colspan="4" class="text-muted">No leave applications found.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -67,71 +64,4 @@
         </div>
     </div>
 </div>
-
-{{-- ✅ Responsive Font Sizes --}}
-<style>
-
-
-/* ✅ Tablet View */
-@media (max-width: 1024px) {
-    body {
-        font-size: 15px;
-    }
-    .table th, .table td {
-        font-size: 14px;
-    }
-    .card-header h5 {
-        font-size: 17px;
-    }
-    .btn {
-        font-size: 14px;
-        padding: 6px 10px;
-    }
-}
-
-/* ✅ Mobile View */
-@media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
-    .table th, .table td {
-        font-size: 13px;
-        padding: 6px 8px;
-    }
-    .card-header h5 {
-        font-size: 16px;
-        text-align: center;
-    }
-    .btn {
-        font-size: 13px;
-        padding: 5px 8px;
-    }
-    .badge {
-        font-size: 12px;
-        padding: 4px 8px;
-    }
-}
-
-/* ✅ Small Mobile View */
-@media (max-width: 430px) {
-    body {
-        font-size: 13px;
-    }
-    .table th, .table td {
-        font-size: 12px;
-        padding: 4px 6px;
-    }
-    .card-header h5 {
-        font-size: 15px;
-    }
-    .btn {
-        font-size: 12px;
-        padding: 4px 6px;
-    }
-    .badge {
-        font-size: 11px;
-        padding: 3px 6px;
-    }
-}
-</style>
 @endsection

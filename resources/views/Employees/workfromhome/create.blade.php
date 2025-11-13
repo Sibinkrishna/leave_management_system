@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center">
-            <h4 class="page-title"></h4>
+            <h4 class="page-title mb-2 mb-md-0"></h4>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">WFH</a></li>
@@ -13,11 +13,13 @@
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card shadow-sm rounded-3">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">WFH Entry</h5>
+            <!-- Compact header using Bootstrap utilities (mobile-friendly) -->
+           <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
+              <h5 class="mb-0 fs-6 fs-md-5">WFH Entry</h5>
             </div>
 
             <div class="card-body">
@@ -65,7 +67,7 @@
                         {{-- Work Status --}}
                         <div class="col-md-4 mb-3">
                             <label for="notes" class="form-label">Work Status</label>
-                            <select name="notes" id="notes" 
+                            <select name="notes" id="notes"
                                 class="form-select @error('notes') is-invalid @enderror" required>
                                 <option value="">-- Select Status --</option>
                                 <option value="Working">Working</option>
@@ -93,8 +95,8 @@
                     {{-- Submit Button --}}
                     <button type="submit" class="btn btn-primary">Submit Work Entry</button>
                 </form>
-            </div>
-        </div>
+            </div> <!-- end card-body -->
+        </div> <!-- end card -->
     </div>
 </div>
 @endsection

@@ -1,17 +1,16 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
+<!-- ✅ Page Title -->
 <div class="row">
     <div class="col-sm-12">
-        <div class="page-title-box d-md-flex justify-content-between align-items-center">
-            <h4 class="page-title"></h4>
-            <div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                    <li class="breadcrumb-item"><a href="#">Work From Home</a></li>
-                    <li class="breadcrumb-item active">Summary</li>
-                </ol>
-            </div>
+        <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
+            <h4 class="page-title mb-2 mb-md-0"></h4>
+            <ol class="breadcrumb mb-0 ms-auto"> <!-- ✅ Always right side -->
+                <li class="breadcrumb-item"><a href="#">Approx</a></li>
+                <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                <li class="breadcrumb-item active">WFH Summary</li>
+            </ol>
         </div>
     </div>
 </div>
@@ -20,7 +19,7 @@
     <div class="col-md-12">
         <div class="card shadow-sm border-0">
             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                <h6 class="mb-0 fw-bold">WFH Records List</h6>
+                 <h4 class="card-title">WFH Records List</h4>
 
                 <!-- ✅ Updated Filter Form -->
 <form method="GET" action="{{ route('admin.wfh.index') }}" class="d-flex align-items-center gap-2">

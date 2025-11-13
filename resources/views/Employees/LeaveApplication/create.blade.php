@@ -3,9 +3,10 @@
 @section('content')
 <div class="container mt-4">
     <div class="card shadow-sm rounded-3">
-       <div class="card-header bg-dark text-white">
-    <h5 class="mb-0">Apply for Leave</h5>
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
+    <h5 class="mb-0 fs-6 fs-md-5">Apply For Leave</h5>
 </div>
+
 
         <div class="card-body">
             @if(session('success'))

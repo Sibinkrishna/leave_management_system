@@ -6,10 +6,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-/* ================================
-   DASHBOARD PAGE STYLES
-================================ */
 
+   /* DASHBOARD PAGE STYLES */
 /* Dashboard Row Layout */
 .dashboard-row {
     display: flex;
@@ -27,7 +25,7 @@
     background-position: center;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    border: 2px solid pink;
+   
 }
 
 .quick-attendance-card .card-body {
@@ -60,93 +58,47 @@
     transform: translateY(-2px);
 }
 
-/* Summary Cards Layout */
-.summary-cards {
-    flex: 1 1 45%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    align-items: stretch;
-}
-
-.summary-cards .card {
-    border-radius: 12px;
-    transition: 0.3s ease;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    border: 2px solid pink;
-}
-
-.summary-cards .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.card-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.card-header-row h5 {
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
-}
-
-.icon-box {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px dashed;
-}
-
-.icon-blue { border-color: #007bff; color: #007bff; background-color: rgba(0,123,255,0.08); }
-.icon-green { border-color: #28a745; color: #28a745; background-color: rgba(40,167,69,0.08); }
-.icon-red { border-color: #dc3545; color: #dc3545; background-color: rgba(220,53,69,0.08); }
-.icon-orange { border-color: #ffc107; color: #ffc107; background-color: rgba(255,193,7,0.08); }
-
-.summary-cards h4 {
-    font-size: 22px;
-    font-weight: 600;
-    text-align: center;
-    margin: 0;
-    color: #000;
-}
-
 /* Responsive Styles */
-@media (max-width: 992px) {
-    .dashboard-row { flex-direction: column; gap: 20px; }
-    .quick-attendance-card { min-width: 100%; }
-    .quick-attendance-card .card-body { padding: 1.8rem; }
-    .quick-attendance-card h4 { font-size: 20px; }
-    .quick-attendance-card p { font-size: 14px; }
-    .quick-attendance-card .btn { font-size: 16px; padding: 12px 0; }
+/* 🌐 Default (Desktop) */
+.summary-box .border {
+    width: 55px;
+    height: 55px;
+}
+.summary-box i {
+    font-size: 28px;
 }
 
-@media (max-width: 767px) {
-    .dashboard-row { flex-direction: column; gap: 15px; }
-    .quick-attendance-card { min-width: 100%; border-radius: 12px; }
-    .quick-attendance-card .card-body { padding: 1.3rem; }
-    .quick-attendance-card h4 { font-size: 18px; }
-    .quick-attendance-card p { font-size: 13px; }
-    .quick-attendance-card .btn { font-size: 15px; padding: 10px 0; }
-    .quick-attendance-card .d-flex.gap-3 { flex-direction: column; gap: 10px; }
+/* 💻 Tablet (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+    .summary-box .border {
+        width: 48px;
+        height: 48px;
+    }
+    .summary-box i {
+        font-size: 25px;
+    }
 }
 
+/* 📱 Mobile (481px - 767px) */
+@media (max-width: 767px) and (min-width: 481px) {
+    .summary-box .border {
+        width: 43px;
+        height: 43px;
+    }
+    .summary-box i {
+        font-size: 23px;
+    }
+}
+
+/* 📞 Small Mobile (≤480px) */
 @media (max-width: 480px) {
-    .quick-attendance-card h4 { font-size: 17px; }
-    .quick-attendance-card p { font-size: 12.5px; }
-    .quick-attendance-card .btn { font-size: 14px; padding: 9px 0; }
-    .quick-attendance-card .card-body { padding: 1rem; }
+    .summary-box .border {
+        width: 38px;
+        height: 38px;
+    }
+    .summary-box i {
+        font-size: 21px;
+    }
 }
 
 /* Admin Dashboard Cards */
@@ -155,10 +107,7 @@
     min-width: 250px;
 }
 </style>
-
-<!-- =============================
-   DASHBOARD CONTENT
-============================= -->
+ {{-- DASHBOARD CONTENT --}}
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center">
@@ -175,116 +124,175 @@
         </div>
     </div>
 </div>
-
-<!-- =============================
-   EMPLOYEE DASHBOARD
-============================= -->
+   {{-- EMPLOYEE DASHBOARD --}}
 @if(Auth::user()->role == 'employee')
-<div class="dashboard-row">
-    <!-- Quick Attendance -->
-    <div class="card bg-globe-img quick-attendance-card overflow-hidden">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="fw-semibold mb-0">Quick Attendance</h4>
-            </div>
-            <p class="text-muted mb-4">Track your daily attendance easily</p>
+<div class="container mt-3">
+    <div class="row g-3 align-items-stretch">
+        <!-- LEFT SIDE: Quick Attendance -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card bg-globe-img quick-attendance-card overflow-hidden h-100">
+                <div class="card-body">
+                    <h4 class="fw-semibold mb-3">Quick Attendance</h4>
+                    <p class="text-muted mb-4">Track your daily attendance easily</p>
 
-            <div class="d-flex gap-3">
-                <form method="POST" action="{{ route('employee.attendance.checkin') }}" id="checkInForm" class="w-50">
-                    @csrf
-                    <button type="submit" class="btn btn-soft-primary w-100">Check In</button>
-                </form>
-
-                <form method="POST" action="{{ route('employee.attendance.checkout') }}" id="checkOutForm" class="w-50">
-                    @csrf
-                    <button type="submit" class="btn btn-soft-danger w-100">Check Out</button>
-                </form>
+                    <div class="d-flex gap-3">
+                        <form method="POST" action="{{ route('employee.attendance.checkin') }}" id="checkInForm" class="w-50">
+                            @csrf
+                            <button type="submit" class="btn btn-soft-primary w-100">Check In</button>
+                        </form>
+                        
+                        <form method="POST" action="{{ route('employee.attendance.checkout') }}" id="checkOutForm" class="w-50">
+                            @csrf
+                            <button type="submit" class="btn btn-soft-danger w-100">Check Out</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Employee Summary Cards -->
-    <div class="summary-cards">
-        <div class="card">
-            <div class="card-header-row">
-                <h5>Total Days Recorded</h5>
-                <div class="icon-box icon-blue"><i class="iconoir-calendar fs-18"></i></div>
-            </div>
-            <h4>{{ $totalDays }}</h4>
-        </div>
-
-        <div class="card">
-            <div class="card-header-row">
-                <h5>Present</h5>
-                <div class="icon-box icon-green"><i class="iconoir-check-circle fs-18"></i></div>
-            </div>
-            <h4>{{ $totalPresent }}</h4>
-        </div>
-
-        <div class="card">
-            <div class="card-header-row">
-                <h5>Absent</h5>
-                <div class="icon-box icon-red"><i class="iconoir-cancel fs-18"></i></div>
-            </div>
-            <h4>{{ $totalAbsent }}</h4>
-        </div>
-
-        <div class="card">
-            <div class="card-header-row">
-                <h5>Total Hours Worked</h5>
-                <div class="icon-box icon-orange"><i class="iconoir-clock fs-18"></i></div>
-            </div>
-            <h4>{{ number_format($totalHoursWorked, 2) }} hr</h4>
+        <!-- RIGHT SIDE: Summary Boxes (2 rows, 4 boxes total) -->
+        <div class="col-lg-6 col-md-12">
+            <div class="row justify-content-center g-3">
+                <!-- Box 1 -->
+                <div class="col-md-6 col-6">
+                    <div class="card bg-corner-img border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-9">
+                                    <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Total Days</p>
+                                    <h4 class="mb-0 fw-bold">{{ $totalDays }}</h4>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <div class="d-flex align-items-center justify-content-center border border-2 border-primary rounded-circle mx-auto" style="width:45px;height:45px;">
+                                        <i class="iconoir-calendar fs-22 text-primary"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Box 2 -->
+                <div class="col-md-6 col-6">
+                    <div class="card bg-corner-img border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-9">
+                                    <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Present</p>
+                                    <h4 class="mb-0 fw-bold">{{ $totalPresent }}</h4>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <div class="d-flex align-items-center justify-content-center border border-2 border-success rounded-circle mx-auto" style="width:45px;height:45px;">
+                                        <i class="iconoir-check-circle fs-22 text-success"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Box 3 -->
+                <div class="col-md-6 col-6">
+                    <div class="card bg-corner-img border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-9">
+                                    <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Absent</p>
+                                    <h4 class="mb-0 fw-bold">{{ $totalAbsent }}</h4>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <div class="d-flex align-items-center justify-content-center border border-2 border-danger rounded-circle mx-auto" style="width:45px;height:45px;">
+                                        <i class="iconoir-cancel fs-22 text-danger"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Box 4 (Pink Box) -->
+                <div class="col-md-6 col-6">
+                    <div class="card bg-corner-img border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-9">
+                                    <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Total Hours</p>
+                                    <h4 class="mb-0 fw-bold">{{ number_format($totalHoursWorked, 2) }} hr</h4>
+                                </div>
+                                <div class="col-3 text-center">
+                                    <div class="d-flex align-items-center justify-content-center border border-2 border-pink rounded-circle mx-auto" style="width:45px;height:45px;">
+                                        <i class="iconoir-clock fs-22 text-pink"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- row end -->
         </div>
     </div>
 </div>
 @endif
-
 <!-- =============================
    ADMIN DASHBOARD
 ============================= -->
 @if(Auth::user()->role == 'admin')
-<div class="dashboard-row">
-    <!-- Total Employees -->
-    <div class="card quick-attendance-card admin-card">
-        <div class="card-body">
-            <div class="card-header-row">
-                <h5>Total Employees</h5>
-                <div class="icon-box icon-blue"><i class="iconoir-users fs-18"></i></div>
+<div class="row justify-content-center g-3">
+    <!-- Box 1 -->
+    <div class="col-md-4 col-lg-4">
+        <div class="card bg-corner-img border-0 shadow-sm" style="min-height:160px;">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-9 d-flex flex-column align-items-center justify-content-center">
+                        <p class="text-muted text-uppercase mb-2 fs-13 fw-semibold">Total Employees</p>
+                        <h4 class="fw-bold mb-0 text-center">{{ $totalEmployees }}</h4>
+                    </div>
+                    <div class="col-3 text-center">
+                        <div class="d-flex align-items-center justify-content-center border border-2 border-pink rounded-circle mx-auto" style="width:45px;height:40px;">
+                            <i class="iconoir-users fs-22 text-pink"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h4>{{ $totalEmployees }}</h4>
         </div>
     </div>
-
-    <!-- Today's Leaves -->
-    <div class="card quick-attendance-card admin-card">
-        <div class="card-body">
-            <div class="card-header-row">
-                <h5>Today's Leaves</h5>
-                <div class="icon-box icon-red"><i class="iconoir-calendar fs-18"></i></div>
+    <!-- Box 2 -->
+    <div class="col-md-4 col-lg-4">
+        <div class="card bg-corner-img border-0 shadow-sm" style="min-height:160px;">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-9 d-flex flex-column align-items-center justify-content-center">
+                        <p class="text-muted text-uppercase mb-2 fs-13 fw-semibold">Today's Leaves</p>
+                        <h4 class="fw-bold mb-0 text-center">{{ $totalLeavesToday }}</h4>
+                    </div>
+                    <div class="col-3 text-center">
+                        <div class="d-flex align-items-center justify-content-center border border-2 border-danger rounded-circle mx-auto" style="width:45px;height:40px;">
+                            <i class="iconoir-calendar fs-22 text-danger"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h4>{{ $totalLeavesToday }}</h4>
         </div>
     </div>
-
-    <!-- Attendance Today -->
-    <div class="card quick-attendance-card admin-card">
-        <div class="card-body">
-            <div class="card-header-row">
-                <h5>Attendance Today</h5>
-                <div class="icon-box icon-green"><i class="iconoir-check-circle fs-18"></i></div>
+    <!-- Box 3 -->
+    <div class="col-md-4 col-lg-4">
+        <div class="card bg-corner-img border-0 shadow-sm" style="min-height:160px;">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-9 d-flex flex-column align-items-center justify-content-center">
+                        <p class="text-muted text-uppercase mb-2 fs-13 fw-semibold">Attendance Today</p>
+                        <h4 class="fw-bold mb-0 text-center">{{ $totalAttendanceToday }}</h4>
+                    </div>
+                    <div class="col-3 text-center">
+                        <div class="d-flex align-items-center justify-content-center border border-2 border-success rounded-circle mx-auto" style="width:45px;height:40px;">
+                            <i class="iconoir-check-circle fs-22 text-success"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h4>{{ $totalAttendanceToday }}</h4>
         </div>
     </div>
 </div>
 @endif
 
+{{-- SweetAlert2 Confirmation --}}
 
-
-<!-- =============================
-   SweetAlert2 Confirmation
-============================= -->
 <script>
 ['checkInForm', 'checkOutForm'].forEach(formId => {
     const form = document.getElementById(formId);

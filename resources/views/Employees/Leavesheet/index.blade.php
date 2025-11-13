@@ -1,23 +1,13 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
-{{-- <div class="row">
+
+<!-- ✅ Page Title -->
+<div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
             <h4 class="page-title mb-2 mb-md-0"></h4>
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                <li class="breadcrumb-item"><a href="#">Leaves</a></li>
-                <li class="breadcrumb-item active">Sheet</li>
-            </ol>
-        </div>
-    </div>
-</div> --}}
-<div class="row">
-    <div class="col-sm-12">
-        <div class="page-title-box d-flex justify-content-between align-items-left flex-wrap">
-            <h4 class="page-title mb-2 mb-md-0"></h4>
-            <ol class="breadcrumb mb-0">
+            <ol class="breadcrumb mb-0 ms-auto"> <!-- ✅ Always right side -->
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">Leaves</a></li>
                 <li class="breadcrumb-item active">Sheet</li>
@@ -26,13 +16,15 @@
     </div>
 </div>
 
+
+
 <div class="row justify-content-center">
     <div class="col-12">
         <div class="card shadow-sm border-0 mt-3 w-100">
             
             <!-- ✅ Card Header -->
-            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap py-3 px-3">
-                <h5 class="mb-0 fw-bold">Leave Summary</h5>
+         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
+                 <h5 class="mb-0 fs-6 fs-md-5">Leave Summary</h5> 
                 {{-- <span class="text-light small">({{ Auth::user()->name }})</span> --}}
             </div>
 
