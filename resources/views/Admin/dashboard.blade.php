@@ -149,83 +149,95 @@
                 </div>
             </div>
         </div>
-        <!-- RIGHT SIDE: Summary Boxes (2 rows, 4 boxes total) -->
-        <div class="col-lg-6 col-md-12">
-            <div class="row justify-content-center g-3">
-                <!-- Box 1 -->
-                <div class="col-md-6 col-6">
-                    <div class="card bg-corner-img border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-9">
-                                    <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Total Days</p>
-                                    <h4 class="mb-0 fw-bold">{{ $totalDays }}</h4>
-                                </div>
-                                <div class="col-3 text-center">
-                                    <div class="d-flex align-items-center justify-content-center border border-2 border-primary rounded-circle mx-auto" style="width:45px;height:45px;">
-                                        <i class="iconoir-calendar fs-22 text-primary"></i>
-                                    </div>
-                                </div>
+       <!-- RIGHT SIDE: Summary Boxes (2 rows, 4 boxes total) -->
+<div class="col-lg-6 col-md-12">
+    <div class="row justify-content-center g-3">
+
+        <!-- Box 1 -->
+        <div class="col-md-6 col-6">
+            <div class="card bg-corner-img border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Total Days</p>
+                            <h4 class="mb-0 fw-bold">{{ $totalDays }}</h4>
+                        </div>
+                        <div class="col-3 text-center">
+                            <div class="d-flex align-items-center justify-content-center border border-2 border-primary rounded-circle mx-auto"
+                                 style="width:32px;height:32px;">
+                                <i class="iconoir-calendar fs-18 text-primary"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Box 2 -->
-                <div class="col-md-6 col-6">
-                    <div class="card bg-corner-img border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-9">
-                                    <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Present</p>
-                                    <h4 class="mb-0 fw-bold">{{ $totalPresent }}</h4>
-                                </div>
-                                <div class="col-3 text-center">
-                                    <div class="d-flex align-items-center justify-content-center border border-2 border-success rounded-circle mx-auto" style="width:45px;height:45px;">
-                                        <i class="iconoir-check-circle fs-22 text-success"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Box 3 -->
-                <div class="col-md-6 col-6">
-                    <div class="card bg-corner-img border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-9">
-                                    <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Absent</p>
-                                    <h4 class="mb-0 fw-bold">{{ $totalAbsent }}</h4>
-                                </div>
-                                <div class="col-3 text-center">
-                                    <div class="d-flex align-items-center justify-content-center border border-2 border-danger rounded-circle mx-auto" style="width:45px;height:45px;">
-                                        <i class="iconoir-cancel fs-22 text-danger"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Box 4 (Pink Box) -->
-                <div class="col-md-6 col-6">
-                    <div class="card bg-corner-img border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-9">
-                                    <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Total Hours</p>
-                                    <h4 class="mb-0 fw-bold">{{ number_format($totalHoursWorked, 2) }} hr</h4>
-                                </div>
-                                <div class="col-3 text-center">
-                                    <div class="d-flex align-items-center justify-content-center border border-2 border-pink rounded-circle mx-auto" style="width:45px;height:45px;">
-                                        <i class="iconoir-clock fs-22 text-pink"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- row end -->
+            </div>
         </div>
+
+        <!-- Box 2 -->
+        <div class="col-md-6 col-6">
+            <div class="card bg-corner-img border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Present</p>
+                            <h4 class="mb-0 fw-bold">{{ $totalPresent }}</h4>
+                        </div>
+                        <div class="col-3 text-center">
+                            <div class="d-flex align-items-center justify-content-center border border-2 border-success rounded-circle mx-auto"
+                                 style="width:32px;height:32px;">
+                                <i class="iconoir-check-circle fs-18 text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Box 3 -->
+        <div class="col-md-6 col-6">
+            <div class="card bg-corner-img border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold">Absent</p>
+                            <h4 class="mb-0 fw-bold">{{ $totalAbsent }}</h4>
+                        </div>
+                        <div class="col-3 text-center">
+                            <div class="d-flex align-items-center justify-content-center border border-2 border-danger rounded-circle mx-auto"
+                                 style="width:32px;height:32px;">
+                                <i class="iconoir-cancel fs-6 text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Box 4 -->
+        <div class="col-md-6 col-6">
+            <div class="card bg-corner-img border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <p class="text-muted text-uppercase mb-1 fs-13 fw-semibold" style="white-space: nowrap;">
+                            Total Hours
+                            </p>
+                            <h4 class="mb-0 fw-bold">{{ number_format($totalHoursWorked, 2) }} hr</h4>
+                        </div>
+                        <div class="col-3 text-center">
+                            <div class="d-flex align-items-center justify-content-center border border-2 border-pink rounded-circle mx-auto"
+                                 style="width:32px;height:32px;">
+                                <i class="iconoir-clock fs-18 text-pink"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- row end -->
+</div>
+
     </div>
 </div>
 @endif
@@ -245,7 +257,7 @@
                     </div>
                     <div class="col-3 text-center">
                         <div class="d-flex align-items-center justify-content-center border border-2 border-pink rounded-circle mx-auto" style="width:45px;height:40px;">
-                            <i class="iconoir-users fs-22 text-pink"></i>
+                            <i class="iconoir-users fs-5 text-pink"></i>
                         </div>
                     </div>
                 </div>
@@ -263,7 +275,7 @@
                     </div>
                     <div class="col-3 text-center">
                         <div class="d-flex align-items-center justify-content-center border border-2 border-danger rounded-circle mx-auto" style="width:45px;height:40px;">
-                            <i class="iconoir-calendar fs-22 text-danger"></i>
+                            <i class="iconoir-calendar fs-4 text-danger"></i>
                         </div>
                     </div>
                 </div>
@@ -281,7 +293,7 @@
                     </div>
                     <div class="col-3 text-center">
                         <div class="d-flex align-items-center justify-content-center border border-2 border-success rounded-circle mx-auto" style="width:45px;height:40px;">
-                            <i class="iconoir-check-circle fs-22 text-success"></i>
+                            <i class="iconoir-check-circle fs-4 text-success"></i>
                         </div>
                     </div>
                 </div>

@@ -46,11 +46,11 @@
                             <td>{{ $leave->days }}</td>                
                             <td>
                                 @if($leave->status == 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
+                                    <span class="badge bg-warning text-dark px-2 py-1 small">Pending</span>
                                 @elseif($leave->status == 'approved')
-                                    <span class="badge bg-success">Approved</span>
+                                    <span class="badge bg-success px-2 py-1 small">Approved</span>
                                 @else
-                                    <span class="badge bg-danger">Rejected</span>
+                                    <span class="badge bg-danger px-2 py-1 small">Rejected</span>
                                 @endif
                             </td>
                         </tr>
