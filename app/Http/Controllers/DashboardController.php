@@ -58,14 +58,21 @@ class DashboardController extends Controller
             $totalAbsent = max($workingDays - ($totalPresent + $approvedLeaves), 0);
 
             // Total hours worked
-            $totalHoursWorked = 0;
-            foreach ($attendances as $attendance) {
-                if ($attendance->check_in && $attendance->check_out) {
-                    $checkIn = Carbon::parse($attendance->check_in);
-                    $checkOut = Carbon::parse($attendance->check_out);
-                    $totalHoursWorked += $checkOut->diffInMinutes($checkIn) / 60;
-                }
-            }
+   // Total hours worked
+$totalHoursWorked = 0;
+
+foreach ($attendances as $attendance) {
+    if ($attendance->check_in && $attendance->check_out) {
+        $checkIn = Carbon::parse($attendance->check_in);
+        $checkOut = Carbon::parse($attendance->check_out);
+
+        // Convert to positive hours always
+        $hours = abs($checkOut->diffInMinutes($checkIn)) / 60;
+
+        $totalHoursWorked += $hours;
+    }
+}
+
 
             return view('Admin.dashboard', compact(
                 'attendances',
