@@ -71,7 +71,7 @@
                                     <td>{{ $dateFormatted }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-dark"
-                                          style="width:32px; height:25px; padding:3.5px 0;"
+                                          style="width:32px; height:25px; padding:1px 0;"
                                             data-bs-toggle="modal"
                                             data-bs-target="#detailsModal"
                                             data-employee="{{ $name }}"

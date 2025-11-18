@@ -49,13 +49,13 @@
                                     <td>{{ \Carbon\Carbon::parse($application->end_date)->format('d-m-Y') }}</td>
                                     <td>{{ $application->days }}</td>
                                     <td>
-                                         @if($application->status == 'approved')
-                                            <span class="badge bg-warning text-dark px-1 py-.5 small">Pending</span>
-                                        @elseif($application->status == 'pending')
-                                           <span class="badge bg-success px-1 py-.5 small">Approved</span>
-                                        @else
-                                            <span class="badge bg-danger px-1 py-.5 small">Rejected</span>
-                                        @endif
+                                          @if($application->status == 'pending')
+                                          <span class="badge bg-warning text-dark px-2 py-1 small fw-normal">Pending</span>
+                                          @elseif($application->status == 'approved')
+                                          <span class="badge bg-success px-2 py-1 small fw-normal">Approved</span>
+                                          @else
+                                          <span class="badge bg-danger px-2 py-1 small fw-normal">Rejected</span>
+                                          @endif
                                     </td>
                                 </tr>
                             @empty
