@@ -128,7 +128,7 @@ Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'
 
     Route::post('attendance/checkin', [AttendanceController::class, 'checkIn'])->name('attendance.checkin');
     Route::post('attendance/checkout', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
-     Route::get('/holiday', [App\Http\Controllers\Employee\HolidayController::class, 'index'])->name('employee.holiday');
+    Route::get('/holiday', [HolidayController::class, 'index'])->name('employee.holiday');
       // ✅ Work From Home routes (move here)
     Route::get('wfh/create', [WorkFromHomeController::class, 'create'])->name('wfh.create');
     Route::post('wfh', [WorkFromHomeController::class, 'store'])->name('wfh.store');
