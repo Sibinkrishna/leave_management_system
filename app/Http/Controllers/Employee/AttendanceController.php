@@ -107,7 +107,8 @@ class AttendanceController extends Controller
                 'date' => $recordDate->format('d M Y'),
                 'check_in' => $attendance->check_in ? Carbon::parse($attendance->check_in)->format('h:i A') : '--',
                 'check_out' => $attendance->check_out ? Carbon::parse($attendance->check_out)->format('h:i A') : '--',
-                'duration' => $attendance->duration_minutes ? round($attendance->duration_minutes / 60, 2) : '--',
+                'duration' => $attendance->duration_minutes? abs(round($attendance->duration_minutes / 60, 2)) : '--',
+
                 'status' => 'Present',
             ];
         } else {
@@ -176,7 +177,8 @@ class AttendanceController extends Controller
                 'date' => $date->format('d M Y'),
                 'check_in' => $attendance->check_in ? Carbon::parse($attendance->check_in)->format('h:i A') : '--',
                 'check_out' => $attendance->check_out ? Carbon::parse($attendance->check_out)->format('h:i A') : '--',
-                'duration' => $attendance->duration_minutes ? round($attendance->duration_minutes / 60, 2) : '--',
+               'duration' => $attendance->duration_minutes? abs(round($attendance->duration_minutes / 60, 2)): '--',
+
                 'status' => 'Present',
             ];
         } else {
