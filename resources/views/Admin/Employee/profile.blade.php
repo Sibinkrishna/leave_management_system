@@ -87,37 +87,82 @@
                 </div><!--end card-body-->  
             </div><!--end card--> 
         </div> <!--end col--> 
+<div class="col-md-8">
+    <div class="tab-content">
+        <div class="tab-pane active" id="documents" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Employee Documentation</h5>
 
-        <div class="col-md-8">
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane active" id="post" role="tabpanel">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row d-flex justify-content-center">
-                                        <div class="col">
-                                            <p class="text-dark mb-1 fw-semibold">Views</p>
-                                            <h3 class="my-2 fs-24 fw-bold">24k</h3>
-                                            <p class="mb-0 text-truncate text-muted">
-                                                <i class="iconoir-bell text-warning fs-18"></i>
-                                                <span class="text-dark fw-semibold">1500</span> New subscribers this week
-                                            </p>
-                                        </div>
-                                        <div class="col-auto align-self-center">
-                                            <div class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
-                                                <i class="iconoir-eye fs-30 align-self-center text-muted"></i>
-                                            </div>                                                                    
-                                        </div>
-                                    </div> 
-                                </div><!--end card-body--> 
-                            </div><!--end card-->   
-                        </div><!--end col-->
-                    </div><!--end row--> 
+                            <!-- BANK DETAILS -->
+                            <h6 class="mb-2">Bank Details</h6>
+                            <table class="table table-bordered mb-3">
+                                <tr>
+                                    <th width="30%">Bank Name</th>
+                                    <td>{{ $employee->bank_name ?? '--' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Branch</th>
+                                    <td>{{ $employee->branch_name ?? '--' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>A/C Number</th>
+                                    <td>{{ $employee->account_number ?? '--' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>IFSC Code</th>
+                                    <td>{{ $employee->ifsc_code ?? '--' }}</td>
+                                </tr>
+                                @if($employee->bank_doc)
+                                <tr>
+                                    <th>Bank Document</th>
+                                    <td><a href="{{ asset('storage/'.$employee->bank_doc) }}" target="_blank">
+                                View <i class="las la-download"></i></td>
+                                </tr>
+                                @endif
+                            </table>
+
+                            <!-- AADHAR DETAILS -->
+                            <h6 class="mb-2">Aadhar Details</h6>
+                            <table class="table table-bordered mb-3">
+                                <tr>
+                                    <th width="30%">Aadhar Number</th>
+                                    <td>{{ $employee->adhar_no ?? '--' }}</td>
+                                </tr>
+                                @if($employee->adhar_card)
+                                <tr>
+                                    <th>Aadhar Card</th>
+                                    <td> <a href="{{ asset('storage/'.$employee->adhar_card) }}" target="_blank">
+                                View <i class="las la-download"></i></td>
+                                </tr>
+                                @endif
+                            </table>
+
+                            <!-- PAN DETAILS -->
+                            <h6 class="mb-2">PAN Details</h6>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th width="30%">PAN Number</th>
+                                    <td>{{ $employee->pan_no ?? '--' }}</td>
+                                </tr>
+                                @if($employee->pan_card)
+                                <tr>
+                                    <th>PAN Card</th>
+                                    <td> <a href="{{ asset('storage/'.$employee->pan_card) }}" target="_blank">
+                                View <i class="las la-download"></i></td>
+                                </tr>
+                                @endif
+                            </table>
+
+                        </div>
+                    </div>
                 </div>
-            </div> 
-        </div> <!--end col-->                                                       
-    </div><!--end row-->                      
+            </div>
+        </div>
+    </div> 
 </div>
+
+    
 @endsection

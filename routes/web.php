@@ -63,6 +63,21 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     Route::post('/employee-edit/{id}', [EmployeeController::class, 'update'])->name('employee.update');
     Route::post('/employee-delete/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
+    // Employee Documentation Page (after creation)
+Route::get('/employee/{id}/documentation', [EmployeeController::class, 'documentation'])->name('employee.documentation');
+
+// Upload documents
+Route::post('/employee/{id}/documentation/upload', [EmployeeController::class, 'uploadDocuments'])->name('employee.uploadDocuments');
+
+// details page
+Route::get('employee/{id}/documentation-details', [EmployeeController::class, 'documentationDetails'])
+    ->name('employee.documentation.details');
+
+
+
+
+
+
     // Company Settings
     Route::get('company-settings', [CompanySettingController::class, 'edit'])->name('company.settings.edit');
     Route::post('company-settings', [CompanySettingController::class, 'update'])->name('company.settings.update');

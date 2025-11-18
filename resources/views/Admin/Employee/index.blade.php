@@ -44,45 +44,54 @@
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @forelse($employees as $employee)
-                                @if(strtolower($employee->status) === 'active')
-                                <tr>
-                                    <td>{{ $employee->name }}</td>
-                                    <td>{{ $employee->designation }}</td>
-                                    <td>{{ ucfirst($employee->status) }}</td> <!-- ✅ Normal text -->
-                                    <td class="text-end">
-                                        <a href="{{ route('admin.employee.show', $employee->id) }}">
-                                            <i class="las la-eye text-secondary font-16"></i>
-                                        </a>
-                                        <a href="{{ route('admin.employee.edit', $employee->id) }}">
-                                            <i class="las la-pen text-secondary font-16"></i>
-                                        </a>
-                                        <form action="{{ route('admin.employee.destroy', $employee->id) }}" 
-                                              method="POST" style="display:inline">
-                                            @csrf
-                                            <button type="button" style="all: unset;" 
-                                                onclick="Swal.fire({
-                                                    title: 'Delete?',
-                                                    text: 'Are you sure you want to delete {{ $employee->name }}?',
-                                                    icon: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: 'rgba(255, 73, 194, 0.72)',
-                                                    cancelButtonColor: '#3085d6',
-                                                    confirmButtonText: 'Yes, Delete'
-                                                }).then((result) => { if(result.isConfirmed){ this.form.submit(); }})">
-                                                <i class="las la-trash-alt text-secondary font-16"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endif
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center">No active employees found.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
+                     <tbody>
+    @forelse($employees as $employee)
+        @if(strtolower($employee->status) === 'active')
+       <tr>
+    <td>{{ $employee->name }}</td>
+    <td>{{ $employee->designation }}</td>
+    <td>{{ ucfirst($employee->status) }}</td>
+    <!-- Documents Column -->
+    {{-- <td>
+      <a href="{{ route('admin.employee.documentation.details', $employee->id) }}" class="btn btn-sm btn-info">
+    View
+</a>
+
+    </td> --}}
+    <td class="text-end">
+        <a href="{{ route('admin.employee.show', $employee->id) }}">
+            <i class="las la-eye text-secondary font-16"></i>
+        </a>
+        <a href="{{ route('admin.employee.edit', $employee->id) }}">
+            <i class="las la-pen text-secondary font-16"></i>
+        </a>
+        <form action="{{ route('admin.employee.destroy', $employee->id) }}" 
+              method="POST" style="display:inline">
+            @csrf
+            <button type="button" style="all: unset;" 
+                onclick="Swal.fire({
+                    title: 'Delete?',
+                    text: 'Are you sure you want to delete {{ $employee->name }}?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: 'rgba(255, 73, 194, 0.72)',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, Delete'
+                }).then((result) => { if(result.isConfirmed){ this.form.submit(); }})">
+                <i class="las la-trash-alt text-secondary font-16"></i>
+            </button>
+        </form>
+    </td>
+</tr>
+
+        @endif
+    @empty
+        <tr>
+            <td colspan="5" class="text-center">No active employees found.</td>
+        </tr>
+    @endforelse
+</tbody>
+
                     </table>
                 </div>
             </div>

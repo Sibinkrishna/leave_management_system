@@ -27,16 +27,6 @@
                 </div>
             </div>
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif  
-
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Success!</strong> {{ session('success') }}
@@ -47,32 +37,41 @@
             <div class="card-body pt-0">
                 <form action="{{ route('admin.employee.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="company_id" value="1">
+                    <input type="hidden" name="role" value="employee">
 
-                    <!-- ✅ Responsive Form Section -->
-                    <!-- gy-2 = small vertical gap on mobile -->
-                    <!-- gy-md-3 = normal gap on tablet/desktop -->
                     <div class="row gy-2 gy-md-3">
-                        <input type="hidden" name="company_id" value="1">
-                        <input type="hidden" name="role" value="employee">
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Name</label>
-                            <input type="text" class="form-control" name="name" value="{{ old('name')}}" placeholder="Enter name">
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name')}}" placeholder="Enter name">
+                            @error('name')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" name="phone" value="{{ old('phone')}}" placeholder="Enter phone number">
+                            <input type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone')}}" placeholder="Enter phone number">
+                            @error('phone')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" value="{{ old('email')}}" placeholder="Enter email">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email')}}" placeholder="Enter email">
+                            @error('email')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Enter password">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter password">
+                            @error('password')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
@@ -82,42 +81,63 @@
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Address</label>
-                            <input type="text" class="form-control" name="address" value="{{ old('address')}}" placeholder="Enter address">
+                            <input type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address')}}" placeholder="Enter address">
+                            @error('address')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Designation</label>
-                            <input type="text" class="form-control" name="designation" value="{{ old('designation')}}" placeholder="Enter designation">
+                            <input type="text" class="form-control @error('designation') is-invalid @enderror" name="designation" value="{{ old('designation')}}" placeholder="Enter designation">
+                            @error('designation')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Join Date</label>
-                            <input type="date" class="form-control" name="join_date" value="{{ old('join_date')}}">
+                            <input type="date" class="form-control @error('join_date') is-invalid @enderror" name="join_date" value="{{ old('join_date')}}">
+                            @error('join_date')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Status</label>
-                            <select class="form-control" name="status">
-                                <option value="" disabled selected>-- Select --</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                            <select class="form-control @error('status') is-invalid @enderror" name="status">
+                                <option value="" disabled {{ old('status') ? '' : 'selected' }}>-- Select --</option>
+                                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                             </select>
+                            @error('status')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Department</label>
-                            <select class="form-control" name="department_id" required>
-                                <option value="" disabled selected>-- Select Department --</option>
+                            <select class="form-control @error('department_id') is-invalid @enderror" name="department_id">
+                                <option value="" disabled {{ old('department_id') ? '' : 'selected' }}>-- Select Department --</option>
                                 @foreach($departments as $department)
-                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                    <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                        {{ $department->name }}
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('department_id')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Avatar</label>
-                            <input type="file" class="form-control" name="avatar" value="{{ old('avatar')}}">
+                            <input type="file" class="form-control @error('avatar') is-invalid @enderror" name="avatar">
+                            @error('avatar')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
+
                     </div>
 
                     <div class="mt-3">
