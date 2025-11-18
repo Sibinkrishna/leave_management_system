@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\{
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\{DashboardController, ProfileController};
 // use App\Http\Controllers\Employee\LeaveController;
-use App\Http\Controllers\Employee\LeaveSheetController; 
+use App\Http\Controllers\Employee\LeaveSheetController;
 use App\Http\Controllers\Employee\PendingLeaveController;
 use App\Http\Controllers\Employee\LeaveApplicationController;
 use App\Http\Controllers\Employee\AttendanceController ;
@@ -48,7 +48,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.su
 
 // ================== ADMIN ROUTES ==================
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
-  
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth','role:admin'])
     ->name('dashboard');
@@ -81,12 +81,12 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     // ================== LeaveType Routes ==================
     Route::get('/leavetype', [LeaveTypeController::class, 'index'])->name('leavetype.index');
     Route::get('/leavetype/create', [LeaveTypeController::class, 'create'])->name('leavetype.create');
-    Route::post('/leavetype', [LeaveTypeController::class, 'store'])->name('leavetype.store');      
+    Route::post('/leavetype', [LeaveTypeController::class, 'store'])->name('leavetype.store');
     Route::get('/leavetype/{id}/edit', [LeaveTypeController::class, 'edit'])->name('leavetype.edit');
     Route::post('/leavetype/{id}/edit', [LeaveTypeController::class, 'update'])->name('leavetype.update');
     Route::post('/leavetype/{id}', [LeaveTypeController::class, 'destroy'])->name('leavetype.destroy');
     Route::post('/leavetype-create', [LeaveTypeController::class, 'store'])->name('leavetype.store');
-    
+
 
     // ================== Holiday Routes ==================
 // Holiday Routes
@@ -107,11 +107,10 @@ Route::post('holiday/{holiday}', [HolidayController::class, 'destroy'])->name('h
 
 
 Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('leaves', [LeaveSheetController::class, 'index'])->name('leaves.index');
     Route::get('pending-leaves', [PendingLeaveController::class, 'index'])->name('pendingleaves.index');
-    
+
     Route::get('leaves/applications', [LeaveApplicationController::class, 'index'])->name('leaveapplication.index');
 
     Route::get('leaves/apply', [LeaveApplicationController::class, 'create'])->name('leaveapplications.create');
@@ -125,12 +124,9 @@ Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'
     Route::post('attendance/checkout', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
 
 
- 
-
 });
 
 
 
 
  // ================== Leave ==================
-
