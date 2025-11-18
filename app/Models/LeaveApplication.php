@@ -65,4 +65,8 @@ class LeaveApplication extends Model
     {
         return $this->days ? $this->days . ' day' . ($this->days > 1 ? 's' : '') : '-';
     }
+    public function employee()
+    {
+      return $this->belongsTo(User::class, 'user_id'); // matches your leave_applications.user_id   
+    }
 }

@@ -77,7 +77,7 @@
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <button type="reset" class="btn btn-danger ms-2">Cancel</button>
+                            <a href="{{ route('admin.department.index') }}" class="btn btn-danger">Cancel</a>
                         <a href="{{ route('admin.holiday.index') }}" class="btn btn-secondary ms-2">Back</a>
                     </div>
                 </form>

@@ -1,11 +1,13 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
+
+<!-- ✅ Page Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
-            <h4 class="page-title mb-2 mb-md-0">Leave Sheet</h4>
-            <ol class="breadcrumb mb-0">
+            <h4 class="page-title mb-2 mb-md-0"></h4>
+            <ol class="breadcrumb mb-0 ms-auto"> <!-- ✅ Always right side -->
                 <li class="breadcrumb-item"><a href="#">Approx</a></li>
                 <li class="breadcrumb-item"><a href="#">Leaves</a></li>
                 <li class="breadcrumb-item active">Sheet</li>
@@ -14,20 +16,22 @@
     </div>
 </div>
 
+
+
 <div class="row justify-content-center">
-    <div class="col-lg-12 col-md-12">
-        <div class="card shadow-sm border-0 mt-3">
+    <div class="col-12">
+        <div class="card shadow-sm border-0 mt-3 w-100">
             
             <!-- ✅ Card Header -->
-            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap py-3 px-3">
-                <h5 class="mb-0 fw-bold">My Employee Leave Summary</h5>
-                <span class="text-light small">({{ Auth::user()->name }})</span>
+         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
+                 <h5 class="mb-0 fs-6 fs-md-5">Leave Summary</h5> 
+                {{-- <span class="text-light small">({{ Auth::user()->name }})</span> --}}
             </div>
 
             <!-- ✅ Table Section -->
             <div class="card-body pt-3 pb-2 px-2">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle mb-0">
+                    <table class="table table-bordered table-striped text-center align-middle mb-0 w-100">
                         <thead class="table-light">
                             <tr>
                                 <th>Leave Type</th>
@@ -45,12 +49,12 @@
                                     <td>{{ \Carbon\Carbon::parse($application->end_date)->format('d-m-Y') }}</td>
                                     <td>{{ $application->days }}</td>
                                     <td>
-                                        @if($application->status == 'approved')
-                                            <span class="badge bg-success">Approved</span>
-                                        @elseif($application->status == 'rejected')
-                                            <span class="badge bg-danger">Rejected</span>
+                                         @if($application->status == 'approved')
+                                            <span class="badge bg-warning text-dark px-1 py-.5 small">Pending</span>
+                                        @elseif($application->status == 'pending')
+                                           <span class="badge bg-success px-1 py-.5 small">Approved</span>
                                         @else
-                                            <span class="badge bg-warning text-dark">Pending</span>
+                                            <span class="badge bg-danger px-1 py-.5 small">Rejected</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -67,108 +71,118 @@
     </div>
 </div>
 
-<!-- ✅ Responsive Styles -->
+<!-- ✅ Full Responsive Styling -->
 <style>
-/* General Table & Badge Styling */
-/* .table th, .table td {
+/* ====== BASE STYLES (Desktop ≥1025px) ====== */
+.page-title-box {
+    margin-bottom: 10px;
+}
+.page-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table th, .table td {
     vertical-align: middle;
     white-space: nowrap;
-    font-size: 15px;
+    font-size: 13px;
+    padding: 10px;
 }
-
-.badge {
-    font-size: 0.9rem;
-    /* padding: 6px 10px; */
-    /* border-radius: 8px;
-} */ */
-
-/* ✅ Proper spacing below header */
-/* .card-body {
-    margin-top: 5px;
-}
-
-/* ✅ Fix header alignment */
-/* .card-header {
-    border-bottom: 2px solid #343a40;
-}
-
 .card-header h5 {
     font-size: 1.15rem;
 }
-
 .card-header span {
     font-size: 0.95rem;
-    opacity: 0.9;
-} */ */
+}
+.badge {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+.card {
+    width: 100%;
+    border-radius: 10px;
+}
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
 
-/* ✅ Tablet View */
-@media (max-width: 992px) {
-    .page-title-box h4 {
-        font-size: 1.1rem;
+/* ====== TABLET VIEW (768px – 1024px) ====== */
+@media (max-width: 1024px) {
+    .page-title {
+        font-size: 1.2rem;
     }
-
-    .table th, .table td {
-        font-size: 0.9rem;
-        padding: 7px;
-    }
-
     .card-header h5 {
         font-size: 1rem;
     }
-
+    .card-header span {
+        font-size: 0.9rem;
+    }
+    .table th, .table td {
+        font-size: 12px;
+        padding: 8px;
+    }
     .badge {
         font-size: 0.8rem;
+        padding: 5px 8px;
     }
 }
 
-/* ✅ Mobile View */
-@media (max-width: 768px) {
+/* ====== MOBILE VIEW (<768px) ====== */
+@media (max-width: 767px) {
     .page-title-box {
         flex-direction: column;
         align-items: flex-start;
+        text-align: left;
         gap: 6px;
     }
-
+    .page-title {
+        font-size: 1rem;
+    }
     .card-header {
         flex-direction: column;
         align-items: flex-start;
-        text-align: left;
         gap: 4px;
     }
-
     .card-header h5 {
         font-size: 0.95rem;
     }
-
     .card-header span {
         font-size: 0.85rem;
     }
-
     .table th, .table td {
-        font-size: 0.85rem;
-        padding: 6px;
+        font-size: 10px;
+        padding: 7px 6px;
         white-space: normal;
+    }
+    .badge {
+        font-size: 0.8rem;
+        padding: 4px 7px;
     }
 }
 
-/* ✅ Small Mobile View */
+/* ====== SMALL MOBILE VIEW (<480px) ====== */
 @media (max-width: 480px) {
-    .table th, .table td {
-        font-size: 0.8rem;
-        padding: 5px;
+    .page-title {
+        font-size: 0.95rem;
     }
-
-    .badge {
-        font-size: 0.75rem;
-        padding: 4px 7px;
-    }
-
     .card-header h5 {
         font-size: 0.9rem;
     }
-
     .card-header span {
         font-size: 0.8rem;
+    }
+    .table th, .table td {
+        font-size: 12px;
+        padding: 5px 4px;
+    }
+    .badge {
+        font-size: 0.75rem;
+        padding: 3px 6px;
     }
 }
 </style>

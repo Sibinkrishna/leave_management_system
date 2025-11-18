@@ -1,17 +1,16 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
+<!-- ✅ Page Title -->
 <div class="row">
     <div class="col-sm-12">
-        <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
-            <h4 class="page-title">Employee Leave Applications</h4>
-            <div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                    <li class="breadcrumb-item"><a href="#">Leave</a></li>
-                    <li class="breadcrumb-item active">Applications</li>
-                </ol>
-            </div>
+        <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
+            <h4 class="page-title mb-2 mb-md-0"></h4>
+            <ol class="breadcrumb mb-0 ms-auto"> <!-- ✅ Always right side -->
+                <li class="breadcrumb-item"><a href="#">Approx</a></li>
+                <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                <li class="breadcrumb-item active">Leave Applications</li>
+            </ol>
         </div>
     </div>
 </div>
@@ -161,37 +160,82 @@ document.addEventListener("DOMContentLoaded", function () {
 <style>
 .table th, .table td {
     vertical-align: middle;
-    font-size: 15px;
+    font-size: 13px; /* ✅ Desktop default */
 }
+
 .card {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border: none;
 }
 
-/* ✅ Responsive */
+/* ✅ Action (eye) icon button */
+.viewBtn {
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+.viewBtn i {
+    font-size: 16px; /* ✅ Desktop */
+    line-height: 1;
+}
+
+/* ✅ Tablet View (768px - 1024px) */
 @media (max-width: 1024px) {
     .table th, .table td {
-        font-size: 14px;
-    }
-}
-@media (max-width: 768px) {
-    .table th, .table td {
         font-size: 13px;
-        padding: 0.45rem 0.5rem;
+        padding: 0.55rem 0.6rem;
     }
-    .card-title, .page-title {
-        text-align: center;
-        font-size: 16px;
+
+    .viewBtn {
+        padding: 4px 6px;
     }
+    .viewBtn i {
+        font-size: 14px; /* smaller on tablet */
+    }
+
     .btn {
         font-size: 13px;
         padding: 5px 8px;
     }
     .badge {
+        font-size: 13px;
+        padding: 5px 8px;
+    }
+    .card-title, .page-title {
+        font-size: 17px;
+    }
+}
+
+/* ✅ Mobile View (below 768px) */
+@media (max-width: 768px) {
+    .table th, .table td {
+        font-size: 10.5px;
+        padding: 0.4rem 0.4rem;
+    }
+
+    /* ✅ Action (eye) icon button */
+.viewBtn {
+    padding: 2px 5px;
+    border-radius: 3px;
+    }
+    .viewBtn i {
+        font-size: 12px; /* ✅ small on mobile */
+    }
+
+    .btn {
         font-size: 12px;
-        padding: 4px 8px;
+        padding: 4px 6px;
+    }
+    .badge {
+        font-size: 11.5px;
+        padding: 3px 6px;
+    }
+    .card-title, .page-title {
+        text-align: left;
+        font-size: 15px;
     }
 }
 </style>
+
+
 @endsection

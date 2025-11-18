@@ -144,7 +144,8 @@
                     <!-- Buttons -->
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <button type="reset" class="btn btn-danger">Cancel</button>
+                        <button type="button" class="btn btn-danger" onclick="window.history.back()">Cancel</button>
+
                     </div>
                 </form>
             </div>

@@ -5,7 +5,7 @@
 /* ✅ Base font size for desktop */
 .table th, 
 .table td {
-    font-size: 15px;
+    font-size: 13px;
     vertical-align: middle;
 }
 
@@ -13,7 +13,7 @@
 @media (max-width: 1024px) {
     .table th, 
     .table td {
-        font-size: 14px;
+        font-size: 11px;
     }
     .card-title {
         font-size: 18px;
@@ -24,7 +24,7 @@
 @media (max-width: 767px) {
     .table th, 
     .table td {
-        font-size: 13px;
+        font-size: 10px;
     }
     .card-title {
         font-size: 16px;
@@ -42,20 +42,27 @@
         border-radius: 8px;
         overflow-x: auto;
     }
+
+    /* ✅ Stack icons vertically on mobile */
+    .action-icons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+    }
 }
 </style>
 
+<!-- ✅ Page Title -->
 <div class="row">
     <div class="col-sm-12">
-        <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
-            <h4 class="page-title">Holiday List</h4>
-            <div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                    <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                    <li class="breadcrumb-item active">Holidays</li>
-                </ol>
-            </div>
+        <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
+            <h4 class="page-title mb-2 mb-md-0"></h4>
+            <ol class="breadcrumb mb-0 ms-auto"> <!-- ✅ Always right side -->
+                <li class="breadcrumb-item"><a href="#">Approx</a></li>
+                <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                <li class="breadcrumb-item active">Holiday List</li>
+            </ol>
         </div>
     </div>
 </div>
@@ -64,9 +71,9 @@
     <div class="col-md-12 col-lg-12">
         <div class="card">
             <div class="card-header">
-                <div class="row align-items-center mb-6">
+                <div class="row align-items-center mb-2">
                     <div class="col">
-                        <h4 class="card-title">Holiday Table</h4>
+                        <h4 class="card-title">Holiday Table ({{ date('Y') }})</h4>
                     </div>
                     <div class="col text-end">
                         <a href="{{ route('admin.holiday.create') }}" class="btn btn-primary">Create</a>
@@ -87,36 +94,36 @@
                         </thead>
                         <tbody>
                             @forelse($holidays as $holiday)
-                                <tr>
-                                    <td class="text-start">{{ $holiday->name }}</td>
-                                    <td class="text-center">{{ \Carbon\Carbon::parse($holiday->date)->format('d M Y') }}</td>
-                                    <td class="text-center">{{ \Carbon\Carbon::parse($holiday->date)->format('l') }}</td>
-                                    <td class="text-end">
-                                        <a href="{{ route('admin.holiday.edit', $holiday->id) }}">
-                                            <i class="las la-pen text-secondary font-16"></i>
-                                        </a>
-                                        <form action="{{ route('admin.holiday.destroy', $holiday->id) }}" method="post" style="display:inline">
-                                            @csrf
-                                            <button type="button" style="all: unset;"
-                                                onclick="Swal.fire({
-                                                    title: 'Delete?',
-                                                    text: 'Are you sure you want to delete {{ $holiday->name }}?',
-                                                    icon: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: 'rgba(255, 73, 194, 0.72)',
-                                                    cancelButtonColor: '#3085d6',
-                                                    confirmButtonText: 'Yes, Delete'
-                                                }).then((result) => { if(result.isConfirmed){ this.form.submit(); }})"
-                                                title="Delete">
-                                                <i class="las la-trash-alt text-secondary font-16"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td class="text-start">{{ $holiday->name }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($holiday->date)->format('d/m') }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($holiday->date)->format('l') }}</td>
+                                <td class="text-end action-icons">
+                                    <a href="{{ route('admin.holiday.edit', $holiday->id) }}" title="Edit">
+                                        <i class="las la-pen text-secondary font-16"></i>
+                                    </a>
+                                    <form action="{{ route('admin.holiday.destroy', $holiday->id) }}" method="post" style="display:inline">
+                                        @csrf
+                                        <button type="button" style="all: unset;"
+                                            onclick="Swal.fire({
+                                                title: 'Delete?',
+                                                text: 'Are you sure you want to delete {{ $holiday->name }}?',
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: 'rgba(255, 73, 194, 0.72)',
+                                                cancelButtonColor: '#3085d6',
+                                                confirmButtonText: 'Yes, Delete'
+                                            }).then((result) => { if(result.isConfirmed){ this.form.submit(); }})"
+                                            title="Delete">
+                                            <i class="las la-trash-alt text-secondary font-16"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="4" class="text-center">No holidays found.</td>    
-                                </tr>
+                            <tr>
+                                <td colspan="4" class="text-center">No holidays found.</td>    
+                            </tr>
                             @endforelse
                         </tbody>
                     </table><!--end /table-->

@@ -1,17 +1,16 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
+<!-- ✅ Page Title -->
 <div class="row">
     <div class="col-sm-12">
-        <div class="page-title-box d-md-flex justify-content-between align-items-center">
-            <h4 class="page-title">WFH Records</h4>
-            <div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="#">Approx</a></li>
-                    <li class="breadcrumb-item"><a href="#">Work From Home</a></li>
-                    <li class="breadcrumb-item active">Summary</li>
-                </ol>
-            </div>
+        <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
+            <h4 class="page-title mb-2 mb-md-0"></h4>
+            <ol class="breadcrumb mb-0 ms-auto"> <!-- ✅ Always right side -->
+                <li class="breadcrumb-item"><a href="#">Approx</a></li>
+                <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                <li class="breadcrumb-item active">WFH Summary</li>
+            </ol>
         </div>
     </div>
 </div>
@@ -20,7 +19,7 @@
     <div class="col-md-12">
         <div class="card shadow-sm border-0">
             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                <h6 class="mb-0 fw-bold">WFH Records List</h6>
+                 <h4 class="card-title">WFH Records List</h4>
 
                 <!-- ✅ Updated Filter Form -->
 <form method="GET" action="{{ route('admin.wfh.index') }}" class="d-flex align-items-center gap-2">
@@ -72,6 +71,7 @@
                                     <td>{{ $dateFormatted }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-dark"
+                                          style="width:32px; height:25px; padding:3.5px 0;"
                                             data-bs-toggle="modal"
                                             data-bs-target="#detailsModal"
                                             data-employee="{{ $name }}"
@@ -182,6 +182,69 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 </script>
+<style>
+/* ✅ Default (Desktop ≥1025px) */
+.table th, .table td {
+    vertical-align: middle;
+    font-size: 13px;
+}
+.card-title, .page-title, .fw-bold {
+    font-size: 18px;
+}
+.btn, .form-control {
+    font-size: 14px;
+}
+.modal-body, .modal-title {
+    font-size: 15px;
+}
+.bi-eye {
+    font-size: 16px; /* action icon */
+}
+
+/* ✅ Tablet (768px–1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .table th, .table td {
+        font-size: 12px;
+        padding: 0.55rem 0.6rem;
+    }
+    .card-title, .page-title, .fw-bold {
+        font-size: 17px;
+    }
+    .btn, .form-control {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+    .modal-body, .modal-title {
+        font-size: 14px;
+    }
+    .bi-eye {
+        font-size: 14px;
+    }
+}
+
+/* ✅ Mobile (<768px) */
+@media (max-width: 767px) {
+    .table th, .table td {
+        font-size: 10.5px;
+        padding: 0.45rem 0.4rem;
+    }
+    .card-title, .page-title, .fw-bold {
+        font-size: 15px;
+        text-align: center;
+    }
+    .btn, .form-control {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+    .modal-body, .modal-title {
+        font-size: 13px;
+    }
+    .bi-eye {
+        font-size: 12px; /* smaller icon for mobile */
+    }
+}
+</style>
+
 
 
 

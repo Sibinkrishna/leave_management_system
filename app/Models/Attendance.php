@@ -19,8 +19,9 @@ class Attendance extends Model
     ];
 
     // Relation to User (Employee)
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+   public function employee()
+{
+    // 'user_id' is the foreign key in attendances table pointing to users.id
+    return $this->belongsTo(User::class, 'user_id');
+}
 }
