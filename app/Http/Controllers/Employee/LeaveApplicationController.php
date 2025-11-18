@@ -39,7 +39,7 @@ class LeaveApplicationController extends Controller
             'leave_type_id' => $request->leave_type_id,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'subject' => $request->subject,
+            // 'subject' => $request->subject,
             'reason' => $request->reason,
             'days' => $days,
             'status' => 'pending',

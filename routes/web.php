@@ -21,8 +21,6 @@ use App\Http\Controllers\Employee\LeaveSheetController;
 use App\Http\Controllers\Employee\PendingLeaveController;
 use App\Http\Controllers\Employee\LeaveApplicationController;
 use App\Http\Controllers\Employee\AttendanceController ;
-use App\Http\Controllers\Employee\WorkFromHomeController;
-use App\Http\Controllers\Admin\WorkFromHomeController as AdminWFHController;
 
 
 
@@ -73,9 +71,6 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     Route::post('leaves/{id}/approve', [LeaveApprovalController::class, 'approve'])->name('leaves.approve');
     Route::post('leaves/{id}/reject', [LeaveApprovalController::class, 'reject'])->name('leaves.reject');
 
-    Route::get('/workfromhome', [AdminWFHController::class, 'index'])->name('wfh.index');
-
-
     // ================== Department Routes ==================
     Route::get('/department', [DepartmentController::class, 'index'])->name('department.index');
     Route::get('/department/create', [DepartmentController::class, 'create'])->name('department.create');
@@ -117,25 +112,17 @@ Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'
     Route::get('leaves', [LeaveSheetController::class, 'index'])->name('leaves.index');
     Route::get('pending-leaves', [PendingLeaveController::class, 'index'])->name('pendingleaves.index');
     
- Route::get('leaves/applications', [LeaveApplicationController::class, 'index'])->name('leaveapplication.index');
+    Route::get('leaves/applications', [LeaveApplicationController::class, 'index'])->name('leaveapplication.index');
 
- Route::get('leaves/apply', [LeaveApplicationController::class, 'create'])->name('leaveapplications.create');
+    Route::get('leaves/apply', [LeaveApplicationController::class, 'create'])->name('leaveapplications.create');
 
- Route::post('leaves', [LeaveApplicationController::class, 'store']) ->name('leaveapplications.store');
+    Route::post('leaves', [LeaveApplicationController::class, 'store']) ->name('leaveapplications.store');
 
-  Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-  Route::get('attendance/records', [AttendanceController::class, 'records'])->name('attendance.records');
+    Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('attendance/records', [AttendanceController::class, 'records'])->name('attendance.records');
 
     Route::post('attendance/checkin', [AttendanceController::class, 'checkIn'])->name('attendance.checkin');
     Route::post('attendance/checkout', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
-     Route::get('/holiday', [App\Http\Controllers\Employee\HolidayController::class, 'index'])->name('employee.holiday');
-      // ✅ Work From Home routes (move here)
-    Route::get('wfh/create', [WorkFromHomeController::class, 'create'])->name('wfh.create');
-    Route::post('wfh', [WorkFromHomeController::class, 'store'])->name('wfh.store');
-
- 
-   
-
 
 
  
