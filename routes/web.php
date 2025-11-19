@@ -1,19 +1,20 @@
 <?php
-
+//admin
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{
-    ActivityLogController,
-    CompanySettingController,
-    DepartmentController,
-    EmployeeController,
-    LeaveApprovalController,
-    LeaveBalanceController,
-    LeaveTypeController,
-    ReportController,
-    UserController,
-    HolidayController,
 
-};
+use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\CompanySettingController;
+use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\LeaveApprovalController;
+use App\Http\Controllers\Admin\LeaveBalanceController;
+use App\Http\Controllers\Admin\LeaveTypeController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\HolidayController;
+use App\Http\Controllers\Admin\WorkFromHomeController as AdminWFHController;
+
+//employee
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\{DashboardController, ProfileController};
 // use App\Http\Controllers\Employee\LeaveController;
@@ -22,7 +23,7 @@ use App\Http\Controllers\Employee\PendingLeaveController;
 use App\Http\Controllers\Employee\LeaveApplicationController;
 use App\Http\Controllers\Employee\AttendanceController ;
 use App\Http\Controllers\Employee\WorkFromHomeController;
-use App\Http\Controllers\Admin\WorkFromHomeController as AdminWFHController;
+use App\Http\Controllers\Employee\HolidayController as EmployeeHolidayController;   
 
 
 
