@@ -10,12 +10,17 @@ return new class extends Migration
     {
         Schema::create('pending_leaves', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('leave_type_id');
+
             $table->year('year');
-            $table->integer('total')->default(0);
-            $table->integer('used')->default(0);
-            $table->integer('remaining')->default(0);
+
+            // ✔ Support decimals like 0.5, 1.5, etc.
+            $table->decimal('total', 5, 1)->default(0.0);
+            $table->decimal('used', 5, 1)->default(0.0);
+            $table->decimal('remaining', 5, 1)->default(0.0);
+
             $table->timestamps();
         });
     }

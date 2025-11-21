@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\LeaveType;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class PendingLeave extends Model
 {
     use HasFactory;
+
     protected $table = 'pending_leaves';
 
     protected $fillable = [
@@ -18,14 +17,14 @@ class PendingLeave extends Model
         'year',
         'total',
         'used',
-        'remaining'
+        'remaining',
     ];
 
-    // Relationship with User model
     public function employee()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
+
     public function leaveType()
     {
         return $this->belongsTo(LeaveType::class, 'leave_type_id');

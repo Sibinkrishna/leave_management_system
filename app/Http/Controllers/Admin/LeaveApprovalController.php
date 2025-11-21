@@ -24,9 +24,9 @@ class LeaveApprovalController extends Controller
 {
     $application = LeaveApplication::findOrFail($id);
 
-    // Calculate number of days
-    $days = $application->start_date->diffInDays($application->end_date) + 1;
-
+    // Use EXACT days stored in DB (0.5 OR 1 OR multi-day)
+    $days = $application->days;  // ← THIS FIXES HALF DAY ISSUE
+    
     // Update leave status
     $application->status = 'approved';
     $application->approval_date = now();

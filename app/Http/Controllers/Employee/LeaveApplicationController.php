@@ -18,32 +18,44 @@ class LeaveApplicationController extends Controller
     }
 
     // Store leave application
-    public function store(Request $request)
-    {
-        $request->validate([
-            'leave_type_id' => 'required|exists:leave_types,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            // 'subject' => 'required|string|max:255',
-            'reason' => 'required|string|max:500',
-        ]);
-        // Calculate number of days
-        $start = Carbon::parse($request->start_date);
-        $end = Carbon::parse($request->end_date);
-        $days = $start->diffInDays($end) + 1; //+1 to include both start and end date
+   public function store(Request $request)
+{
+    $request->validate([
+        'leave_type_id' => 'required|exists:leave_types,id',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date|after_or_equal:start_date',
+        'subject' => 'required|string|max:255',
+        'reason' => 'required|string|max:500',
+        'day_type' => 'required',
+    ]);
 
-        // $days = (new \DateTime($request->start_date))->diff(new \DateTime($request->end_date))->days + 1;
+    // DAY TYPE
+    $dayType = $request->day_type;
 
-        LeaveApplication::create([
-            'user_id' => Auth::id(),
-            'leave_type_id' => $request->leave_type_id,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'subject' => $request->subject,
-            'reason' => $request->reason,
-            'days' => $days,
-            'status' => 'pending',
-        ]);
+    // CALCULATE DAYS PROPERLY
+    if ($dayType == 'half_fn' || $dayType == 'half_an') {
+
+        // HALF DAY
+        $days = 0.5;
+
+    } else {
+
+        // FULL DAY (Calculate including date range)
+        $days = Carbon::parse($request->start_date)
+                    ->diffInDays($request->end_date) + 1;
+    }
+
+    LeaveApplication::create([
+        'user_id' => Auth::id(),
+        'leave_type_id' => $request->leave_type_id,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'day_type' => $dayType,
+        'subject' => $request->subject,
+        'reason' => $request->reason,
+        'days' => $days,
+        'status' => 'pending',
+    ]);
 
        return redirect()->route('employee.leaveapplication.index')->with('success', 'Leave applied successfully!');
 

@@ -39,7 +39,8 @@
                                 <tr>
                                     <td class="text-start">{{ $leave->user->name ?? '-' }}</td>
                                     <td>{{ $leave->leaveType->name ?? '-' }}</td>
-                                    <td>{{ $leave->days ?? '0' }}</td>
+                                    <td>{{ $leave->days = floatval($leave->days); }}</td> 
+
                                     <td>
                                         @if($leave->status == 'approved')
                                             <span class="badge bg-success">Approved</span>

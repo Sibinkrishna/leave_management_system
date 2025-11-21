@@ -47,7 +47,7 @@
                                     <td>{{ $application->leaveType->name }}</td>
                                     <td>{{ \Carbon\Carbon::parse($application->start_date)->format('d-m-Y') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($application->end_date)->format('d-m-Y') }}</td>
-                                    <td>{{ $application->days }}</td>
+                                    <td>{{ $application->days = floatval($application->days); }}</td> 
                                     <td>
                                           @if($application->status == 'pending')
                                           <span class="badge bg-warning text-dark px-2 py-1 small fw-normal">Pending</span>

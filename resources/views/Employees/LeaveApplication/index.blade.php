@@ -35,6 +35,7 @@
                         <th>Id</th>
                         <th>Leave Type</th>
                         <th>Days</th>
+                        <th>Day Type</th>   <!-- ⭐ Added Column -->
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -43,7 +44,19 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $leave->leaveType->name ?? '-' }}</td>
-                            <td>{{ $leave->days }}</td>                
+                            <td>{{ $leave->days = floatval($leave->days); }}</td> 
+                               <!-- ⭐ Day Type Display -->
+                <td>
+                    @if($leave->day_type == 'full')
+                        Full Day
+                    @elseif($leave->day_type == 'half_fn')
+                        Half Day (FN)
+                    @elseif($leave->day_type == 'half_an')
+                        Half Day (AN)
+                    @else
+                        -
+                    @endif
+                </td>               
                             <td>
                                 @if($leave->status == 'pending')
                                     <span class="badge bg-warning text-dark px-2 py-1 small">Pending</span>

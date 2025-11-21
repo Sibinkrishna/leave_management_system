@@ -19,7 +19,8 @@ class LeaveApplication extends Model
         'days',
         'status',
         'approved_by',
-        'approval_date'
+        'approval_date',
+        'day_type',
     ];
     protected $casts = [
             'start_date' => 'date',

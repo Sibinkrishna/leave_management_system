@@ -2,28 +2,24 @@
 //admin
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\CompanySettingController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\LeaveApprovalController;
-use App\Http\Controllers\Admin\LeaveBalanceController;
 use App\Http\Controllers\Admin\LeaveTypeController;
-use App\Http\Controllers\Admin\ReportController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\HolidayController;
 use App\Http\Controllers\Admin\WorkFromHomeController as AdminWFHController;
 
 //employee
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\{DashboardController, ProfileController};
+use App\Http\Controllers\DashboardController;
 // use App\Http\Controllers\Employee\LeaveController;
 use App\Http\Controllers\Employee\LeaveSheetController; 
 use App\Http\Controllers\Employee\PendingLeaveController;
 use App\Http\Controllers\Employee\LeaveApplicationController;
 use App\Http\Controllers\Employee\AttendanceController ;
 use App\Http\Controllers\Employee\WorkFromHomeController;
-use App\Http\Controllers\Employee\HolidayController as EmployeeHolidayController;   
+use App\Http\Controllers\Employee\HolidayController as EmployeeHolidayController;
 
 
 
@@ -144,7 +140,7 @@ Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'
 
     Route::post('attendance/checkin', [AttendanceController::class, 'checkIn'])->name('attendance.checkin');
     Route::post('attendance/checkout', [AttendanceController::class, 'checkOut'])->name('attendance.checkout');
-    Route::get('/holiday', [HolidayController::class, 'index'])->name('employee.holiday');
+    Route::get('/holiday', [EmployeeHolidayController::class, 'index'])->name('employee.holiday');
       // ✅ Work From Home routes (move here)
     Route::get('wfh/create', [WorkFromHomeController::class, 'create'])->name('wfh.create');
     Route::post('wfh', [WorkFromHomeController::class, 'store'])->name('wfh.store');
