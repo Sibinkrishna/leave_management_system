@@ -27,7 +27,24 @@ class LeaveApplicationController extends Controller
         'subject' => 'required|string|max:255',
         'reason' => 'required|string|max:500',
         'day_type' => 'required',
+        'medical_certificate' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
     ]);
+
+    //check if medical leave & >= 3 days
+    $leaveType = LeaveType::find($request->leave_type_id);
+    $startDate = Carbon::parse($request->start_date)->diffInDays($request->end_date) + 1;
+    $filePath = null;
+
+     // Medical Leave + 3+ days = certificate required
+    if ($leaveType->name == 'Medical Leave' && $startDate >= 3) {
+        if (!$request->hasFile('medical_certificate')) {
+            return back()->withErrors([
+                'medical_certificate' => 'Medical certificate is required for more than 3 days medical leave.'
+            ]);
+        }
+        // Handle file upload
+        $filePath = $request->file('medical_certificate')->store('medical_certificates', 'public');
+    }
 
     // DAY TYPE
     $dayType = $request->day_type;
@@ -55,6 +72,7 @@ class LeaveApplicationController extends Controller
         'reason' => $request->reason,
         'days' => $days,
         'status' => 'pending',
+        'medical_certificate_path' => $filePath ?? null,
     ]);
 
        return redirect()->route('employee.leaveapplication.index')->with('success', 'Leave applied successfully!');

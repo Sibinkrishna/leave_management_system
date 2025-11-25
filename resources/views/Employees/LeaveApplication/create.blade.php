@@ -13,7 +13,9 @@
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <form action="{{ route('employee.leaveapplications.store') }}" method="POST">
+<form action="{{ route('employee.leaveapplications.store') }}" 
+      method="POST" 
+      enctype="multipart/form-data">
                 @csrf
 
                 <!-- ⭐ Row 1: Leave Type, Start Date, End Date, Day Type -->
@@ -81,9 +83,50 @@
                     </div>
                 </div>
 
+                <!-- ⭐ Row 4: Medical Certificate Upload (Conditional) -->
+               <div class="row mb-3 d-none" id="medical_certificate_row">
+                 <div class="col-12">
+                      <label class="form-label">Medical Certificate (PDF/JPG)</label>
+                      <input type="file" name="medical_certificate" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                      @error('medical_certificate')
+                         <small class="text-danger">{{ $message }}</small>
+                      @enderror
+                 </div>
+               </div>
+               
                 <div class="text-end">
                     <button type="submit" class="btn btn-success px-4">Apply Leave</button>
                 </div>
+                <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    function checkMedicalCertificate() {
+        let leaveType = document.getElementById("leave_type").value;
+        let start = document.getElementById("start_date").value;
+        let end = document.getElementById("end_date").value;
+
+        if (!start || !end) return;
+
+        let startDate = new Date(start);
+        let endDate = new Date(end);
+        let dayDiff = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
+
+        // Medical Leave ID (change if needed)
+        let medicalLeaveID = "{{ $leaveTypes->where('name', 'Medical Leave')->first()->id ?? '' }}";
+
+        if (leaveType == medicalLeaveID && dayDiff > 3) {
+            document.getElementById("medical_certificate_row").classList.remove("d-none");
+        } else {
+            document.getElementById("medical_certificate_row").classList.add("d-none");
+        }
+    }
+
+    document.getElementById("leave_type").addEventListener("change", checkMedicalCertificate);
+    document.getElementById("start_date").addEventListener("change", checkMedicalCertificate);
+    document.getElementById("end_date").addEventListener("change", checkMedicalCertificate);
+});
+</script>
+
 
             </form>
         </div>

@@ -1,0 +1,31 @@
+<div class="row mb-3" id="medical_certificate_row" style="display:none;">
+    <div class="col-12">
+        <label class="form-label">Medical Certificate (PDF/JPG/PNG)</label>
+        <input type="file" name="medical_certificate" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+        @error('medical_certificate')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const leaveTypeSelect = document.getElementById("leave_type");
+    const medicalCertificateRow = document.getElementById("medical_certificate_row");
+
+    function toggleMedicalCertificateRow() {
+        // Find Medical Leave ID from backend
+        const medicalLeaveID = "{{ $leaveTypes->where('name', 'Medical Leave')->first()->id ?? '' }}";
+
+        if (leaveTypeSelect.value == medicalLeaveID) {
+            medicalCertificateRow.style.display = "block";
+        } else {
+            medicalCertificateRow.style.display = "none";
+        }
+    }
+
+    leaveTypeSelect.addEventListener('change', toggleMedicalCertificateRow);
+
+    toggleMedicalCertificateRow(); // On page load
+});
+</script>

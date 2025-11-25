@@ -61,6 +61,8 @@
                                             data-end="{{ \Carbon\Carbon::parse($leave->end_date)->format('Y-m-d') }}"
                                             data-id="{{ $leave->id }}"
                                             data-status="{{ $leave->status }}"
+                                            data-certificate="{{ $leave->medical_certificate_path ?? '' }}"
+
                                         >
                                             <i class="las la-eye"></i>
                                         </button>
@@ -107,8 +109,11 @@
                     <h6><strong>Reason:</strong></h6>
                     <p id="modalReason" class="border rounded p-2 bg-light"></p>
                 </div>
+                 <div class="mt-3">
+                    <h6><strong>Medical Certificate:</strong></h6>
+                    <p id="modalCertificate" class="border rounded p-2 bg-light"></p>
+                </div>
             </div>
-
             <div class="modal-footer" id="modalActions">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
             </div>
@@ -122,17 +127,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("viewLeaveModal");
     modal.addEventListener("show.bs.modal", function (event) {
         const button = event.relatedTarget;
+
         const subject = button.getAttribute("data-subject") || "N/A";
         const reason = button.getAttribute("data-reason") || "N/A";
         const start = button.getAttribute("data-start") || "N/A";
         const end = button.getAttribute("data-end") || "N/A";
         const id = button.getAttribute("data-id");
         const status = (button.getAttribute("data-status") || '').toLowerCase();
+        const certificate = button.getAttribute("data-certificate") || "";
+
+        
 
         document.getElementById("modalSubject").textContent = subject;
         document.getElementById("modalReason").textContent = reason;
         document.getElementById("modalStart").textContent = start;
         document.getElementById("modalEnd").textContent = end;
+
+          document.getElementById("modalCertificate").innerHTML =
+            certificate
+                ? `<a href="/storage/${certificate}" target="_blank" class="text-primary fw-bold">View Certificate</a>`
+                : `<span class="text-muted">No file uploaded</span>`;
+                
 
         const actionDiv = document.getElementById("modalActions");
         if (status === "pending") {

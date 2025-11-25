@@ -21,6 +21,7 @@ class LeaveApplication extends Model
         'approved_by',
         'approval_date',
         'day_type',
+        'medical_certificate_path'  // ← ADD THIS
     ];
     protected $casts = [
             'start_date' => 'date',
