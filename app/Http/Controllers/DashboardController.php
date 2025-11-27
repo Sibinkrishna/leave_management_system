@@ -9,6 +9,7 @@ use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\LeaveApplication;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -49,10 +50,11 @@ class DashboardController extends Controller
             }
 
             // Approved leaves for this month
-            $approvedLeaves = Leave::where('employee_id', $userId)
-                ->whereRaw('LOWER(status) = ?', ['approved'])
-                ->whereMonth('start_date', $currentMonth)
-                ->count();
+         $approvedLeaves = LeaveApplication::where('user_id', $userId)
+    ->whereRaw('LOWER(status) = ?', ['approved'])
+    ->whereMonth('start_date', $currentMonth)
+    ->count();
+
 
             // Total absent
             $totalAbsent = max($workingDays - ($totalPresent + $approvedLeaves), 0);
@@ -73,6 +75,14 @@ foreach ($attendances as $attendance) {
     }
 }
 
+  // ⛔ Correct Leave Check (LeaveApplication table)
+$isOnLeaveToday = LeaveApplication::where('user_id', $userId)
+    ->whereRaw('LOWER(status) = ?', ['approved'])
+    ->whereDate('start_date', '<=', Carbon::today())
+    ->whereDate('end_date', '>=', Carbon::today())
+    ->exists();
+
+
 
             return view('Admin.dashboard', compact(
                 'attendances',
@@ -81,7 +91,9 @@ foreach ($attendances as $attendance) {
                 'totalAbsent',
                 'totalHoursWorked',
                 'monthName',
-                'currentYear'
+                'currentYear',
+                'isOnLeaveToday'
+
             ));
         }
 
@@ -94,10 +106,10 @@ $today = Carbon::today()->toDateString();
 $leavesToday = LeaveApplication::whereRaw('LOWER(status) = ?', ['approved'])
     ->whereDate('start_date', '<=', $today)
     ->whereDate('end_date', '>=', $today)
-    ->with('employee') // Make sure LeaveApplication has employee() relationship
+    ->with('user') // Make sure LeaveApplication has employee() relationship
     ->get();
-
-// Attendance today
+    
+// Attendance today 
 $attendanceToday = Attendance::with('employee')
     ->whereDate('attendance_date', $today)
     ->get();

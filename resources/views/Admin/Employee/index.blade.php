@@ -27,7 +27,7 @@
                     </div>
                     <div class="col text-end">
                         <a href="{{ route('admin.employee.create') }}" class="btn btn-primary">
-                            Add Employee
+                            Add
                         </a>
                     </div>
                 </div>

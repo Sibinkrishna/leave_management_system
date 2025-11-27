@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Holiday;
+use App\Models\LeaveApplication; 
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -16,6 +17,19 @@ class AttendanceController extends Controller
     {
         $userId = Auth::id();
         $today = Carbon::today();
+
+         // ⛔ BLOCK CHECK-IN IF EMPLOYEE IS ON LEAVE
+       $isOnLeaveToday = LeaveApplication::where('user_id', $userId)
+    ->whereRaw('LOWER(status) = ?', ['approved'])
+    ->whereDate('start_date', '<=', $today)
+    ->whereDate('end_date', '>=', $today)
+    ->exists();
+
+        if ($isOnLeaveToday) {
+            return back()->with('error', 'You are on leave today. You cannot check in.');
+        }
+
+        
 
         $existing = Attendance::where('user_id', $userId)
             ->where('attendance_date', $today)
@@ -41,6 +55,19 @@ class AttendanceController extends Controller
     {
         $userId = Auth::id();
         $today = Carbon::today();
+
+            // ⛔ BLOCK CHECK-OUT IF EMPLOYEE IS ON LEAVE
+     $isOnLeaveToday = LeaveApplication::where('user_id', $userId)
+    ->whereRaw('LOWER(status) = ?', ['approved'])
+    ->whereDate('start_date', '<=', $today)
+    ->whereDate('end_date', '>=', $today)
+    ->exists();
+
+
+        if ($isOnLeaveToday) {
+            return back()->with('error', 'You are on leave today. You cannot check out.');
+        }
+
 
         $attendance = Attendance::where('user_id', $userId)
             ->where('attendance_date', $today)

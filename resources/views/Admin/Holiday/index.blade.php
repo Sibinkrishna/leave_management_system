@@ -76,7 +76,7 @@
                         <h4 class="card-title">Holiday Table ({{ date('Y') }})</h4>
                     </div>
                     <div class="col text-end">
-                        <a href="{{ route('admin.holiday.create') }}" class="btn btn-primary">Create</a>
+                        <a href="{{ route('admin.holiday.create') }}" class="btn btn-primary">Add</a>
                     </div>
                 </div>
             </div>

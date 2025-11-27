@@ -136,19 +136,29 @@
                     <p class="text-muted mb-4">Track your daily attendance easily</p>
 
                     <div class="d-flex gap-3">
-                        <form method="POST" action="{{ route('employee.attendance.checkin') }}" id="checkInForm" class="w-50">
-                            @csrf
-                            <button type="submit" class="btn btn-soft-primary w-100">Check In</button>
-                        </form>
-                        
-                        <form method="POST" action="{{ route('employee.attendance.checkout') }}" id="checkOutForm" class="w-50">
-                            @csrf
-                            <button type="submit" class="btn btn-soft-danger w-100">Check Out</button>
-                        </form>
-                    </div>
+
+    @if($isOnLeaveToday)
+        <!-- If employee is on leave -->
+        <button type="button" class="btn btn-secondary w-50 leaveAlertBtn">Check In</button>
+        <button type="button" class="btn btn-secondary w-50 leaveAlertBtn">Check Out</button>
+
+    @else
+        <!-- Normal working day -->
+        <form method="POST" action="{{ route('employee.attendance.checkin') }}" id="checkInForm" class="w-50">
+            @csrf
+            <button type="submit" class="btn btn-soft-primary w-100">Check In</button>
+        </form>
+        
+        <form method="POST" action="{{ route('employee.attendance.checkout') }}" id="checkOutForm" class="w-50">
+            @csrf
+            <button type="submit" class="btn btn-soft-danger w-100">Check Out</button>
+        </form>
+    @endif
+
+</div>
                 </div>
             </div>
-        </div>
+        </div>  
        <!-- RIGHT SIDE: Summary Boxes (2 rows, 4 boxes total) -->
 <div class="col-lg-6 col-md-12">
     <div class="row justify-content-center g-3">
@@ -303,13 +313,29 @@
 </div>
 @endif
 
-{{-- SweetAlert2 Confirmation --}}
+<!-- BLOCK CHECK-IN / CHECK-OUT WHEN EMPLOYEE IS ON LEAVE -->
+@if(isset($isOnLeaveToday) && $isOnLeaveToday)
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.leaveAlertBtn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            Swal.fire({
+                icon: "warning",
+                title: "Leave Today",
+                text: "You are on leave today. You cannot check in or check out.",
+                confirmButtonColor: "#d33",
+            });
+        });
+    });
+});
+</script>
+@endif
 
+<!-- NORMAL CHECK-IN / CHECK-OUT CONFIRMATION -->
 <script>
 ['checkInForm', 'checkOutForm'].forEach(formId => {
     const form = document.getElementById(formId);
     if (!form) return;
-
     const isCheckIn = formId === 'checkInForm';
     form.addEventListener('submit', function(e) {
         e.preventDefault();

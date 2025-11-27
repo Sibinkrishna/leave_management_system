@@ -50,11 +50,12 @@
                                             <div class="invalid-feedback" id="error-email"></div>
                                         </div><!--end form-group-->
 
-                                        <div class="form-group">
-                                            <label class="form-label" for="password">Password</label>
-                                            <input type="password" class="form-control" name="password" placeholder="Enter password">
-                                            <div class="invalid-feedback" id="error-password"></div>
-                                        </div><!--end form-group-->
+                                     <div class="form-group position-relative">
+                                           <label class="form-label" for="password">Password</label>
+                                           <input type="password" class="form-control" name="password" placeholder="Enter password" id="password">
+                                           <span class="fa fa-fw fa-eye field-icon toggle-password" toggle="#password" style="position:absolute; top:38px; right:10px; cursor:pointer;"></span>
+                                          <div class="invalid-feedback" id="error-password"></div>
+                                     </div><!--end form-group-->
 
                                         <div class="form-group row mt-3">
                                             <div class="col-sm-6">
@@ -64,7 +65,10 @@
                                                 </div>
                                             </div><!--end col-->
                                             <div class="col-sm-6 text-end">
-                                                <a href="#" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?</a>
+                                                <a href="{{ route('password.request') }}" class="text-muted font-13">
+                                                 <i class="dripicons-lock"></i> Forgot password?
+                                                </a>
+
                                             </div><!--end col-->
                                         </div><!--end form-group-->
 
@@ -150,5 +154,23 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
     }
 });
 </script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+document.querySelectorAll('.toggle-password').forEach(function(element) {
+    element.addEventListener('click', function() {
+        const input = document.querySelector(this.getAttribute('toggle'));
+        if (input.type === "password") {
+            input.type = "text";
+            this.classList.remove('fa-eye');
+            this.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            this.classList.remove('fa-eye-slash');
+            this.classList.add('fa-eye');
+        }
+    });
+});
+</script>
+
 
 </html>

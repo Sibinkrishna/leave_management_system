@@ -18,9 +18,29 @@
 <div class="row justify-content-center">
     <div class="col-md-12 col-lg-12">
         <div class="card">
-            <div class="card-header bg-white">
-                <h5 class="card-title mb-0">Employee Leave List</h5>
-            </div>
+           <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap">
+
+    <h5 class="card-title mb-0">Employee Leave List</h5>
+
+    <!-- 🔍 Search Box Right Side -->
+    <form method="GET" 
+          action="{{ route('admin.leaves.pending') }}" 
+          class="d-flex mt-2 mt-md-0">
+
+        <input type="text" name="search"
+               class="form-control form-control-sm"
+               style="max-width:180px;"
+               placeholder="Search…" 
+               value="{{ $search ?? '' }}">
+
+        <button class="btn btn-primary btn-sm ms-2" type="submit">Search</button>
+
+        @if(!empty($search))
+            <a href="{{ route('admin.leaves.pending') }}" 
+               class="btn btn-secondary btn-sm ms-2">Reset</a>
+        @endif
+    </form>
+</div>
 
             <div class="card-body pt-0">
                 <div class="table-responsive">

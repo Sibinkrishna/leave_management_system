@@ -10,13 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class LeaveApprovalController extends Controller
 {
-    public function index()
+    // FINAL INDEX FUNCTION WITH SEARCH
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+
         $leaveApplications = LeaveApplication::with(['user', 'leaveType'])
-            // ->where('status', 'pending')
+            ->when($search, function ($query) use ($search) {
+                return $query->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'LIKE', "%{$search}%");
+                });
+            })
             ->orderByDesc('created_at')
             ->get();
-
+            
         return view('Admin.Leave.index', compact('leaveApplications'));
     }
 

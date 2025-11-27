@@ -12,10 +12,6 @@
     </g>
 </div>
 
-
-
-
-
         <!--end brand-->
         <!--start startbar-menu-->
         <div class="startbar-menu" >
@@ -87,10 +83,7 @@
                                   <i class="iconoir-laptop menu-icon"></i>
                                    <span>WFH Records</span>
                                     </a>
-                                   </li>
-
-
-
+                                   </li><!--end nav-item-->
 
                         @endif
                         @if (Auth::user()->role == 'employee')
@@ -118,20 +111,21 @@
                                 <span>Apply Leave</span>
                             </a>
                             </li><!--end nav-item-->
+
+                              <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.wfh.create') }}">
+                             <i class="iconoir-laptop menu-icon"></i>
+                            <span>WFH</span>
+                             </a>
+                            </li><!--end nav-item-->
+
                              <li class="nav-item">
                             <a class="nav-link" href="{{ route('employee.attendance.records') }}">
                                 <i class="iconoir-bell menu-icon"></i>
                                <span>Attendance Record</span>
                             </a>
-                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('employee.wfh.create') }}">
-                             <i class="iconoir-laptop menu-icon"></i>
-                            <span>Work From Home</span>
-                             </a>
-                            </li>
-
-                        
+                         </li><!--end nav-item-->
+                    
 
                         @endif
                         <!--end nav-item-->

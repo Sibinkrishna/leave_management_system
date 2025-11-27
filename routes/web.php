@@ -1,6 +1,11 @@
 <?php
 //admin
 use Illuminate\Support\Facades\Route;
+//auth controllers
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
+
 
 use App\Http\Controllers\Admin\CompanySettingController;
 use App\Http\Controllers\Admin\DepartmentController;
@@ -33,6 +38,16 @@ Route::get('change-password', [AuthController::class, 'showChangePassword'])->na
 Route::post('change-password', [AuthController::class, 'changePassword'])->name('password.update');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPassword'])->name('password.request');
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
+
+//reset password routes
+Route::get('/reset-password', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name('password.update');
+
 
 // ================== DASHBOARD ==================
 
@@ -144,6 +159,9 @@ Route::prefix('employee')->name('employee.')->middleware(['auth','role:employee'
       // ✅ Work From Home routes (move here)
     Route::get('wfh/create', [WorkFromHomeController::class, 'create'])->name('wfh.create');
     Route::post('wfh', [WorkFromHomeController::class, 'store'])->name('wfh.store');
+
+
+    
 
  
    

@@ -21,7 +21,7 @@
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-2 px-3">
             <h5 class="mb-0 fs-6 fs-md-5">Leave Applications</h5>
             <a href="{{ route('employee.leaveapplications.create') }}" 
-               class="btn btn-sm btn-primary">+ Apply Leave</a>
+               class="btn btn-sm btn-primary">Apply</a>
         </div>
 
         <div class="card-body">
