@@ -57,17 +57,18 @@
                                         <form action="{{ route('admin.leavetype.destroy', $type->id) }}" method="POST" style="display:inline">
                                             @csrf
                                             <button type="button" class="btn-style-none" style="all: unset;" 
-                                                onclick="Swal.fire({
-                                                    title: 'Delete?',
-                                                    text: 'Are you sure you want to delete {{ $type->name }}?',
-                                                    icon: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: 'rgba(255, 73, 194, 0.72)',
-                                                    cancelButtonColor: '#3085d6',
-                                                    confirmButtonText: 'Yes, Delete'
-                                                }).then((result) => { if(result.isConfirmed){ this.form.submit(); }})">
-                                                <i class="las la-trash-alt text-secondary font-16"></i>
-                                            </button>
+    onclick="let btn=this; Swal.fire({
+        title: 'Delete?',
+        text: 'Are you sure you want to delete {{ $type->name }}?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'rgba(255, 73, 194, 0.72)',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Delete'
+    }).then((result) => { if(result.isConfirmed){ btn.closest('form').submit(); }})">
+    <i class="las la-trash-alt text-secondary font-16"></i>
+</button>
+
                                         </form>
                                     </td>
                                 </tr>

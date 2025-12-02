@@ -29,10 +29,13 @@
      <!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
 
 
 </head>
+<body>
 @include('Admin.Layouts.partials.sidebar')
 @include('Admin.Layouts.partials.header')
  <div class="page-wrapper">
@@ -47,12 +50,12 @@
                                     <p class="text-muted mb-0">
                                         ©
                                         <script> document.write(new Date().getFullYear()) </script>
-                                        Vanguard
+                                        
                                         <span
                                             class="text-muted d-none d-sm-inline-block float-end">
                                             Design with
-                                            <i class="iconoir-heart-solid text-danger align-middle"></i>
-                                        by Smartenough solutions</span>
+                                            <i class="solid text-danger align-middle"></i>
+                                        by Smartenough solution</span>
                                     </p>
                                 </div>
                             </div>
@@ -62,6 +65,7 @@
             </footer>
         </div>
     </div>
+    <!-- Loader -->
 <div id="spinner-overlay" style="display: none; position: fixed; z-index: 99999; background: rgba(255, 255, 255, 0.8); top: 0; left: 0; height: 100%; width: 100%; justify-content: center; align-items: center;">
     <div class="spinner-border text-warning" role="status" style="width: 4rem; height: 4rem;">
         <span class="visually-hidden">Loading...</span>
@@ -89,6 +93,13 @@
     <script src="{{asset('Admin/assets/js/DynamicSelect.js')}}"></script>
     <script src="{{asset('Admin/assets/js/app.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+ <!-- SWEETALERT CDN (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- ✅ ADD ALL PAGE SCRIPTS HERE -->
+@stack('scripts') 
+
 </body>
 <!--end body-->
 

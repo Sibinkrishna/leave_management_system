@@ -34,16 +34,27 @@ class EmployeeController extends Controller
             'name'           => 'required|string|max:255',
             'phone'          => 'required|string|max:15',
             'email'          => 'required|string|email|max:255|unique:users,email',
-            'password'       => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required|string|min:8',
-            'designation'    => 'required|string|max:255',
-            'join_date'      => 'required|date',
-            'status'         => 'required|string|max:50',
-            'avatar'         => 'nullable|image|max:2048|mimes:png,jpg,jpeg,gif',
-            'address'        => 'nullable|string|max:500',
-            'department_id'  => 'nullable|exists:departments,id',
-        ]);
+                 'password'       => [
+            'required',
+            'string',
+            'min:8',
+            'regex:/[a-z]/',      // at least one lowercase
+            'regex:/[A-Z]/',      // at least one uppercase
+            'regex:/[0-9]/',      // at least one number
+            'confirmed'
+        ],
 
+        'password_confirmation' => 'required|string|min:8',
+        'designation'    => 'required|string|max:255',
+        'join_date'      => 'required|date',
+        'status'         => 'required|string|max:50',
+        'avatar'         => 'nullable|image|max:2048|mimes:png,jpg,jpeg,gif',
+        'address'        => 'nullable|string|max:500',
+        'department_id'  => 'nullable|exists:departments,id',
+    ], [
+        'phone.digits' => 'Phone number must be exactly 10 digits.',
+        'password.regex' => 'Password must include at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters.',
+    ]);
         // Handle avatar upload
         $avatarPath = null;
         if ($request->hasFile('avatar')) {
@@ -169,18 +180,17 @@ public function uploadDocuments(Request $request, $id)
         'account_number' => 'required|string|max:50',
         'ifsc_code' => 'required|string|max:20',
         'branch_name' => 'required|string|max:100',
-        'adhar_no' => 'required|digits:12', // ✅ exactly 12 digits
+        'adhar_no' => 'required|digits:12',
         'pan_no' => 'required|string|max:10',
-        'adhar_card' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048', // ✅ image or PDF
+        'adhar_card' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
         'pan_card' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
-        'passport_photo' => 'nullable|mimes:jpg,jpeg,png|max:2048', // only image
+        'passport_photo' => 'nullable|mimes:jpg,jpeg,png|max:2048',
         'bank_doc' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
     ]);
 
     $employee = User::findOrFail($id);
 
-    // ✅ Handle uploads
-    if($request->hasFile('adhar_card')) {
+     if($request->hasFile('adhar_card')) {
         $employee->adhar_card = $request->file('adhar_card')->store('employees/documents', 'public');
     }
     if($request->hasFile('pan_card')) {
@@ -202,22 +212,15 @@ public function uploadDocuments(Request $request, $id)
 
     $employee->save();
 
-    return redirect()->back()->with('success', 'Documents uploaded successfully!');
+    // Redirect to index page
+    return redirect()->route('admin.employee.index')
+                     ->with('success', 'Employee and documents submitted successfully!');
 }
 
-// Show Employee Documentation Details
-// app/Http/Controllers/Employee/EmployeeController.php
-
-// / ✅ Documentation Details Page
-    public function documentationDetails($id)
-    {
-        // Fetch single employee by ID
-        $employee = User::findOrFail($id); // or Employee::findOrFail($id)
-        return view('Admin.Employee.documentation_details', compact('employee'));
-    }
-
-
-
-
-
+// ✅ Documentation Details Page (must be outside of uploadDocuments)
+public function documentationDetails($id)
+{
+    $employee = User::findOrFail($id);
+    return view('Admin.Employee.documentation_details', compact('employee'));
 }
+ }

@@ -42,7 +42,7 @@
                         @if (Auth::user()->role == 'admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.employee.index')}}">
-                                <i class="iconoir-hand-cash menu-icon"></i>
+                               <i class="iconoir-user menu-icon"></i> <!-- Changed icon -->
                                 <span>Employee</span>
                             </a>
                         </li>

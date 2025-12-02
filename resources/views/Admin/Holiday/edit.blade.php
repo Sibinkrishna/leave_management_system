@@ -63,7 +63,8 @@
                         <div class="col-md-4 mb-3">
                             <label for="date" class="form-label">Date</label>
                             <input type="date" class="form-control" id="date" name="date" 
-                                   value="{{ old('date', $holiday->date) }}" required>
+                                   value="{{ old('date', \Carbon\Carbon::parse($holiday->date)->format('Y-m-d')) }}"
+ required>
                         </div>
 
                         <!-- Day -->

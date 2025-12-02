@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\LeaveApplication;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\LeaveType;
+
 
 class LeaveApprovalController extends Controller
 {
@@ -63,5 +66,60 @@ public function reject($id)
 
     return back()->with('success', 'Leave rejected successfully!');
 }
+
+public function userLeaveTotals($userId)
+{
+    $user = User::findOrFail($userId);
+    $leaveTypes = LeaveType::all();
+
+    $pending = PendingLeave::where('user_id', $userId)
+        ->get()
+        ->keyBy('leave_type_id');
+
+    if ($pending->isNotEmpty()) {
+        $data = $leaveTypes->map(function ($type) use ($pending) {
+            $p = $pending->get($type->id);
+            return [
+                'id' => $type->id,
+                'name' => $type->name,
+                'total' => $p ? floatval($p->total) : 0,
+                'used' => $p ? floatval($p->used) : 0,
+                'remaining' => $p ? floatval($p->remaining) : 0,
+            ];
+        })->values();
+    } else {
+        $totals = LeaveApplication::where('user_id', $userId)
+            ->selectRaw('leave_type_id, SUM(days) as used')
+            ->groupBy('leave_type_id')
+            ->get()
+            ->keyBy('leave_type_id');
+
+        $data = $leaveTypes->map(function ($type) use ($totals) {
+            $row = $totals->get($type->id);
+            return [
+                'id' => $type->id,
+                'name' => $type->name,
+                'total' => null, // unknown without PendingLeave
+                'used' => $row ? floatval($row->used) : 0,
+                'remaining' => null,
+            ];
+        })->values();
+    }
+
+    // Calculate final total row
+    $totalsRow = [
+        'name' => 'Total',
+        'total' => $data->sum('total'),
+        'used' => $data->sum('used'),
+        'remaining' => $data->sum('remaining'),
+    ];
+
+    return response()->json([
+        'user' => ['id' => $user->id, 'name' => $user->name],
+        'totals' => $data,
+        'totalsRow' => $totalsRow,
+    ]);
+}
+
 
 }

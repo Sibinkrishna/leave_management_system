@@ -6,8 +6,19 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <div class="page-title-box d-md-flex justify-content-md-between align-items-center">
-                <h4 class="page-title">Profile</h4>
+     <div class="page-title-box d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center gap-2">
+        <h4 class="page-title mb-0">Profile</h4>
+
+        <!-- ✅ Clean Back Button -->
+        <a href="{{ route('admin.employee.index') }}" 
+           class="btn btn-outline-dark btn-sm d-flex align-items-center"
+           style="padding: 2px 10px; border-radius: 6px;">
+            <i class="las la-arrow-left me-1"></i> Back
+        </a>
+    </div>
+
+
                 <div class="">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="#">Approx</a></li>

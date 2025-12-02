@@ -48,7 +48,7 @@
                             <th>Date</th>
                             <th>Check In</th>
                             <th>Check Out</th>
-                            <th>Duration (hrs)</th>
+                            <th>Duration</th>
                             <th>Status</th>
                         </tr>
                     </thead>

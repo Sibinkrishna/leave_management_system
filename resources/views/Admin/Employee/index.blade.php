@@ -46,18 +46,11 @@
                         </thead>
                      <tbody>
     @forelse($employees as $employee)
-        @if(strtolower($employee->status) === 'active')
-       <tr>
+  <tr>
     <td>{{ $employee->name }}</td>
     <td>{{ $employee->designation }}</td>
     <td>{{ ucfirst($employee->status) }}</td>
-    <!-- Documents Column -->
-    {{-- <td>
-      <a href="{{ route('admin.employee.documentation.details', $employee->id) }}" class="btn btn-sm btn-info">
-    View
-</a>
-
-    </td> --}}
+   
     <td class="text-end">
         <a href="{{ route('admin.employee.show', $employee->id) }}">
             <i class="las la-eye text-secondary font-16"></i>
@@ -83,13 +76,11 @@
         </form>
     </td>
 </tr>
-
-        @endif
-    @empty
-        <tr>
-            <td colspan="5" class="text-center">No active employees found.</td>
-        </tr>
-    @endforelse
+@empty
+<tr>
+    <td colspan="5" class="text-center">No active employees found.</td>
+</tr>
+ @endforelse
 </tbody>
 
                     </table>

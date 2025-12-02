@@ -74,6 +74,7 @@ class LeaveApplicationController extends Controller
         'status' => 'pending',
         'medical_certificate_path' => $filePath ?? null,
     ]);
+    
 
        return redirect()->route('employee.leaveapplication.index')->with('success', 'Leave applied successfully!');
 

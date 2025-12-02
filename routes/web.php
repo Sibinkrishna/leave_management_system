@@ -100,6 +100,12 @@ Route::get('employee/{id}/documentation-details', [EmployeeController::class, 'd
     Route::post('leaves/{id}/approve', [LeaveApprovalController::class, 'approve'])->name('leaves.approve');
     Route::post('leaves/{id}/reject', [LeaveApprovalController::class, 'reject'])->name('leaves.reject');
 
+    // show totals for a user (AJAX JSON)
+Route::get('/leave/totals/{userId}', [LeaveApprovalController::class, 'userLeaveTotals'])
+    ->name('admin.leave.totals');
+
+
+
     Route::get('/workfromhome', [AdminWFHController::class, 'index'])->name('wfh.index');
 
 

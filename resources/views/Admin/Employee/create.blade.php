@@ -66,26 +66,28 @@
                             @enderror
                         </div>
 
-                        <div class="col-lg-4 col-md-6 col-12">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter password">
-                            @error('password')
-                                <span class="text-danger small">{{ $message }}</span>
-                            @enderror
-                        </div>
+                       <div class="col-lg-4 col-md-6 col-12">
+    <label class="form-label">Password</label>
+    <div class="input-group">
+        <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter password">
+        <span class="input-group-text" onclick="togglePassword('password', this)" style="cursor:pointer;">
+            <i class="bi bi-eye"></i>
+        </span>
+    </div>
+    @error('password')
+        <span class="text-danger small">{{ $message }}</span>
+    @enderror
+</div>
 
-                        <div class="col-lg-4 col-md-6 col-12">
-                            <label class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm password">
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-12">
-                            <label class="form-label">Address</label>
-                            <input type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address')}}" placeholder="Enter address">
-                            @error('address')
-                                <span class="text-danger small">{{ $message }}</span>
-                            @enderror
-                        </div>
+                   <div class="col-lg-4 col-md-6 col-12">
+    <label class="form-label">Confirm Password</label>
+    <div class="input-group">
+        <input type="password" id="password_confirmation" class="form-control" name="password_confirmation" placeholder="Confirm password">
+        <span class="input-group-text" onclick="togglePassword('password_confirmation', this)" style="cursor:pointer;">
+            <i class="bi bi-eye"></i>
+        </span>
+    </div>
+</div>
 
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">Designation</label>
@@ -149,4 +151,23 @@
         </div>
     </div>
 </div>
+
+<script>
+function togglePassword(fieldId, el) {
+    const input = document.getElementById(fieldId);
+    const icon = el.querySelector('i');
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    }
+}
+</script>
+
+
 @endsection
