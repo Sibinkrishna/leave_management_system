@@ -106,7 +106,7 @@
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('employee.leaveapplication.index') }}">
+                            <a class="nav-link" href="{{ route('employee.leaveapplications.index') }}">
                                <i class="iconoir-book menu-icon"></i>
                                 <span>Apply Leave</span>
                             </a>

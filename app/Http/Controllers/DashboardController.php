@@ -9,7 +9,6 @@ use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\LeaveApplication;
-use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -22,10 +21,14 @@ class DashboardController extends Controller
         // Employee Dashboard
         // =============================
         if ($user->role === 'employee') {
+
             $userId = $user->id;
             $currentMonth = Carbon::now()->month;
             $currentYear = Carbon::now()->year;
             $monthName = Carbon::now()->format('F');
+
+            // Employee join date
+            $joinDate = Carbon::parse($user->joining_date);
 
             // Attendance for this month
             $attendances = Attendance::where('user_id', $userId)
@@ -33,56 +36,57 @@ class DashboardController extends Controller
                 ->whereYear('attendance_date', $currentYear)
                 ->orderBy('attendance_date', 'desc')
                 ->get();
-
             // Total days recorded
             $totalDays = $attendances->count();
 
             // Total present
             $totalPresent = $attendances->where('status', 'present')->count();
 
-            // Working days (Mon-Fri)
+            // Working days (Mon–Fri), but starting from join date
+            // Working days (Mon–Fri), but starting from join date
             $startOfMonth = Carbon::now()->startOfMonth();
+            if ($joinDate->greaterThan($startOfMonth)) {
+                $startOfMonth = $joinDate->copy(); // start counting from join date
+            }
+
             $workingDays = 0;
-            for ($date = $startOfMonth->copy(); $date->lte($today); $date->addDay()) {
-                if (!$date->isWeekend()) {
+            $currentDate = $startOfMonth->copy();
+            while ($currentDate->lte($today)) {
+                if (!$currentDate->isWeekend()) {
                     $workingDays++;
+                }
+                $currentDate->addDay();
+            }
+
+            // Total present in current month (only on/after join date)
+            $totalPresent = $attendances
+                ->filter(function ($attendance) use ($joinDate) {
+                    return Carbon::parse($attendance->attendance_date)->gte($joinDate)
+                        && strtolower($attendance->status) === 'present';
+                })
+                ->count();
+
+            // Total absent = workingDays – totalPresent
+            $totalAbsent = max($workingDays - $totalPresent, 0);
+
+
+            // Total hours worked
+            $totalHoursWorked = 0;
+            foreach ($attendances as $attendance) {
+                if ($attendance->check_in && $attendance->check_out) {
+                    $checkIn = Carbon::parse($attendance->check_in);
+                    $checkOut = Carbon::parse($attendance->check_out);
+                    $hours = abs($checkOut->diffInMinutes($checkIn)) / 60;
+                    $totalHoursWorked += $hours;
                 }
             }
 
-            // Approved leaves for this month
-         $approvedLeaves = LeaveApplication::where('user_id', $userId)
-    ->whereRaw('LOWER(status) = ?', ['approved'])
-    ->whereMonth('start_date', $currentMonth)
-    ->count();
-
-
-            // Total absent
-            $totalAbsent = max($workingDays - ($totalPresent + $approvedLeaves), 0);
-
-            // Total hours worked
-   // Total hours worked
-$totalHoursWorked = 0;
-
-foreach ($attendances as $attendance) {
-    if ($attendance->check_in && $attendance->check_out) {
-        $checkIn = Carbon::parse($attendance->check_in);
-        $checkOut = Carbon::parse($attendance->check_out);
-
-        // Convert to positive hours always
-        $hours = abs($checkOut->diffInMinutes($checkIn)) / 60;
-
-        $totalHoursWorked += $hours;
-    }
-}
-
-  // ⛔ Correct Leave Check (LeaveApplication table)
-$isOnLeaveToday = LeaveApplication::where('user_id', $userId)
-    ->whereRaw('LOWER(status) = ?', ['approved'])
-    ->whereDate('start_date', '<=', Carbon::today())
-    ->whereDate('end_date', '>=', Carbon::today())
-    ->exists();
-
-
+            // To check if today employee is on approved leave
+            $isOnLeaveToday = LeaveApplication::where('user_id', $userId)
+                ->whereRaw('LOWER(status) = ?', ['approved'])
+                ->whereDate('start_date', '<=', $today)
+                ->whereDate('end_date', '>=', $today)
+                ->exists();
 
             return view('Admin.dashboard', compact(
                 'attendances',
@@ -93,40 +97,36 @@ $isOnLeaveToday = LeaveApplication::where('user_id', $userId)
                 'monthName',
                 'currentYear',
                 'isOnLeaveToday'
-
             ));
         }
 
         // =============================
         // Admin Dashboard
-$totalEmployees = User::where('role', 'employee')->count();
-$today = Carbon::today()->toDateString();
+        // =============================
+        $totalEmployees = User::where('role', 'employee')->count();
+        $today = Carbon::today()->toDateString();
 
-// Leaves today
-$leavesToday = LeaveApplication::whereRaw('LOWER(status) = ?', ['approved'])
-    ->whereDate('start_date', '<=', $today)
-    ->whereDate('end_date', '>=', $today)
-    ->with('user') // Make sure LeaveApplication has employee() relationship
-    ->get();
-    
-// Attendance today 
-$attendanceToday = Attendance::with('employee')
-    ->whereDate('attendance_date', $today)
-    ->get();
+        // Leaves today
+        $leavesToday = LeaveApplication::whereRaw('LOWER(status) = ?', ['approved'])
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->with('user')
+            ->get();
 
-// Pass counts as separate variables
-$totalLeavesToday = $leavesToday->count();
-$totalAttendanceToday = $attendanceToday->count();
+        // Attendance today
+        $attendanceToday = Attendance::with('employee')
+            ->whereDate('attendance_date', $today)
+            ->get();
 
-// ✅ Pass everything to the view
-return view('Admin.dashboard', compact(
-    'totalEmployees',
-    'leavesToday',
-    'attendanceToday',
-    'totalLeavesToday',
-    'totalAttendanceToday'
-));
+        $totalLeavesToday = $leavesToday->count();
+        $totalAttendanceToday = $attendanceToday->count();
 
-        }
+        return view('Admin.dashboard', compact(
+            'totalEmployees',
+            'leavesToday',
+            'attendanceToday',
+            'totalLeavesToday',
+            'totalAttendanceToday'
+        ));
     }
-
+}

@@ -1,7 +1,6 @@
 @extends('Admin.Layouts.app')
 
 @section('content')
-<!-- Page Title -->
 <div class="row mb-3">
     <div class="col-sm-12">
         <div class="page-title-box d-flex justify-content-between align-items-center flex-wrap">
@@ -20,19 +19,6 @@
         <div class="card shadow-sm rounded-3">
             <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap">
                 <h5 class="card-title mb-0">Employee Leave List</h5>
-
-                <!-- Search Form -->
-                <form method="GET" action="{{ route('admin.leaves.pending') }}" class="d-flex mt-2 mt-md-0">
-                    <input type="text" name="search"
-                           class="form-control form-control-sm"
-                           style="max-width:180px;"
-                           placeholder="Search…"
-                           value="{{ $search ?? '' }}">
-                    <button class="btn btn-primary btn-sm ms-2" type="submit">Search</button>
-                    @if(!empty($search))
-                        <a href="{{ route('admin.leaves.pending') }}" class="btn btn-secondary btn-sm ms-2">Reset</a>
-                    @endif
-                </form>
             </div>
 
             <div class="card-body p-0">
@@ -48,20 +34,13 @@
                             </tr>
                         </thead>
 
-                        @php $renderedUsers = []; @endphp
                         <tbody>
                         @forelse($leaveApplications as $leave)
-                            @php
-                                $userId = $leave->user->id ?? null;
-                                $showTotals = $userId && !in_array($userId, $renderedUsers);
-                                if($showTotals) $renderedUsers[] = $userId;
-                            @endphp
-
-                            <tr>
+                            <tr id="leaveRow{{ $leave->id }}">
                                 <td class="text-start">{{ $leave->user->name ?? '-' }}</td>
                                 <td>{{ $leave->leaveType->name ?? '-' }}</td>
                                 <td>{{ floatval($leave->days) }}</td>
-                                <td>
+                                <td class="leave-status text-center">
                                     @if($leave->status == 'approved')
                                         <span class="badge bg-success">Approved</span>
                                     @elseif($leave->status == 'pending')
@@ -71,17 +50,23 @@
                                     @endif
                                 </td>
                                 <td class="text-end">
-                                    <button class="btn btn-outline-secondary btn-sm viewBtn" ...existing attributes...>
+                                    <button class="btn btn-outline-secondary btn-sm viewBtn"
+                                        data-id="{{ $leave->id }}"
+                                        data-employee="{{ $leave->user->name }}"
+                                        data-start="{{ $leave->start_date }}"
+                                        data-end="{{ $leave->end_date }}"
+                                        data-subject="{{ $leave->subject }}"
+                                        data-reason="{{ $leave->reason }}"
+                                        + data-certificate="{{ $leave->medical_certificate_path }}"
+                                        data-status="{{ $leave->status }}">
                                         <i class="las la-eye"></i>
                                     </button>
 
-                                    @if($showTotals)
-                                        <button class="btn btn-outline-primary btn-sm ms-1 totalsBtn"
-                                                data-user-id="{{ $userId }}"
-                                                data-user-name="{{ $leave->user->name ?? '' }}">
-                                            Totals
-                                        </button>
-                                    @endif
+                                    <button class="btn btn-outline-primary btn-sm ms-1 totalsBtn"
+                                        data-user-id="{{ $leave->user->id }}"
+                                        data-user-name="{{ $leave->user->name }}">
+                                        Totals
+                                    </button>
                                 </td>
                             </tr>
                         @empty
@@ -97,46 +82,52 @@
     </div>
 </div>
 
-<!-- View Leave Modal -->
-<div class="modal fade" id="viewLeaveModal" tabindex="-1" aria-labelledby="viewLeaveLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<!-- VIEW LEAVE MODAL -->
+<div class="modal fade" id="viewLeaveModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-white border-bottom">
-                <h6 class="modal-title" id="viewLeaveLabel">Leave Details</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Employee Leave Application Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
             <div class="modal-body">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <h6><strong>Start Date:</strong></h6>
-                        <p id="modalStart" class="border rounded p-2 bg-light"></p>
-                    </div>
-                    <div class="col-md-6">
-                        <h6><strong>End Date:</strong></h6>
-                        <p id="modalEnd" class="border rounded p-2 bg-light"></p>
-                    </div>
+                <div class="mb-3">
+                    <h6><strong>Employee:</strong></h6>
+                    <p id="modalEmployee" class="border rounded p-2 bg-light"></p>
                 </div>
+
+                <div class="mb-3">
+                    <h6><strong>Leave Dates:</strong></h6>
+                    <p id="modalDates" class="border rounded p-2 bg-light"></p>
+                </div>
+
                 <div class="mb-3">
                     <h6><strong>Subject:</strong></h6>
                     <p id="modalSubject" class="border rounded p-2 bg-light"></p>
                 </div>
-                <div>
+
+                <div class="mb-3">
                     <h6><strong>Reason:</strong></h6>
                     <p id="modalReason" class="border rounded p-2 bg-light"></p>
                 </div>
-                <div class="mt-3">
-                    <h6><strong>Medical Certificate:</strong></h6>
-                    <p id="modalCertificate" class="border rounded p-2 bg-light"></p>
-                </div>
-            </div>
+
+             <div class="mb-3">
+    <h6><strong>Medical Certificate:</strong></h6>
+    <p id="modalCertificate" class="border rounded p-2 bg-light">
+        <a id="modalCertificateLink" href="#" target="_blank">No file</a>
+    </p>
+</div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button id="approveBtn" class="btn btn-success btn-sm" data-id="">Approve</button>
+                <button id="rejectBtn" class="btn btn-danger btn-sm" data-id="">Reject</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Totals Modal -->
+<!-- TOTALS MODAL -->
 <div class="modal fade" id="totalsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
@@ -168,105 +159,148 @@
     </div>
 </div>
 
-{{-- Totals Script --}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const showModal = id => bootstrap.Modal.getOrCreateInstance(document.getElementById(id)).show();
+    const viewBtns = document.querySelectorAll('.viewBtn');
+    const modal = new bootstrap.Modal(document.getElementById('viewLeaveModal'));
 
+    viewBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.getElementById('modalEmployee').textContent = this.dataset.employee || '-';
+
+            const start = this.dataset.start ? this.dataset.start.split(' ')[0] : '-';
+            const end = this.dataset.end ? this.dataset.end.split(' ')[0] : '-';
+            document.getElementById('modalDates').textContent = `${start} – ${end}`;
+
+            document.getElementById('modalSubject').textContent = this.dataset.subject || '-';
+            document.getElementById('modalReason').textContent = this.dataset.reason || '-';
+
+            // ✅ MEDICAL CERTIFICATE CLICKABLE LINK
+            const certificate = this.dataset.certificate;
+            const certLink = document.getElementById('modalCertificateLink');
+
+            if (certificate && certificate !== 'null') {
+                certLink.href = `/storage/${certificate}`;
+                certLink.textContent = 'View Certificate';
+            } else {
+                certLink.href = '#';
+                certLink.textContent = 'No file';
+            }
+
+            const approveBtn = document.getElementById('approveBtn');
+            const rejectBtn = document.getElementById('rejectBtn');
+
+            approveBtn.dataset.id = this.dataset.id;
+            rejectBtn.dataset.id = this.dataset.id;
+
+            // Show/hide approve & reject buttons based on current status
+            if (this.dataset.status === 'pending') {
+                approveBtn.style.display = 'inline-block';
+                rejectBtn.style.display = 'inline-block';
+            } else {
+                approveBtn.style.display = 'none';
+                rejectBtn.style.display = 'none';
+            }
+
+            modal.show();
+        });
+    });
+
+    const updateStatus = async (leaveId, status) => {
+        try {
+            const token = '{{ csrf_token() }}';
+
+            const url = status === 'approved'
+                ? `/admin/leaves/${leaveId}/approve`
+                : `/admin/leaves/${leaveId}/reject`;
+
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({})
+            });
+
+            const data = await resp.json();
+            if (data.success) {
+                const row = document.getElementById('leaveRow' + leaveId);
+                const badgeCell = row.querySelector('.leave-status');
+
+                badgeCell.innerHTML = status === 'approved'
+                    ? '<span class="badge bg-success">Approved</span>'
+                    : '<span class="badge bg-danger">Rejected</span>';
+
+                const viewBtn = row.querySelector('.viewBtn');
+                viewBtn.dataset.status = status;
+
+                bootstrap.Modal.getInstance(document.getElementById('viewLeaveModal')).hide();
+            } else {
+                alert('Failed to update status');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error updating status');
+        }
+    };
+
+    document.getElementById('approveBtn').addEventListener('click', () => {
+        updateStatus(document.getElementById('approveBtn').dataset.id, 'approved');
+    });
+
+    document.getElementById('rejectBtn').addEventListener('click', () => {
+        updateStatus(document.getElementById('rejectBtn').dataset.id, 'rejected');
+    });
+
+    // TOTALS BUTTON
     document.querySelectorAll('.totalsBtn').forEach(btn => {
-        btn.addEventListener('click', async function () {
+        btn.addEventListener('click', async function() {
             const userId = this.dataset.userId;
-            const userName = this.dataset.userName || 'Employee';
-            const tbody = document.getElementById('totalsBody');
-
+            const userName = this.dataset.userName;
             document.getElementById('totalsUserName').textContent = userName;
+
+            const tbody = document.getElementById('totalsBody');
             tbody.innerHTML = '<tr><td colspan="4" class="text-center">Loading…</td></tr>';
 
-            if(!userId) return alert('User id missing');
-
             try {
-                const resp = await fetch(`{{ url('/admin/leave/totals') }}/${userId}`, { headers: { 'Accept':'application/json' } });
-                if(!resp.ok) throw new Error('Network response was not ok');
-
+                const resp = await fetch(`/admin/leave/totals/${userId}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
                 const json = await resp.json();
 
-                if(!json.totals?.length) {
+                if (!json.totals?.length) {
                     tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No leave records.</td></tr>';
-                    return showModal('totalsModal');
-                }
-
-                tbody.innerHTML = '';
-                json.totals.forEach(r => {
-                    tbody.innerHTML += `
-                        <tr>
+                } else {
+                    tbody.innerHTML = '';
+                    json.totals.forEach(r => {
+                        tbody.innerHTML += `<tr>
                             <td class="text-start">${r.name}</td>
                             <td>${r.total ?? 0}</td>
-                            <td>${Number(r.used ?? 0)}</td>
+                            <td>${r.used ?? 0}</td>
                             <td>${r.remaining ?? 0}</td>
-                        </tr>
-                    `;
-                });
-
-                if(json.totalsRow){
+                        </tr>`;
+                    });
                     const t = json.totalsRow;
-                    tbody.innerHTML += `
-                        <tr class="fw-bold">
-                            <td class="text-start">${t.name}</td>
-                            <td>${t.total}</td>
-                            <td>${Number(t.used)}</td>
-                            <td>${t.remaining}</td>
-                        </tr>
-                    `;
+                    tbody.innerHTML += `<tr class="fw-bold">
+                        <td class="text-start">${t.name}</td>
+                        <td>${t.total ?? 0}</td>
+                        <td>${t.used ?? 0}</td>
+                        <td>${t.remaining ?? 0}</td>
+                    </tr>`;
                 }
 
-                showModal('totalsModal');
+                new bootstrap.Modal(document.getElementById('totalsModal')).show();
             } catch(err) {
                 console.error(err);
                 tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Failed to load totals.</td></tr>';
-                showModal('totalsModal');
+                new bootstrap.Modal(document.getElementById('totalsModal')).show();
             }
         });
     });
 });
 </script>
 
-{{-- Styles --}}
-<style>
-.table th, .table td {
-    vertical-align: middle;
-    font-size: 13px;
-}
 
-.card {
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    border: none;
-}
- .viewBtn {
-    padding: 4px 8px;
-    border-radius: 6px;
-}
-.viewBtn i {
-    font-size: 16px;
-}
-
-/* Tablet */
-@media(max-width:1024px){
-    .table th,.table td{font-size:13px;padding:0.55rem 0.6rem;}
-    .viewBtn{padding:4px 6px;}
-    .viewBtn i{font-size:14px;}
-    .btn{font-size:13px;padding:5px 8px;}
-    .badge{font-size:13px;padding:5px 8px;}
-}
-
-/* Mobile */
-@media(max-width:768px){
-    .table th,.table td{font-size:10.5px;padding:0.4rem;}
-    .viewBtn{padding:2px 5px;}
-    .viewBtn i{font-size:12px;}
-    .btn{font-size:12px;padding:4px 6px;}
-    .badge{font-size:11.5px;padding:3px 6px;}
-    .card-title,.page-title{text-align:left;font-size:15px;}
-}
-</style>
- @endsection
+@endsection

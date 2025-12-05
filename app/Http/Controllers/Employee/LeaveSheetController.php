@@ -29,6 +29,6 @@ class LeaveSheetController extends Controller
         ->orderByDesc('start_date')
         ->get();
 
-    return view('Employees.LeaveSheet.index', compact('pendingLeaves', 'leaveApplications', 'totalAll'));
+    return view('Employees.Leavesheet.index', compact('pendingLeaves', 'leaveApplications', 'totalAll'));
     }
 }

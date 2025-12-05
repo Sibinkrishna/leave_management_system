@@ -76,7 +76,7 @@ class LeaveApplicationController extends Controller
     ]);
     
 
-       return redirect()->route('employee.leaveapplication.index')->with('success', 'Leave applied successfully!');
+       return redirect()->route('employee.leaveapplications.index')->with('success', 'Leave applied successfully!');
 
     }
 

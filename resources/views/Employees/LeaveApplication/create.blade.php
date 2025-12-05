@@ -1,3 +1,5 @@
+
+You said:
 @extends('Admin.Layouts.app')
 
 @section('content')
@@ -93,89 +95,17 @@
                       @enderror
                  </div>
                </div>
-<div class="text-end">
-    <button type="button" id="apply_leave_btn" class="btn btn-success px-4">
-        Apply Leave
-    </button>
-</div>
-{{-- popopp --}}
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+               
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success px-4">Apply Leave</button>
+                </div>
+                 
+  
 
-    const applyBtn = document.getElementById("apply_leave_btn");
-
-    const hrNumber = "{{ config('services.hr.whatsapp') }}";
-
-    function getField(id) {
-        let el = document.getElementById(id);
-        return el ? el.value.trim() : "";
-    }
-
-    applyBtn.addEventListener("click", function () {
-
-        // Validate required fields
-        if (!getField('leave_type')) { return alert("Please select Leave Type"); }
-        if (!getField('start_date')) { return alert("Please select Start Date"); }
-        if (!getField('end_date'))   { return alert("Please select End Date"); }
-        if (!getField('subject'))    { return alert("Please enter Subject"); }
-
-        // Ask user if they want to send WhatsApp
-        Swal.fire({
-            title: "Leave Submitted!",
-            text: "Do you want to send this leave application via WhatsApp?",
-            icon: "success",
-            showCancelButton: true,
-            confirmButtonText: "Yes, Send WhatsApp",
-            cancelButtonText: "No, Only Submit",
-            confirmButtonColor: "#25D366",
-        }).then((result) => {
-
-            // If YES → send WhatsApp + submit form
-            if (result.isConfirmed) {
-
-                const leaveTypeText = document.getElementById("leave_type").selectedOptions[0].text;
-                const dayTypeText = document.getElementById("day_type").selectedOptions[0].text;
-
-                const message = [
-                    "*Leave Application*",
-                    `*Employee:* {{ Auth::user()->name }}`,
-                    `*Leave Type:* ${leaveTypeText}`,
-                    `*Start Date:* ${getField('start_date')}`,
-                    `*End Date:* ${getField('end_date')}`,
-                    `*Day Type:* ${dayTypeText}`,
-                    `*Subject:* ${getField('subject')}`,
-                    `*Reason:* ${getField('reason') || '(No reason)'}`,
-                    "",
-                    "_Sent from Leave Management System_"
-                ].join("\n");
-
-                const encoded = encodeURIComponent(message);
-
-                const waURL = `https://wa.me/${hrNumber}?text=${encoded}`;
-
-                window.open(waURL, "_blank");
-
-                // Submit form after WhatsApp link opens
-                setTimeout(() => {
-                    document.querySelector("form").submit();
-                }, 500);
-
-            } else {
-                // If NO → submit normally
-                document.querySelector("form").submit();
-            }
-
-        });
-
-    });
-
-});
-</script>
-
-
-
-
-
+<div class="d-flex justify-content-start mt-4">
+    <button type="button" id="send_whatsapp_btn" class="btn btn-success px-4 me-2">Send via WhatsApp</button>
+    {{-- <a id="direct_whatsapp_link" href="javascript:void(0);" class="btn btn-success px-4">Send via WhatsApp</a>
+</div> --}}
 
 
 <script>
@@ -209,10 +139,87 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const sendBtn = document.getElementById('send_whatsapp_btn');
+
+    const hrNumber = "{{ config('services.hr.whatsapp') }}";
+
+    if (!hrNumber || hrNumber.trim() === "") {
+        sendBtn.disabled = true;
+        sendBtn.title = "HR WhatsApp number not configured";
+        return;
+    }
+
+    function getField(id) {
+        let el = document.getElementById(id);
+        return el ? el.value.trim() : "";
+    }
+
+    function validateFields() {
+        if (!getField('leave_type')) {
+            alert("Please select Leave Type.");
+            return false;
+        }
+        if (!getField('start_date')) {
+            alert("Please select Start Date.");
+            return false;
+        }
+        if (!getField('end_date')) {
+            alert("Please select End Date.");
+            return false;
+        }
+        if (!getField('subject')) {
+            alert("Please enter Subject.");
+            return false;
+        }
+        return true;
+    }
+
+    sendBtn.addEventListener("click", function () {
+
+        if (!validateFields()) return;
+
+        const leaveTypeSelect = document.getElementById('leave_type');
+        const dayTypeSelect = document.getElementById('day_type');
+
+        const employeeName = "{{ Auth::user()->name ?? 'Employee' }}";
+        const leaveType = leaveTypeSelect.selectedOptions[0].text;
+        const start = getField('start_date');
+        const end = getField('end_date');
+        const dayType = dayTypeSelect.selectedOptions[0].text;
+        const subject = getField('subject');
+        const reason = getField('reason') || "(No reason provided)";
+
+        // ✅ Use template literals correctly
+        const message = `*Leave Application*
+*Employee:* ${employeeName}
+*Leave Type:* ${leaveType}
+*Start Date:* ${start}
+*End Date:* ${end}
+*Day Type:* ${dayType}
+*Subject:* ${subject}
+*Reason:* ${reason}
+
+_Sent from the Leave Management System_`;
+
+        const encodedMessage = encodeURIComponent(message);
+
+        // ✅ Correct WhatsApp URL
+        const waUrl = `https://wa.me/${hrNumber}?text=${encodedMessage}`;
+
+        window.open(waUrl, "_blank");
+    });
+
+});
+</script>
+
+
+
 
             </form>
         </div>
     </div>
 </div>
 @endsection
-<!-- ---------- WhatsApp script ---------- -->

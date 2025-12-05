@@ -93,25 +93,34 @@ class AttendanceController extends Controller
         return back()->with('success', 'Check-out recorded successfully!');
     }
 
-    public function records(Request $request)
+   public function records(Request $request)
 {
-    $userId = Auth::id();
+    $user = Auth::user();
+    $userId = $user->id;
+    $joinDate = Carbon::parse($user->join_date)->startOfDay(); // User's join date
 
-    // If a specific date is selected → filter only that date
+    $records = [];
+    $today = now()->startOfDay();
+
+    // ✅ If user selects a specific date
     if ($request->filled('date')) {
-        $date = Carbon::parse($request->date)->toDateString();
+        $date = Carbon::parse($request->date)->startOfDay();
+
+        // Skip if date is before joining
+        if ($date->lessThan($joinDate)) {
+            return view('Employees.Attendance.records', ['records' => []]);
+        }
 
         $attendance = Attendance::where('user_id', $userId)
             ->whereDate('attendance_date', $date)
             ->first();
 
         $holiday = Holiday::whereDate('date', $date)->first();
-        $recordDate = Carbon::parse($date);
 
         // Weekend
-        if ($recordDate->isSaturday() || $recordDate->isSunday()) {
+        if ($date->isSaturday() || $date->isSunday()) {
             $records[] = [
-                'date' => $recordDate->format('d M Y'),
+                'date' => $date->format('d M Y'),
                 'check_in' => '--',
                 'check_out' => '--',
                 'duration' => '--',
@@ -121,26 +130,30 @@ class AttendanceController extends Controller
         // Holiday
         elseif ($holiday) {
             $records[] = [
-                'date' => $recordDate->format('d M Y'),
+                'date' => $date->format('d M Y'),
                 'check_in' => '--',
                 'check_out' => '--',
                 'duration' => '--',
                 'status' => 'Holiday',
             ];
         }
-        // Attendance
+        // Present
         elseif ($attendance) {
             $records[] = [
-                'date' => $recordDate->format('d M Y'),
-                'check_in' => $attendance->check_in ? Carbon::parse($attendance->check_in)->format('h:i A') : '--',
-                'check_out' => $attendance->check_out ? Carbon::parse($attendance->check_out)->format('h:i A') : '--',
-                'duration' => $attendance->duration_minutes? abs(round($attendance->duration_minutes / 60, 2)) : '--',
-
+                'date' => $date->format('d M Y'),
+                'check_in' => $attendance->check_in
+                    ? Carbon::parse($attendance->check_in)->format('h:i A') : '--',
+                'check_out' => $attendance->check_out
+                    ? Carbon::parse($attendance->check_out)->format('h:i A') : '--',
+                'duration' => $attendance->duration_minutes
+                    ? abs(round($attendance->duration_minutes / 60, 2)) : '--',
                 'status' => 'Present',
             ];
-        } else {
+        }
+        // Absent
+        else {
             $records[] = [
-                'date' => $recordDate->format('d M Y'),
+                'date' => $date->format('d M Y'),
                 'check_in' => '--',
                 'check_out' => '--',
                 'duration' => '--',
@@ -151,31 +164,45 @@ class AttendanceController extends Controller
         return view('Employees.Attendance.records', compact('records'));
     }
 
-    // ✅ Default view: full month if no specific date selected
-    $month = $request->get('month', date('m'));
-    $year = $request->get('year', date('Y'));
+    // ✅ Month-Year Filter (type="month")
+    $monthInput = $request->month; // format: YYYY-MM
+    if ($monthInput) {
+        $year = substr($monthInput, 0, 4);
+        $month = substr($monthInput, 5, 2);
+    } else {
+        $year = date('Y');
+        $month = date('m');
+    }
 
+    // Fetch Attendance for that month (after join date)
     $attendances = Attendance::whereYear('attendance_date', $year)
         ->whereMonth('attendance_date', $month)
         ->where('user_id', $userId)
+        ->where('attendance_date', '>=', $joinDate)
         ->get()
-        ->keyBy('attendance_date');
+        ->keyBy(function ($item) {
+            return Carbon::parse($item->attendance_date)->toDateString();
+        });
 
+    // Fetch Holidays for that month
     $holidays = Holiday::whereYear('date', $year)
         ->whereMonth('date', $month)
         ->pluck('date')
         ->map(fn($d) => Carbon::parse($d)->toDateString())
         ->toArray();
 
-    $records = [];
-    $today = now()->startOfDay();
     $daysInMonth = Carbon::create($year, $month)->daysInMonth;
 
     for ($day = 1; $day <= $daysInMonth; $day++) {
         $date = Carbon::create($year, $month, $day)->startOfDay();
 
+        // Skip future dates
         if ($date->greaterThan($today)) continue;
 
+        // Skip dates before joining
+        if ($date->lessThan($joinDate)) continue;
+
+        // Weekend
         if ($date->isSaturday() || $date->isSunday()) {
             $records[] = [
                 'date' => $date->format('d M Y'),
@@ -187,6 +214,7 @@ class AttendanceController extends Controller
             continue;
         }
 
+        // Holiday
         if (in_array($date->toDateString(), $holidays)) {
             $records[] = [
                 'date' => $date->format('d M Y'),
@@ -198,17 +226,21 @@ class AttendanceController extends Controller
             continue;
         }
 
+        // Present
         if (isset($attendances[$date->toDateString()])) {
             $attendance = $attendances[$date->toDateString()];
             $records[] = [
                 'date' => $date->format('d M Y'),
-                'check_in' => $attendance->check_in ? Carbon::parse($attendance->check_in)->format('h:i A') : '--',
-                'check_out' => $attendance->check_out ? Carbon::parse($attendance->check_out)->format('h:i A') : '--',
-               'duration' => $attendance->duration_minutes? abs(round($attendance->duration_minutes / 60, 2)): '--',
-
+                'check_in' => $attendance->check_in
+                    ? Carbon::parse($attendance->check_in)->format('h:i A') : '--',
+                'check_out' => $attendance->check_out
+                    ? Carbon::parse($attendance->check_out)->format('h:i A') : '--',
+                'duration' => $attendance->duration_minutes
+                    ? abs(round($attendance->duration_minutes / 60, 2)) : '--',
                 'status' => 'Present',
             ];
         } else {
+            // Absent
             $records[] = [
                 'date' => $date->format('d M Y'),
                 'check_in' => '--',
@@ -221,6 +253,7 @@ class AttendanceController extends Controller
 
     return view('Employees.Attendance.records', compact('records', 'month', 'year'));
 }
+
 
 
     // ✅ Dashboard Summary

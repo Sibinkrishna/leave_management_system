@@ -30,6 +30,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<!-- Favicon -->
+<link rel="icon" href="{{ asset('Admin/assets/images/favicon.ico') }}" type="image/x-icon">
+<link rel="shortcut icon" href="{{ asset('Admin/assets/images/favicon.ico') }}" type="image/x-icon">
+
+
 
 
 
@@ -85,7 +90,7 @@
     <script src="{{asset('Admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('Admin/assets/libs/simplebar/simplebar.min.js')}}"></script>
     <script src="{{asset('Admin/assets/libs/simplebar/simplebar.min.js')}}"></script>
-        <!-- Sweet-Alert  -->
+        <!-- Sweet-Alert -->
     <script src="{{asset('Admin/assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
     <script src="{{asset('Admin/assets/libs/apexcharts/apexcharts.min.js')}}"></script>
     <script src="https://apexcharts.com/samples/assets/stock-prices.js'"></script>

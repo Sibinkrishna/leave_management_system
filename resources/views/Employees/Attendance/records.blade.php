@@ -27,12 +27,13 @@
 
             <!-- ✅ Filter Form -->
             <form method="GET" action="{{ route('employee.attendance.records') }}" class="d-flex flex-wrap align-items-center gap-2">
-                <input 
-                    type="date" 
-                    name="date" 
-                    class="form-control form-control-sm w-auto"
-                    value="{{ request('date') }}"
-                >
+<input 
+    type="month" 
+    name="month" 
+    class="form-control form-control-sm w-auto"
+    value="{{ request('month') }}"
+>
+
                 <button type="submit" class="btn btn-sm btn-primary">
                     <i class="bi bi-search"></i> Filter
                 </button>
